@@ -1,0 +1,2 @@
+python -m pip install "pymongo[srv]"==3.12
+mongodb+srv://hackchillzone:<db_password>@cluster0.2iqvs.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0

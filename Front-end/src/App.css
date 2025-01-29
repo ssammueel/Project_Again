@@ -1,0 +1,27 @@
+*{
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+.good {
+  color: green; /* Set text color to green */
+  display: flex; /* Use flexbox for centering */
+  justify-content: center; /* Center horizontally */
+  animation: fadeOut 5s forwards; /* Apply fade-out animation */
+}
+
+.hover-trigger:hover + .dropdown-menu,
+.dropdown-menu:hover {
+  display: block;
+}
+.dropdown-menu {
+  list-style: none;
+  padding: 0;
+  display: none;
+  min-width: 150px;
+  z-index: 10;
+}
+.dropdown-menu li {
+  padding: 0.5rem;
+}
