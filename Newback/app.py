@@ -15,6 +15,7 @@ from routes.firewall_evasion_scan import firewall_scan_bp
 from routes.udp_scan import udp_scan_bp
 from routes.syn_scan import syn_scan_bp
 from routes.traceroute_scan import traceroute_scan_bp
+from routes.custom_scan import custom_scan_bp
 
 import os
 from dotenv import load_dotenv
@@ -39,6 +40,7 @@ app.register_blueprint(firewall_scan_bp,url_prefix='/api')
 app.register_blueprint(udp_scan_bp,url_prefix='/api')
 app.register_blueprint(syn_scan_bp,url_prefix='/api')
 app.register_blueprint(traceroute_scan_bp,url_prefix='/api')
+app.register_blueprint(custom_scan_bp,url_prefix='/api')
 
 
 

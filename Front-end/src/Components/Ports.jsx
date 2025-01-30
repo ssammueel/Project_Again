@@ -1,7 +1,5 @@
-
 import React, { useState } from 'react';
 
-// when i scan a port to show the loading insteased of keeping the previos state
 export const PtScan = () => {
     const [ipAddress, setIpAddress] = useState('');
     const [startPort, setStartPort] = useState('');
@@ -157,32 +155,6 @@ export const TcpScan = () =>{
 
 }
 
-export const Scanoutput = () =>{
-    return(
-        <section className='w-[50%]'>
-          <div className='w-[] p-10 shadow'>
-            <h2 className='text-xl'>Scan Briefs</h2>
-            <p>Report Details</p>
-          </div>
-        </section>
-    )
-}
-
-export const Ranget = ()=>{
-return(
-    <>
-    <h1>this is what happens when one if forced</h1>
-    </>
-)
-}
-
-export const Specific= ()=>{
-    return(
-    <div>get agry not becouse of you </div>
-    )
-}
-
-
 export const ServiceScan = () => {
     const [ipAddress, setIpAddress] = useState("");
     const [services, setServices] = useState({});
@@ -227,7 +199,6 @@ export const ServiceScan = () => {
     );
 };
 
-
 export const SubnetScan = () => {
     const [subnet, setSubnet] = useState("");
     const [liveHosts, setLiveHosts] = useState([]);
@@ -270,8 +241,6 @@ export const SubnetScan = () => {
     );
 };
 
-
-
 export const VulnScan = () => {
     const [ipAddress, setIpAddress] = useState("");
     const [vulns, setVulns] = useState([]);
@@ -305,7 +274,6 @@ export const VulnScan = () => {
         </div>
     );
 };
-
 
 export const AggressiveScan = () => {
     const [ipAddress, setIpAddress] = useState("");
@@ -474,6 +442,50 @@ export const TracerouteScan = () => {
             <div>
                 <h2>Traceroute Scan Results</h2>
                 <pre>{JSON.stringify(results, null, 2)}</pre>
+            </div>
+        </div>
+    );
+};
+
+
+export const CustomScan = () => {
+    const [customCommand, setCustomCommand] = useState("");
+    const [results, setResults] = useState("");
+
+    const handleScan = async () => {
+        try {
+            const response = await fetch('http://127.0.0.1:5000/api/scan_custom', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ command: customCommand }),
+            });
+            const result = await response.json();
+            setResults(result.output || "No output received.");
+        } catch (error) {
+            console.error("Error executing custom scan:", error);
+            setResults("Error executing scan.");
+        }
+    };
+
+    return (
+        <div className="bg-gray-200 p-4 rounded-lg shadow-md">
+            <h2 className="text-lg font-bold mb-2">Custom Nmap Scan</h2>
+            <input 
+                className="w-full p-2 border border-gray-400 rounded mb-2"
+                type="text" 
+                placeholder="Enter custom Nmap command (e.g., -p 80,443 192.168.1.1)" 
+                value={customCommand} 
+                onChange={(e) => setCustomCommand(e.target.value)}
+            />
+            <button 
+                className="bg-blue-500 text-white px-4 py-2 rounded" 
+                onClick={handleScan}
+            >
+                Run Scan
+            </button>
+            <div className="mt-4">
+                <h3 className="font-bold">Scan Output:</h3>
+                <pre className="bg-white p-2 border">{results}</pre>
             </div>
         </div>
     );
