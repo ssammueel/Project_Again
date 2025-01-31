@@ -11,14 +11,16 @@ import { Documentation } from './documentation/Documentation'
 import { News } from './news/News'
 import { ChangePassword } from './profile/ChangePassword'
 import { ChangePic } from './profile/ChangePic'
-import { AggressiveScan, Detectos, FirewallScan, PtScan, Ranget, ServiceScan, SubnetScan, SynScan, TcpScan, TracerouteScan, UdpScan, VulnScan } from './Components/Ports'
+import { AggressiveScan, CustomScan, Detectos, FirewallScan, PtScan, ServiceScan, SubnetScan, SynScan, TcpScan, TracerouteScan, UdpScan, VulnScan } from './Components/Ports'
 import { ExploitSearch } from './features/more/ExploitSearch'
+import { Footer } from './Components/Footer'
+import { NiktoScan } from './Components/Nikto'
 
 function App() {
   
 
   return (
-    <div className=''>
+    <div>
 <BrowserRouter>
 <Header/>
     <Routes>
@@ -33,8 +35,7 @@ function App() {
           <Route path='ptScan' element={<PtScan/>}/>
           <Route path='tcpScan' element={<TcpScan/>}/>
           <Route path='UdpScan' element={<UdpScan/>}/>
-          <Route path='detectos' element={<Detectos/>} />
-          <Route path='ranget' element={<Ranget/>}/>
+          <Route path='detectos' element={<Detectos/>} />        
           <Route path='exploit' element={<ExploitSearch/>}/>
           <Route path='ServiceSca' element={<ServiceScan/>} />
           <Route path='SubnetScan' element={<SubnetScan/>}/>
@@ -43,8 +44,10 @@ function App() {
           <Route path='FirewallScan' element={<FirewallScan/>} />
           <Route path='SynScan' element={<SynScan/>}/>
           <Route path='TracerouteScan' element={<TracerouteScan/>}/>
-    
-              
+          <Route path='CustomScan' element={<CustomScan/>}/>
+          
+          <Route path='NiktoScan' element={<NiktoScan/>}/>
+
           </Route>
       </Route>
       
@@ -60,7 +63,7 @@ function App() {
     </Routes>
 
 </BrowserRouter>
-
+<Footer/>
       
     </div>
   )

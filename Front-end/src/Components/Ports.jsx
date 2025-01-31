@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Footer } from './Footer';
 
 export const PtScan = () => {
     const [ipAddress, setIpAddress] = useState('');
@@ -329,16 +330,17 @@ export const FirewallScan = () => {
     };
 
     return (
-        <div>
+        <div className='h-fit '>
             <form onSubmit={(e) => { e.preventDefault(); handleScan(); }} className="bg-slate-300 p-3">
                 <label>IP Address:</label>
                 <input className="bg-white p-2 rounded" type="text" placeholder="Enter IP" value={ipAddress} onChange={(e) => setIpAddress(e.target.value)} />
                 <button type="submit" className="btn btn-primary mt-2">Firewall Evasion Scan</button>
             </form>
-            <div>
+            <div className='flex-grow bg-[rgb(174,187,221)] overflow-y-auto max-h-[450px]'>
                 <h2>Firewall Scan Results</h2>
                 <pre>{JSON.stringify(results, null, 2)}</pre>
             </div>
+            
         </div>
     );
 };
@@ -468,10 +470,10 @@ export const CustomScan = () => {
     };
 
     return (
-        <div className="bg-gray-200 p-4 rounded-lg shadow-md">
+        <div className="bg-gray-200 p-4 rounded-lg shadow-md h-fit">
             <h2 className="text-lg font-bold mb-2">Custom Nmap Scan</h2>
             <input 
-                className="w-full p-2 border border-gray-400 rounded mb-2"
+                className="bg-white p-2 rounded w-full border border-gray-400 mb-2"
                 type="text" 
                 placeholder="Enter custom Nmap command (e.g., -p 80,443 192.168.1.1)" 
                 value={customCommand} 
@@ -485,8 +487,9 @@ export const CustomScan = () => {
             </button>
             <div className="mt-4">
                 <h3 className="font-bold">Scan Output:</h3>
-                <pre className="bg-white p-2 border">{results}</pre>
+                <pre className="bg-white p-2 border ">{results}</pre>
             </div>
         </div>
     );
 };
+
