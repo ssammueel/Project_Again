@@ -44,7 +44,7 @@ app.register_blueprint(syn_scan_bp,url_prefix='/api')
 app.register_blueprint(traceroute_scan_bp,url_prefix='/api')
 app.register_blueprint(custom_scan_bp,url_prefix='/api')
 
-app.register_blueprint(nikto_bp,url_prefix='/api')
+app.register_blueprint(nikto_bpw,url_prefix='/api')
 
 
 

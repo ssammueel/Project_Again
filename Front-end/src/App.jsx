@@ -15,13 +15,12 @@ import { AggressiveScan, CustomScan, Detectos, FirewallScan, PtScan, ServiceScan
 import { ExploitSearch } from './features/more/ExploitSearch'
 import { Footer } from './Components/Footer'
 import { NiktoScan } from './Components/Nikto'
-
 function App() {
   
 
   return (
-    <div>
-<BrowserRouter>
+    <div className=''>
+<BrowserRouter>w
 <Header/>
     <Routes>
 

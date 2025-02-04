@@ -13,7 +13,6 @@ export const News = () => {
 
         <p>here we need to use the python library to webscap and get all the news related to cybersecuruity and artificai intelgence</p>
     </div>
-    <Footer/>
     </>
   )
 }

@@ -2,7 +2,7 @@ import React from 'react'
 
 export const Footer = () => {
   return (
-    <section className='bg-none'> 
+    <section className='bg-none pt-4'> 
     {/* bg-base-300 */}
   
           <footer className="footer bg-slate-400d text-base-content p-20">
