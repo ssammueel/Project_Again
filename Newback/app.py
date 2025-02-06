@@ -19,6 +19,8 @@ from routes.custom_scan import custom_scan_bp
 
 from routes.nickto_scans.general_scan import general_scan_bp
 from routes.nickto_scans.ssl_scan import ssl_scan_bp
+from routes.nickto_scans.nikto_header_scan import nikto_header_bp
+from routes.nickto_scans.outdated_software import nikto_outdated_bp
 
 import os
 from dotenv import load_dotenv
@@ -45,9 +47,12 @@ app.register_blueprint(syn_scan_bp,url_prefix='/api')
 app.register_blueprint(traceroute_scan_bp,url_prefix='/api')
 app.register_blueprint(custom_scan_bp,url_prefix='/api')
 
+
 # nicto scan
 app.register_blueprint(general_scan_bp)
 app.register_blueprint(ssl_scan_bp)
+app.register_blueprint(nikto_header_bp)
+app.register_blueprint(nikto_outdated_bp)
 
 
 if __name__ == '__main__':
