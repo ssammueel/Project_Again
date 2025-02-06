@@ -53,6 +53,7 @@ function App() {
           <Route path='OutdatedSoftwareScan' element={<OutdatedSoftwareScan/>}/>
           <Route path='FileUploadScan' element={<FileUploadScan/>}/>
           <Route path='AdminPanelScan' element={<AdminPanelScan/>}/>
+          <Route path='CustomScan' element={<CustomScan/>}/>
 
           </Route>
       </Route>

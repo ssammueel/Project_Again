@@ -52,7 +52,7 @@ export const Features = () => {
                   <Link to='OutdatedSoftwareScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>Outdated Software</li></Link>                
           
                   <Link to='AdminPanelScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>Admin pannel</li></Link>
-                  <Link to='ServiceSca'><li className='text-[16px] pl-5 pt-0 link link-hover'>Custom Scan</li></Link>
+                  <Link to='CustomScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>Custom Scan</li></Link>
               </ul>
           </details>
 
