@@ -1,49 +1,179 @@
 import { useState } from "react";
 
-export const NiktoScan = () => {
-    const [url, setUrl] = useState("");
+export const GeneralScan = () => {
+    const [target, setTarget] = useState("");
     const [scanResult, setScanResult] = useState("");
+    const [loading, setLoading] = useState(false); // Track scan progress
 
     const handleScan = async (e) => {
         e.preventDefault();
+        setScanResult(""); // Clear previous results
+        setLoading(true);  // Show loading indicator
 
         try {
-            const response = await fetch('http://127.0.0.1:5000/api/nikto_scan', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ url }),
+            const response = await fetch("http://127.0.0.1:5000/nikto/general_scan", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ target }),
             });
-
             const data = await response.json();
-            setScanResult(data.output || data.error);
+            setScanResult(data.scan_result || data.error);
         } catch (error) {
-            console.error("Error running scan:", error);
+            console.error("Scan error:", error);
             setScanResult("Error running scan");
+        } finally {
+            setLoading(false); // Hide loading indicator after scan
         }
     };
 
     return (
-        <div className="bg-slate-300 p-5 h-fit flex flex-col w-[70%]">
-            <h2 className="text-xl font-bold">Nikto Web Server Scan</h2>
-            <form onSubmit={handleScan} className="flex flex-col gap-3">
-                <input
-                    type="text"
-                    placeholder="Enter target URL"
-                    value={url}
-                    onChange={(e) => setUrl(e.target.value)}
-                    className="bg-white p-2 rounded w-[100%]"
-                />
-                <button type="submit" className="btn btn-primary mt-2 w-fit">Run Scan</button>
-            </form>
+        <form onSubmit={handleScan} className="bg-slate-300 mt-10 p-3 flex flex-col w-[100%]">
+            <label className="font-bold">Nikto General Scan</label>
+            <input 
+                className="bg-white p-2 rounded border mt-2" 
+                type="text"
+                placeholder="Enter Target URL or IP"
+                value={target}
+                onChange={(e) => setTarget(e.target.value)}
+            />
+            <button type="submit" className="mt-3 p-2 bg-blue-600 w-fit text-white rounded">
+                {loading ? "Scanning..." : "Run Scan"} {/* Change button text while loading */}
+            </button>
 
-            {scanResult && (
-                <div className="mt-5 bg-white p-3 rounded-lg shadow-md">
-                    <h3 className="text-lg font-semibold">Scan Results:</h3>
-                    <pre className="whitespace-pre-wrap">{scanResult}</pre>
-                </div>
+            {/* Show loading indicator */}
+            {loading && <p className="mt-3 text-yellow-600">Scanning in progress...</p>}
+
+            {/* Show scan results only when not loading */}
+            {!loading && scanResult && (
+                <pre className="mt-4 p-3 bg-white border rounded overflow-auto whitespace-pre-wrap break-words max-w-full">
+                    {typeof scanResult === "string" ? scanResult : JSON.stringify(scanResult, null, 2)}
+                </pre>
             )}
-        </div>
+        </form>
+    );
+};
+
+
+// ssl 
+
+
+export const SSLScan = () => {
+    const [target, setTarget] = useState("");
+    const [scanResult, setScanResult] = useState("");
+    const [loading, setLoading] = useState(false); // Track scan progress
+
+    const handleScan = async (e) => {
+        e.preventDefault();
+        setScanResult(""); // Clear previous results
+        setLoading(true);  // Show loading indicator
+
+        try {
+            const response = await fetch("http://127.0.0.1:5000/ssl/scan", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ target }),
+            });
+            const data = await response.json();
+            setScanResult(data.scan_result || data.error);
+        } catch (error) {
+            console.error("Scan error:", error);
+            setScanResult("Error running scan");
+        } finally {
+            setLoading(false); // Hide loading indicator after scan
+        }
+    };
+
+    return (
+        <form onSubmit={handleScan} className="bg-slate-300 mt-10 p-3 flex flex-col w-[100%]">
+            <label className="font-bold">SSL Scan</label>
+            <input 
+                className="bg-white p-2 rounded border mt-2" 
+                type="text"
+                placeholder="Enter Target URL or IP"
+                value={target}
+                onChange={(e) => setTarget(e.target.value)}
+            />
+            <button type="submit" className="mt-3 p-2 bg-blue-600 w-fit text-white rounded">
+                {loading ? "Scanning..." : "Run Scan"} {/* Change button text while loading */}
+            </button>
+
+            {/* Show loading indicator */}
+            {loading && <p className="mt-3 text-yellow-600">Scanning in progress...</p>}
+
+            {/* Show scan results only when not loading */}
+            {!loading && scanResult && (
+                <pre className="mt-4 p-3 bg-white border rounded overflow-auto whitespace-pre-wrap break-words max-w-full">
+                    {typeof scanResult === "string" ? scanResult : JSON.stringify(scanResult, null, 2)}
+                </pre>
+            )}
+        </form>
+    );
+};
+
+// header scan
+
+export const HeaderScan = () => {
+    const [target, setTarget] = useState("");
+    const [scanResult, setScanResult] = useState("");
+    const [loading, setLoading] = useState(false); // Track scan progress
+
+    const handleScan = async (e) => {
+        e.preventDefault();
+        setScanResult(""); // Clear previous results
+        setLoading(true);  // Show loading indicator
+
+        try {
+            const response = await fetch("http://127.0.0.1:5000/nikto/header_scan", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ target }),
+            });
+            const data = await response.json();
+            setScanResult(data.scan_result || data.error);
+        } catch (error) {
+            console.error("Scan error:", error);
+            setScanResult("Error running scan");
+        } finally {
+            setLoading(false); // Hide loading indicator after scan
+        }
+    };
+
+    return (
+        <form onSubmit={handleScan} className="bg-slate-300 mt-10 p-3 flex flex-col w-[100%]">
+            <label className="font-bold">Nikto Header Scan</label>
+            <input 
+                className="bg-white p-2 rounded border mt-2" 
+                type="text"
+                placeholder="Enter Target URL or IP"
+                value={target}
+                onChange={(e) => setTarget(e.target.value)}
+            />
+            <button type="submit" className="mt-3 p-2 bg-blue-600 w-fit text-white rounded">
+                {loading ? "Scanning..." : "Run Scan"} {/* Change button text while loading */}
+            </button>
+
+            {/* Show loading indicator */}
+            {loading && <p className="mt-3 text-yellow-600">Scanning in progress...</p>}
+
+            {/* Show scan results only when not loading */}
+            {!loading && scanResult && (
+                <pre className="mt-4 p-3 bg-white border rounded overflow-auto whitespace-pre-wrap break-words max-w-full">
+                    {typeof scanResult === "string" ? scanResult : JSON.stringify(scanResult, null, 2)}
+                </pre>
+            )}
+        </form>
+    );
+};
+
+
+// testing 
+
+export const NiktoScan  = () => {
+   
+
+    return (
+        <>
+            <h1>samuel mumo</h1>
+        </>
     );
 };

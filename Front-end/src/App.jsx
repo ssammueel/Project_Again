@@ -14,13 +14,13 @@ import { ChangePic } from './profile/ChangePic'
 import { AggressiveScan, CustomScan, Detectos, FirewallScan, PtScan, ServiceScan, SubnetScan, SynScan, TcpScan, TracerouteScan, UdpScan, VulnScan } from './Components/Ports'
 import { ExploitSearch } from './features/more/ExploitSearch'
 import { Footer } from './Components/Footer'
-import { NiktoScan } from './Components/Nikto'
+import { GeneralScan, HeaderScan, NiktoScan, SSLScan } from './Components/Nikto'
 function App() {
   
 
   return (
-    <div className=''>
-<BrowserRouter>w
+    <div>
+<BrowserRouter>
 <Header/>
     <Routes>
 
@@ -45,7 +45,11 @@ function App() {
           <Route path='TracerouteScan' element={<TracerouteScan/>}/>
           <Route path='CustomScan' element={<CustomScan/>}/>
           
+          {/* nicto scan  */}
           <Route path='NiktoScan' element={<NiktoScan/>}/>
+          <Route path='GeneralScans' element={<GeneralScan/>}/>
+          <Route path='SSLScan' element={<SSLScan/>} />
+          <Route path='HeaderScan' element={<HeaderScan/>}/>
 
           </Route>
       </Route>

@@ -44,9 +44,9 @@ export const Features = () => {
             <summary className='text-blue-700 text-[18px] p-0 cursor-pointer'>NIkto Scans</summary>
               <ul className='flex flex-col gap-1'>
                  
-                  <Link to='ptScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>General scans</li></Link>
-                  <Link to='tcpScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>ssl scans</li></Link>
-                  <Link to='UdpScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>Headers Scan</li></Link>
+                  <Link to='GeneralScans'><li className='text-[16px] pl-5 pt-0 link link-hover'>General scans</li></Link>
+                  <Link to='SSLScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>ssl scans</li></Link>
+                  <Link to='HeaderScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>Headers Scan</li></Link>
 
                   <Link to='SynScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>fileupload Scan</li></Link>                  
                   <Link to='TracerouteScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>Outdated Software</li></Link>                
