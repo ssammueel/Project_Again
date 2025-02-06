@@ -67,7 +67,7 @@ export const Features = () => {
 
                   <Link to='Persistence'><li className='text-[16px] pl-5 pt-0 link link-hover'> Persistence</li></Link>
                   <Link to='MSFRPC'><li className='text-[16px] pl-5 pt-0 link link-hover'>MSF RPC</li></Link> 
-                  <Link to='ptScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>Payloads</li></Link>
+                  <Link to='Payloads'><li className='text-[16px] pl-5 pt-0 link link-hover'>Payloads</li></Link>
 
                   <Link to='ptScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>auxiliary</li></Link>
                   <Link to='ptScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>Listeners</li></Link>

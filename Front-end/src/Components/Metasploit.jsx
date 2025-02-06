@@ -1,6 +1,6 @@
 //exploits
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const Exploits = () => {
     const [module, setModule] = useState("");
