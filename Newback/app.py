@@ -21,6 +21,8 @@ from routes.nickto_scans.general_scan import general_scan_bp
 from routes.nickto_scans.ssl_scan import ssl_scan_bp
 from routes.nickto_scans.nikto_header_scan import nikto_header_bp
 from routes.nickto_scans.outdated_software import nikto_outdated_bp
+from routes.nickto_scans.file_upload_scan import upload_scan_bp
+from routes.nickto_scans.admin_panel_scan import admin_panel_bp
 
 import os
 from dotenv import load_dotenv
@@ -53,6 +55,8 @@ app.register_blueprint(general_scan_bp)
 app.register_blueprint(ssl_scan_bp)
 app.register_blueprint(nikto_header_bp)
 app.register_blueprint(nikto_outdated_bp)
+app.register_blueprint(upload_scan_bp)
+app.register_blueprint(admin_panel_bp)
 
 
 if __name__ == '__main__':

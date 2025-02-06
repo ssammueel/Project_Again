@@ -48,10 +48,10 @@ export const Features = () => {
                   <Link to='SSLScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>ssl scans</li></Link>
                   <Link to='HeaderScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>Headers Scan</li></Link>
 
-                  <Link to='SynScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>fileupload Scan</li></Link>                  
+                  <Link to='FileUploadScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>fileupload Scan</li></Link>                  
                   <Link to='OutdatedSoftwareScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>Outdated Software</li></Link>                
           
-                  <Link to='detectos'><li className='text-[16px] pl-5 pt-0 link link-hover'>Admin pannel</li></Link>
+                  <Link to='AdminPanelScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>Admin pannel</li></Link>
                   <Link to='ServiceSca'><li className='text-[16px] pl-5 pt-0 link link-hover'>Custom Scan</li></Link>
               </ul>
           </details>
