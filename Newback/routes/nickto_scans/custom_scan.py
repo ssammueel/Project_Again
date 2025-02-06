@@ -3,7 +3,7 @@ from flask import Blueprint, request, jsonify
 
 nickto_custom_bp = Blueprint("custom_scan", __name__)
 
-@custom_scan.route("/nikto/custom_scan", methods=["POST"])
+@nickto_custom_bp.route("/nikto/custom_scan", methods=["POST"])
 def run_custom_scan():
     data = request.json
     target = data.get("target")

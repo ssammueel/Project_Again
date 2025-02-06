@@ -3,7 +3,7 @@ from flask import Blueprint, request, jsonify
 
 admin_panel_bp = Blueprint("admin_panel_scan", __name__)
 
-@admin_panel_scan.route("/nikto/admin_panel_scan", methods=["POST"])
+@admin_panel_bp.route("/nikto/admin_panel_scan", methods=["POST"])
 def run_admin_panel_scan():
     data = request.json
     target = data.get("target")

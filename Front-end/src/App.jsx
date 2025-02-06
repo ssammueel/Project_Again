@@ -15,6 +15,7 @@ import { AggressiveScan, CustomScan, Detectos, FirewallScan, PtScan, ServiceScan
 import { ExploitSearch } from './features/more/ExploitSearch'
 import { Footer } from './Components/Footer'
 import { AdminPanelScan, FileUploadScan, GeneralScan, HeaderScan, NiktoScan, OutdatedSoftwareScan, SSLScan } from './Components/Nikto'
+import { Exploits, MSFRPC, Persistence, PostExploitation, Scanners } from './Components/Metasploit'
 function App() {
   
 
@@ -54,6 +55,14 @@ function App() {
           <Route path='FileUploadScan' element={<FileUploadScan/>}/>
           <Route path='AdminPanelScan' element={<AdminPanelScan/>}/>
           <Route path='CustomScan' element={<CustomScan/>}/>
+
+          {/* metasploit */}
+          <Route path='Exploits' element={<Exploits/>}/>
+          <Route path='Scanners' element={<Scanners/>}/>
+          <Route path='PostExploitation' element={<PostExploitation/>}/>
+          <Route path='Persistence' element={<Persistence/>}/>
+          <Route path='MSFRPC' element={<MSFRPC/>}/>
+          
 
           </Route>
       </Route>

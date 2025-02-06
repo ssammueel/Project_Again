@@ -61,12 +61,12 @@ export const Features = () => {
             <summary className='text-blue-700 text-[18px] p-0 cursor-pointer'>Metaspoit</summary>
             <ul className='flex flex-col gap-1'>
                  
-                  <Link to='ptScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>Exploits</li></Link>
-                  <Link to='ptScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>Scanners</li></Link>
-                  <Link to='ptScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>Post Exploitation</li></Link>
+                  <Link to='Exploits'><li className='text-[16px] pl-5 pt-0 link link-hover'>Exploits</li></Link>
+                  <Link to='Scanners'><li className='text-[16px] pl-5 pt-0 link link-hover'>Scanners</li></Link>
+                  <Link to='PostExploitation'><li className='text-[16px] pl-5 pt-0 link link-hover'>Post Exploitation</li></Link>
 
-                  <Link to='ptScan'><li className='text-[16px] pl-5 pt-0 link link-hover'> Persistence</li></Link>
-                  <Link to='ptScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>MSF RPC</li></Link> 
+                  <Link to='Persistence'><li className='text-[16px] pl-5 pt-0 link link-hover'> Persistence</li></Link>
+                  <Link to='MSFRPC'><li className='text-[16px] pl-5 pt-0 link link-hover'>MSF RPC</li></Link> 
                   <Link to='ptScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>Payloads</li></Link>
 
                   <Link to='ptScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>auxiliary</li></Link>

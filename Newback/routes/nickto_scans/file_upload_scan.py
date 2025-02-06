@@ -3,7 +3,7 @@ from flask import Blueprint, request, jsonify
 
 upload_scan_bp = Blueprint("file_upload_scan", __name__)
 
-@file_upload_scan.route("/nikto/file_upload_scan", methods=["POST"])
+@upload_scan_bp.route("/nikto/file_upload_scan", methods=["POST"])
 def run_file_upload_scan():
     data = request.json
     target = data.get("target")
