@@ -1,8 +1,16 @@
 from flask import Flask
 from flask_cors import CORS
 
+#hydra
+from routes.hydra.ssh_bruteforce import ssh_bruteforce_bp
+from routes.hydra.ftp_bruteforce import ftp_bruteforce
+from routes.hydra.mysql_bruteforce import mysql_bruteforce
+
+#login and register
 from routes.register import register_bp
 from routes.login import login_bp
+
+#nmap
 from routes.nmap_scans.os_scan import os_scan_bp
 from routes.nmap_scans.port_scan import scan_bp
 from routes.nmap_scans.exploit_search import search_bp
@@ -33,6 +41,9 @@ from routes.metasploit.post_exploitation import post_exploit_bp
 from routes.metasploit.persistence import persistence_bp
 from routes.metasploit.msf_rpc import msf_rpc_bp
 from routes.metasploit.payloads import payloads_bp
+from routes.metasploit.auxiliary_scans import auxiliary_bp
+from routes.metasploit.listeners import listeners_bp
+from routes.metasploit.listeners_auto import listeners_blueprint
 
 import os
 from dotenv import load_dotenv
@@ -76,6 +87,14 @@ app.register_blueprint(post_exploit_bp)
 app.register_blueprint(persistence_bp)
 app.register_blueprint(msf_rpc_bp)
 app.register_blueprint(payloads_bp)
+app.register_blueprint(auxiliary_bp)
+app.register_blueprint(listeners_bp)
+app.register_blueprint(listeners_blueprint)
+
+#hydra
+app.register_blueprint(ssh_bruteforce_bp, url_prefix="/hydra")
+app.register_blueprint(ftp_bruteforce, url_prefix="/hydra")
+app.register_blueprint(mysql_bruteforce, url_prefix="/hydra")
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -15,7 +15,8 @@ import { AggressiveScan, CustomScan, Detectos, FirewallScan, PtScan, ServiceScan
 import { ExploitSearch } from './features/more/ExploitSearch'
 import { Footer } from './Components/Footer'
 import { AdminPanelScan, FileUploadScan, GeneralScan, HeaderScan, NiktoScan, OutdatedSoftwareScan, SSLScan } from './Components/Nikto'
-import { Exploits, MSFRPC, Payloads, Persistence, PostExploitation, Scanners } from './Components/Metasploit'
+import { AutoListeners, AuxiliaryScans, Exploits, Listeners, MSFRPC, Payloads, Persistence, PostExploitation, Scanners } from './Components/Metasploit'
+import { FTPBruteforce, SSHBruteforce } from './Components/Hydra'
 function App() {
   
 
@@ -63,6 +64,13 @@ function App() {
           <Route path='Persistence' element={<Persistence/>}/>
           <Route path='MSFRPC' element={<MSFRPC/>}/>
           <Route path='Payloads' element={<Payloads/>}/>
+          <Route path='AuxiliaryScans' element={<AuxiliaryScans/>}/>
+          <Route path='Listeners' element={<Listeners/>}/>
+          <Route path='AutoListeners' element={<AutoListeners/>}/>
+
+          {/* hydra  */}
+          <Route path='SSHBruteforce' element={<SSHBruteforce/>}/>
+          <Route path='FTPBruteforce' element={<FTPBruteforce/>}/>
 
           </Route>
       </Route>

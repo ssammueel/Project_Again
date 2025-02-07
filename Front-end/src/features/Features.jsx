@@ -69,11 +69,9 @@ export const Features = () => {
                   <Link to='MSFRPC'><li className='text-[16px] pl-5 pt-0 link link-hover'>MSF RPC</li></Link> 
                   <Link to='Payloads'><li className='text-[16px] pl-5 pt-0 link link-hover'>Payloads</li></Link>
 
-                  <Link to='ptScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>auxiliary</li></Link>
-                  <Link to='ptScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>Listeners</li></Link>
-                  <Link to='ptScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>reporting</li></Link>
-
-                  <Link to='ptScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>automation</li></Link>
+                  <Link to='AuxiliaryScans'><li className='text-[16px] pl-5 pt-0 link link-hover'>auxiliary</li></Link>
+                  <Link to='Listeners'><li className='text-[16px] pl-5 pt-0 link link-hover'>Listeners</li></Link>
+                  <Link to='AutoListeners'><li className='text-[16px] pl-5 pt-0 link link-hover'>automation</li></Link>
             </ul>
           </details>
 
@@ -82,8 +80,8 @@ export const Features = () => {
           <summary className='text-blue-700 text-[18px] p-0 cursor-pointer'>Hydra</summary>
             <ul className='flex flex-col gap-1'>
 
-            <Link to='NiktoScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>ssh_bruteforce</li></Link>
-              <Link to='NiktoScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>FTPBruteforce</li></Link>
+            <Link to='SSHBruteforce'><li className='text-[16px] pl-5 pt-0 link link-hover'>ssh_bruteforce</li></Link>
+              <Link to='FTPBruteforce'><li className='text-[16px] pl-5 pt-0 link link-hover'>FTPBruteforce</li></Link>
             <Link to='NiktoScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>MySQLBruteforce</li></Link>
 
             <Link to='NiktoScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>DPBruteforce</li></Link>

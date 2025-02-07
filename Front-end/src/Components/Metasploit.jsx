@@ -376,3 +376,223 @@ export const Payloads = () => {
         </form>
     );
 };
+
+// Auxiliaryscans
+
+export const AuxiliaryScans = () => {
+    const [modules, setModules] = useState([]);
+    const [selectedModule, setSelectedModule] = useState("");
+    const [options, setOptions] = useState({});
+    const [result, setResult] = useState(null);
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        const fetchModules = async () => {
+            try {
+                const response = await fetch("http://127.0.0.1:5000/metasploit/auxiliary");
+                const data = await response.json();
+                setModules(data || []);
+            } catch (error) {
+                console.error("Failed to fetch auxiliary modules:", error);
+            }
+        };
+
+        fetchModules();
+    }, []);
+
+    const handleExecute = async (e) => {
+        e.preventDefault();
+        setResult(null);
+        setLoading(true);
+
+        try {
+            const response = await fetch("http://127.0.0.1:5000/metasploit/auxiliary/execute", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ module: selectedModule, options }),
+            });
+            const data = await response.json();
+            setResult(data);
+        } catch (error) {
+            console.error("Execution error:", error);
+            setResult({ error: "Failed to execute auxiliary scan" });
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <form onSubmit={handleExecute} className="bg-gray-200 p-4 rounded">
+            <h2 className="text-xl font-bold">Metasploit Auxiliary Scans</h2>
+            <select
+                className="bg-slate-50 p-2 border rounded w-full my-2"
+                value={selectedModule}
+                onChange={(e) => setSelectedModule(e.target.value)}
+            >
+                <option value="">Select an Auxiliary Module</option>
+                {modules.map((module, index) => (
+                    <option key={index} value={module}>{module}</option>
+                ))}
+            </select>
+            <button type="submit" className="bg-blue-600 text-white p-2 rounded">
+                {loading ? "Scanning..." : "Run Scan"}
+            </button>
+            {result && (
+                <pre className="mt-4 p-2 bg-white border rounded overflow-auto">
+                    {JSON.stringify(result, null, 2)}
+                </pre>
+            )}
+        </form>
+    );
+};
+
+// listeners
+
+
+export const Listeners = () => {
+    const [listeners, setListeners] = useState([]);
+    const [payload, setPayload] = useState("windows/meterpreter/reverse_tcp");
+    const [lhost, setLhost] = useState("127.0.0.1");
+    const [lport, setLport] = useState("4444");
+    const [loading, setLoading] = useState(false);
+    const [message, setMessage] = useState("");
+
+    useEffect(() => {
+        const fetchListeners = async () => {
+            try {
+                const response = await fetch("http://127.0.0.1:5000/metasploit/listeners");
+                const data = await response.json();
+                setListeners(data || []);
+            } catch (error) {
+                console.error("Failed to fetch listeners:", error);
+            }
+        };
+
+        fetchListeners();
+    }, []);
+
+    const handleStartListener = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        setMessage("");
+
+        try {
+            const response = await fetch("http://127.0.0.1:5000/metasploit/listeners/start", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ payload, lhost, lport }),
+            });
+            const data = await response.json();
+            setMessage(data.message || JSON.stringify(data, null, 2));
+        } catch (error) {
+            console.error("Error starting listener:", error);
+            setMessage("Failed to start listener.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleStopListener = async (job_id) => {
+        setLoading(true);
+        setMessage("");
+
+        try {
+            const response = await fetch("http://127.0.0.1:5000/metasploit/listeners/stop", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ job_id }),
+            });
+            const data = await response.json();
+            setMessage(data.message || JSON.stringify(data, null, 2));
+        } catch (error) {
+            console.error("Error stopping listener:", error);
+            setMessage("Failed to stop listener.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <div className="bg-gray-200 p-4 rounded">
+            <h2 className="text-xl font-bold">Metasploit Listeners</h2>
+            <form onSubmit={handleStartListener} className="mb-4">
+                <label className="block font-bold">Payload</label>
+                <input
+                    className="bg-slate-50 p-2 border rounded w-full"
+                    type="text"
+                    value={payload}
+                    onChange={(e) => setPayload(e.target.value)}
+                />
+
+                <label className="block font-bold mt-2">LHOST</label>
+                <input
+                    className="bg-slate-50 p-2 border rounded w-full"
+                    type="text"
+                    value={lhost}
+                    onChange={(e) => setLhost(e.target.value)}
+                />
+
+                <label className="block font-bold mt-2">LPORT</label>
+                <input
+                    className="bg-slate-50 p-2 border rounded w-full"
+                    type="text"
+                    value={lport}
+                    onChange={(e) => setLport(e.target.value)}
+                />
+
+                <button type="submit" className="bg-blue-600 text-white p-2 rounded mt-3">
+                    {loading ? "Starting..." : "Start Listener"}
+                </button>
+            </form>
+
+            {message && (
+                <pre className="mt-4 p-2 bg-white border rounded overflow-auto">
+                    {message}
+                </pre>
+            )}
+
+            <h3 className="text-lg font-bold mt-4">Active Listeners</h3>
+            {listeners.length > 0 ? (
+                <ul className="bg-white p-2 rounded border mt-2">
+                    {Object.entries(listeners).map(([job_id, details]) => (
+                        <li key={job_id} className="flex justify-between items-center border-b p-2">
+                            <span>{details.name} (Job ID: {job_id})</span>
+                            <button
+                                className="bg-red-500 text-white p-1 rounded"
+                                onClick={() => handleStopListener(job_id)}
+                            >
+                                Stop
+                            </button>
+                        </li>
+                    ))}
+                </ul>
+            ) : (
+                <p>No active listeners</p>
+            )}
+        </div>
+    );
+};
+
+// auto listers 
+
+export const AutoListeners = () => {
+    const [monitoring, setMonitoring] = useState(false);
+    const [message, setMessage] = useState("");
+
+    const toggleMonitoring = async () => {
+        setMonitoring(!monitoring);
+        setMessage(monitoring ? "Auto-monitoring stopped." : "Auto-monitoring started.");
+    };
+
+    return (
+        <div className="bg-gray-200 p-4 rounded">
+            <h2 className="text-xl font-bold">Automated Listeners</h2>
+            <label className="flex items-center">
+                <input type="checkbox" checked={monitoring} onChange={toggleMonitoring} className="mr-2"/>
+                Enable Auto-Start Listeners
+            </label>
+            {message && <p className="mt-3 text-blue-600">{message}</p>}
+        </div>
+    );
+};
+
