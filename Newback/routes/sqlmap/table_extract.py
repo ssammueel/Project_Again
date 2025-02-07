@@ -22,3 +22,4 @@ def sqlmap_table_extract():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+w

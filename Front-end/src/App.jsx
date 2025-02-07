@@ -17,7 +17,8 @@ import { Footer } from './Components/Footer'
 import { AdminPanelScan, FileUploadScan, GeneralScan, HeaderScan, NiktoScan, OutdatedSoftwareScan, SSLScan } from './Components/Nikto'
 import { AutoListeners, AuxiliaryScans, Exploits, Listeners, MSFRPC, Payloads, Persistence, PostExploitation, Scanners } from './Components/Metasploit'
 import { CustomBruteforce, FTPBruteforce, MySQLBruteforce, RDPBruteforce, SSHBruteforce } from './Components/Hydra'
-import { BasicScan, DbEnum } from './Components/Sqlscan'
+import { BasicScan, CustomSQL, DbEnum, TableExtract } from './Components/Sqlscan'
+import { CaptureHandshake, CrackPassword, DeauthAttack, ScanNetworks } from './Components/Wificracking'
 function App() {
   
 
@@ -79,6 +80,14 @@ function App() {
           {/* sqlmap  */}
           <Route path='BasicScan' element={<BasicScan/>}/>
           <Route path='DbEnum' element={<DbEnum/>}/>
+          <Route path='TableExtract' element={<TableExtract/>}/>
+          <Route path='CustomSQL' element={<CustomSQL/>}/>
+
+          {/* wifi Cracking  */}
+          <Route path='ScanNetworks' element={<ScanNetworks/>}/>
+          <Route path='CaptureHandshake' element={<CaptureHandshake/>}/>
+          <Route path='CrackPassword' element={<CrackPassword/>}/>
+          <Route path='DeauthAttack' element={<DeauthAttack/>}/>
 
           </Route>
       </Route>

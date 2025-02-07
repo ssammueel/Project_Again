@@ -96,12 +96,11 @@ export const Features = () => {
             <ul className='flex flex-col gap-1'>
 
             <Link to='BasicScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>BasicScan</li></Link>
-              <Link to='DbEnum'><li className='text-[16px] pl-5 pt-0 link link-hover'>DBEnum</li></Link>
-            <Link to='NiktoScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>TableExtract</li></Link>
+            <Link to='DbEnum'><li className='text-[16px] pl-5 pt-0 link link-hover'>DBEnum</li></Link>
 
-            <Link to='NiktoScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>CustomSQL</li></Link>
-            <Link to='NiktoScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>ustomBruteforce.</li></Link>
-
+            <Link to='TableExtract'><li className='text-[16px] pl-5 pt-0 link link-hover'>TableExtract</li></Link>
+            <Link to='CustomSQL'><li className='text-[16px] pl-5 pt-0 link link-hover'>CustomSQL</li></Link>
+            
             </ul>
           </details>
 
@@ -110,11 +109,11 @@ export const Features = () => {
           <summary className='text-blue-700 text-[18px] p-0 cursor-pointer'>Wifi Cracking</summary>
             <ul className='flex flex-col gap-1'>
 
-            <Link to='NiktoScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>networkScan</li></Link>
-              <Link to='NiktoScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>CaptureHandshake</li></Link>
-            <Link to='NiktoScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>CrackPassword</li></Link>
+            <Link to='ScanNetworks'><li className='text-[16px] pl-5 pt-0 link link-hover'>networkScan</li></Link>
+              <Link to='CaptureHandshake'><li className='text-[16px] pl-5 pt-0 link link-hover'>CaptureHandshake</li></Link>
+            <Link to='CrackPassword'><li className='text-[16px] pl-5 pt-0 link link-hover'>CrackPassword</li></Link>
 
-            <Link to='NiktoScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>DeauthAttack</li></Link>
+            <Link to='DeauthAttack'><li className='text-[16px] pl-5 pt-0 link link-hover'>DeauthAttack</li></Link>
             </ul>
           </details>
 
