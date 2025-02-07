@@ -1,10 +1,17 @@
 from flask import Flask
 from flask_cors import CORS
 
+# sqlmap 
+from routes.sqlmap.basic_scan import basic_scan
+from routes.sqlmap.db_enum import db_enum
+from routes.sqlmap.table_extract import table_extract
+
 #hydra
 from routes.hydra.ssh_bruteforce import ssh_bruteforce_bp
 from routes.hydra.ftp_bruteforce import ftp_bruteforce
 from routes.hydra.mysql_bruteforce import mysql_bruteforce
+from routes.hydra.rdp_bruteforce import rdp_bruteforce
+from routes.hydra.custom_bruteforce import custom_bruteforce
 
 #login and register
 from routes.register import register_bp
@@ -95,6 +102,13 @@ app.register_blueprint(listeners_blueprint)
 app.register_blueprint(ssh_bruteforce_bp, url_prefix="/hydra")
 app.register_blueprint(ftp_bruteforce, url_prefix="/hydra")
 app.register_blueprint(mysql_bruteforce, url_prefix="/hydra")
+app.register_blueprint(rdp_bruteforce, url_prefix="/hydra")
+app.register_blueprint(custom_bruteforce, url_prefix="/hydra")
+
+# sqlmap 
+app.register_blueprint(basic_scan, url_prefix="/sqlmap")
+app.register_blueprint(db_enum, url_prefix="/sqlmap")
+app.register_blueprint(table_extract, url_prefix="/sqlmap")
 
 if __name__ == '__main__':
     app.run(debug=True)

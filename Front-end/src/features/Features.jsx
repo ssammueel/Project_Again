@@ -82,10 +82,10 @@ export const Features = () => {
 
             <Link to='SSHBruteforce'><li className='text-[16px] pl-5 pt-0 link link-hover'>ssh_bruteforce</li></Link>
               <Link to='FTPBruteforce'><li className='text-[16px] pl-5 pt-0 link link-hover'>FTPBruteforce</li></Link>
-            <Link to='NiktoScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>MySQLBruteforce</li></Link>
+            <Link to='MySQLBruteforce'><li className='text-[16px] pl-5 pt-0 link link-hover'>MySQLBruteforce</li></Link>
 
-            <Link to='NiktoScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>DPBruteforce</li></Link>
-            <Link to='NiktoScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>ustomBruteforce.</li></Link>
+            <Link to='RDPBruteforce'><li className='text-[16px] pl-5 pt-0 link link-hover'>DPBruteforce</li></Link>
+            <Link to='CustomBruteforce'><li className='text-[16px] pl-5 pt-0 link link-hover'>customBruteforce.</li></Link>
 
             </ul>
           </details>
@@ -95,8 +95,8 @@ export const Features = () => {
           <summary className='text-blue-700 text-[18px] p-0 cursor-pointer'>SQL vunerability</summary>
             <ul className='flex flex-col gap-1'>
 
-            <Link to='NiktoScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>BasicScan</li></Link>
-              <Link to='NiktoScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>DBEnum</li></Link>
+            <Link to='BasicScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>BasicScan</li></Link>
+              <Link to='DbEnum'><li className='text-[16px] pl-5 pt-0 link link-hover'>DBEnum</li></Link>
             <Link to='NiktoScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>TableExtract</li></Link>
 
             <Link to='NiktoScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>CustomSQL</li></Link>

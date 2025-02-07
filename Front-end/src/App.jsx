@@ -16,7 +16,8 @@ import { ExploitSearch } from './features/more/ExploitSearch'
 import { Footer } from './Components/Footer'
 import { AdminPanelScan, FileUploadScan, GeneralScan, HeaderScan, NiktoScan, OutdatedSoftwareScan, SSLScan } from './Components/Nikto'
 import { AutoListeners, AuxiliaryScans, Exploits, Listeners, MSFRPC, Payloads, Persistence, PostExploitation, Scanners } from './Components/Metasploit'
-import { FTPBruteforce, SSHBruteforce } from './Components/Hydra'
+import { CustomBruteforce, FTPBruteforce, MySQLBruteforce, RDPBruteforce, SSHBruteforce } from './Components/Hydra'
+import { BasicScan, DbEnum } from './Components/Sqlscan'
 function App() {
   
 
@@ -71,6 +72,13 @@ function App() {
           {/* hydra  */}
           <Route path='SSHBruteforce' element={<SSHBruteforce/>}/>
           <Route path='FTPBruteforce' element={<FTPBruteforce/>}/>
+          <Route path='MySQLBruteforce' element={<MySQLBruteforce/>}/>
+          <Route path='RDPBruteforce' element={<RDPBruteforce/>}/>
+          <Route path='CustomBruteforce' element={<CustomBruteforce/>}/>
+
+          {/* sqlmap  */}
+          <Route path='BasicScan' element={<BasicScan/>}/>
+          <Route path='DbEnum' element={<DbEnum/>}/>
 
           </Route>
       </Route>
