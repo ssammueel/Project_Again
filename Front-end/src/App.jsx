@@ -1,6 +1,5 @@
 import './App.css'
 import { BrowserRouter,Routes,Route } from 'react-router-dom'
-import { Home } from './Components/Home'
 import { Login } from './Components/Login'
 import {Me} from './profile/Me'
 import { Features } from './features/Features'
@@ -19,6 +18,8 @@ import { AutoListeners, AuxiliaryScans, Exploits, Listeners, MSFRPC, Payloads, P
 import { CustomBruteforce, FTPBruteforce, MySQLBruteforce, RDPBruteforce, SSHBruteforce } from './Components/Hydra'
 import { BasicScan, CustomSQL, DbEnum, TableExtract } from './Components/Sqlscan'
 import { CaptureHandshake, CrackPassword, DeauthAttack, ScanNetworks } from './Components/Wificracking'
+import { Home } from './Home/Home'
+import { MainCrausel } from './Home/MainCrausel'
 function App() {
   
 
@@ -28,7 +29,8 @@ function App() {
 <Header/>
     <Routes>
 
-      <Route path='/' element={<Home/>}/>
+      {/* <Route path='/' element={<Home/>}/> */}
+      <Route path='/' element={<MainCrausel/>}/>
       <Route path='/home' element={<Home/>}/>
 
       <Route path='/login' element={<Login/>}/>

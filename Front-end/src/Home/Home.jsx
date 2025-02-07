@@ -1,8 +1,8 @@
 import React from 'react'
-import { Scan } from './Scan'
-import { Header } from './Header'
-import { AutoCarousel } from './AutoCarousel'
-import { Footer } from './Footer'
+import { Scan } from '../Components/Scan'
+import { Header } from '../Components/Header'
+import { AutoCarousel } from '../Components/AutoCarousel'
+import { Footer } from '../Components/Footer'
 
 export const Home = () => {
   return (
