@@ -1,7 +1,7 @@
 import requests
 from flask import Blueprint, request, jsonify
 
-listeners_bp = Blueprint("listeners", __name__)
+listeners_bp = Blueprint("listener_bp", __name__)
 
 # MSF RPC Configurations
 MSF_RPC_URL = "http://127.0.0.1:55553/api/"
@@ -16,7 +16,7 @@ def authenticate():
     )
     return response.json().get("token")
 
-@listeners_bp.route("/metasploit/listeners", methods=["GET"])
+@listeners_bp.route("/metasploit/listener", methods=["GET"])
 def list_listeners():
     """Fetch active listeners."""
     token = authenticate()
@@ -26,7 +26,7 @@ def list_listeners():
     response = requests.get(f"{MSF_RPC_URL}job/list", json={"token": token})
     return jsonify(response.json())
 
-@listeners_bp.route("/metasploit/listeners/start", methods=["POST"])
+@listeners_bp.route("/metasploit/listener/start", methods=["POST"])
 def start_listener():
     """Start a new listener."""
     data = request.json
@@ -55,7 +55,7 @@ def start_listener():
     response = requests.post(f"{MSF_RPC_URL}module.execute", json=payload_data)
     return jsonify(response.json())
 
-@listeners_bp.route("/metasploit/listeners/stop", methods=["POST"])
+@listeners_bp.route("/metasploit/listener/stop", methods=["POST"])
 def stop_listener():
     """Stop a listener by job ID."""
     data = request.json

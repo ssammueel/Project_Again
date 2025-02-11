@@ -18,7 +18,6 @@ export const Features = () => {
               <ul className='flex flex-col gap-1'>
                  
                   <Link to='ptScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>PortScan</li></Link>
-                  <Link to='tcpScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>TCP Scan</li></Link>
                   <Link to='UdpScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>UDP Scan</li></Link>
 
                   <Link to='SynScan'><li className='text-[16px] pl-5 pt-0 link link-hover'>SynScan</li></Link>                  

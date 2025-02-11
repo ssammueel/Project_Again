@@ -8,23 +8,47 @@ export const AutoCarousel = () => {
     "https://www.axians.co.uk/app/uploads/sites/75/2024/08/AdobeStock_472181971-scaled.jpeg",
   ];
 
-  const [currentIndex, setCurrentIndex] = useState(0);
+  // Clone first and last images for seamless looping
+  const extendedImages = [images[images.length - 1], ...images, images[0]];
+  
+  const [currentIndex, setCurrentIndex] = useState(1); // Start at 1 to avoid initial jump
+  const [isTransitioning, setIsTransitioning] = useState(true);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 5000); // Change slide every 5 seconds
-    return () => clearInterval(interval); // Clean up interval on unmount
-  }, [images.length]);
+      setCurrentIndex((prevIndex) => prevIndex + 1);
+    }, 3000); // Slide every 3 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Handle infinite loop effect
+  useEffect(() => {
+    if (currentIndex === extendedImages.length - 1) {
+      setTimeout(() => {
+        setIsTransitioning(false);
+        setCurrentIndex(1); // Reset to first real image instantly
+      }, 500); // Wait for the transition to finish
+    } else if (currentIndex === 0) {
+      setTimeout(() => {
+        setIsTransitioning(false);
+        setCurrentIndex(images.length); // Jump to last real image instantly
+      }, 500);
+    } else {
+      setIsTransitioning(true);
+    }
+  }, [currentIndex, extendedImages.length]);
 
   return (
-    <div className="w-[100px] h-[100px]">
-       {
-  images.map((image, index) => (
-    <img src={image.url} alt={image.alt} key={index} />
-  ))
-}
-
+    <div className="w-full max-w-lg mx-auto overflow-hidden relative">
+      <div
+        className={`flex ${isTransitioning ? "transition-transform duration-700 ease-in-out" : ""}`}
+        style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+      >
+        {extendedImages.map((image, index) => (
+          <img key={index} src={image} alt={`Slide ${index}`} className="w-full h-[300px] object-cover rounded-lg" />
+        ))}
+      </div>
     </div>
   );
 };
