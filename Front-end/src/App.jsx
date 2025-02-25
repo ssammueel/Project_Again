@@ -13,7 +13,7 @@ import { ChangePic } from './profile/ChangePic'
 import { AggressiveScan, CustomScan, Detectos, FirewallScan, PtScan, ServiceScan, SubnetScan, SynScan, TcpScan, TracerouteScan, UdpScan, VulnScan } from './Components/Ports'
 import { ExploitSearch } from './features/more/ExploitSearch'
 import { Footer } from './Components/Footer'
-import { AdminPanelScan, FileUploadScan, GeneralScan, HeaderScan, NiktoScan, OutdatedSoftwareScan, SSLScan } from './Components/Nikto'
+import { AdminPanelScan, CustomScanNt, FileUploadScan, GeneralScan, HeaderScan, NiktoScan, OutdatedSoftwareScan, SSLScan } from './Components/Nikto'
 import { AutoListeners, AuxiliaryScans, Exploits, Listeners, MSFRPC, Payloads, Persistence, PostExploitation, Scanners } from './Components/Metasploit'
 import { CustomBruteforce, FTPBruteforce, MySQLBruteforce, RDPBruteforce, SSHBruteforce } from './Components/Hydra'
 import { BasicScan, CustomSQL, DbEnum, TableExtract } from './Components/Sqlscan'
@@ -59,7 +59,7 @@ function App() {
           <Route path='OutdatedSoftwareScan' element={<OutdatedSoftwareScan/>}/>
           <Route path='FileUploadScan' element={<FileUploadScan/>}/>
           <Route path='AdminPanelScan' element={<AdminPanelScan/>}/>
-          <Route path='CustomScan' element={<CustomScan/>}/>
+          <Route path='CustomScanNt' element={<CustomScanNt/>}/>
 
           {/* metasploit */}
           <Route path='Exploits' element={<Exploits/>}/>

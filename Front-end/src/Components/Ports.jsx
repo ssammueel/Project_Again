@@ -52,7 +52,7 @@ export const PtScan = () => {
 
     return (
         <>
-            <form onSubmit={(e) => { e.preventDefault(); handleScan(); }} className="bg-slate-300 flex flex-col p-3 gap-3 w-[45%] h-fit">
+            <form onSubmit={(e) => { e.preventDefault(); handleScan(); }} className="bg-slate-300 flex flex-col p-3 gap-3 w-[60%] h-fit">
                 
                 <label>IP Address:</label>
                 <input className="bg-white p-2 indent-3 outline-none rounded-btn" type="text" placeholder="Enter IP address"
@@ -72,15 +72,9 @@ export const PtScan = () => {
                 />
 
                 <label>End Port:</label>
-                <input
-                    className="bg-white p-2 indent-3 outline-none rounded-btn"
-                    type="text"
-                    placeholder="Enter end port"
-                    id="endport"
-                    value={endPort}
-                    onChange={(e) => setEndPort(e.target.value)}
-                    onKeyDown={(e) => handleKeyDown(e, document.getElementById('scan'))}
-                />
+                <input className="bg-white p-2 indent-3 outline-none rounded-btn" type="text" placeholder="Enter end port"
+                    id="endport" value={endPort} onChange={(e) => setEndPort(e.target.value)}
+                    onKeyDown={(e) => handleKeyDown(e, document.getElementById('scan'))} />
 
                 <button className="btn btn-accent w-fit px-5 mt-4" id="scan" disabled={isScanning} >
                 {isScanning ? "Scanning..." : "Scan"}
@@ -196,34 +190,40 @@ export const SynScan = () => {
     };
 
     return (
-        <div className='w-[100%] mt-6'>
-            <form onSubmit={(e) => { e.preventDefault(); handleScan(); }} className="bg-slate-300 p-3 w-[70%] flex flex-col gap-4 rounded-lg shadow">
-                <label>IP Address:</label>
+        <div className="w-full mt-6 min-h-screen flex flex-col">
+            <form 
+                onSubmit={(e) => { e.preventDefault(); handleScan(); }} 
+                className="bg-slate-300 p-3 flex flex-col gap-3 w-[90%] md:w-[90%] shadow-lg rounded-lg"
+            >
+                <label className="font-semibold">IP Address:</label>
                 <input 
-                    className="bg-white p-2 rounded" 
+                    className="bg-white p-2 rounded border border-gray-400" 
                     type="text" 
                     placeholder="Enter IP" 
                     value={ipAddress} 
                     onChange={(e) => setIpAddress(e.target.value)} 
                 />
-                <button type="submit" className="btn btn-primary mt-2 w-fit">
+                <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 w-fit">
                     {isScanning ? "Scanning..." : "SYN Stealth Scan"}
                 </button>
             </form>
             
-            <div className="mt-5">
-                <h2>syn_Scan Results</h2>
-                {isScanning ? (
-                    <p className="text-yellow-600">Scanning in progress...</p>
-                ) : Object.keys(results).length > 0 ? (
-                    <pre>{JSON.stringify(results, null, 2)}</pre>
-                ) : (
-                    <p>No results available.</p>
-                )}
+            <div className="mt-5 w-[90%] md:w-[90%]">
+                <h2 className="font-bold text-lg">SYN Scan Results</h2>
+                <div className="bg-gray-200 p-3 rounded shadow-md mt-2 max-h-[300px] overflow-y-auto">
+                    {isScanning ? (
+                        <p className="text-yellow-600">Scanning in progress...</p>
+                    ) : Object.keys(results).length > 0 ? (
+                        <pre className="whitespace-pre-wrap break-words">{JSON.stringify(results, null, 2)}</pre>
+                    ) : (
+                        <p>No results available.</p>
+                    )}
+                </div>
             </div>
         </div>
     );
 };
+
 
 // traceroute scan 
 export const TracerouteScan = () => {
@@ -263,8 +263,9 @@ export const TracerouteScan = () => {
     };
 
     return (
-        <div className="bg-gray-200 p-4 rounded-lg shadow-md mt-6 w-[90%]">
+        <div className="bg-gray-200 p-4 rounded-lg shadow-md w-full mt-6 min-h-screen">
             <h2 className="text-lg font-bold mb-2">Traceroute Scan</h2>
+
             <input
                 className="bg-white p-2 rounded w-full border border-gray-400 mb-2"
                 type="text"
@@ -272,16 +273,17 @@ export const TracerouteScan = () => {
                 value={ipAddress}
                 onChange={(e) => setIpAddress(e.target.value)}
             />
+
             <div className="flex gap-2 mt-2">
                 <button
-                    className="bg-blue-500 text-white px-4 py-2 rounded"
+                    className={`px-4 py-2 rounded ${isScanning ? "bg-gray-400" : "bg-blue-500 hover:bg-blue-600"} text-white`}
                     onClick={handleScan}
                     disabled={isScanning}
                 >
                     {isScanning ? "Scanning..." : "Run Traceroute"}
                 </button>
                 <button
-                    className="bg-gray-500 text-white px-4 py-2 rounded"
+                    className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded"
                     onClick={handleClear}
                 >
                     Clear
@@ -290,17 +292,20 @@ export const TracerouteScan = () => {
 
             <div className="mt-5">
                 <h2 className="font-bold">Traceroute Scan Results</h2>
-                {isScanning ? (
-                    <p className="text-yellow-600">Scanning in progress...</p>
-                ) : Object.keys(results).length > 0 ? (
-                    <pre className="bg-gray-300 p-3 rounded">{JSON.stringify(results, null, 2)}</pre>
-                ) : (
-                    <p>No results available.</p>
-                )}
+                <div className="bg-gray-300 p-3 rounded mt-2 max-h-[350px] overflow-y-auto">
+                    {isScanning ? (
+                        <p className="text-yellow-600">Scanning in progress...</p>
+                    ) : Object.keys(results).length > 0 ? (
+                        <pre className="whitespace-pre-wrap break-words">{JSON.stringify(results, null, 2)}</pre>
+                    ) : (
+                        <p>No results available.</p>
+                    )}
+                </div>
             </div>
         </div>
     );
 };
+
 
 // detect os 
 export const Detectos = () => {
@@ -369,19 +374,18 @@ export const Detectos = () => {
     );
 };
 
-//service scan
+// service scan 
 export const ServiceScan = () => {
     const [ipAddress, setIpAddress] = useState("");
     const [services, setServices] = useState({});
     const [isScanning, setIsScanning] = useState(false);
 
     const handleScan = async () => {
-        if (!ipAddress) {
-            alert("Please enter an IP address.");
+        if (!ipAddress.trim()) {
+            alert("Please enter a valid IP address.");
             return;
         }
 
-        // Clear previous results and show scanning message
         setServices({});
         setIsScanning(true);
 
@@ -396,47 +400,67 @@ export const ServiceScan = () => {
             setServices(result.services || {});
         } catch (error) {
             console.error("Error scanning services:", error);
-            setServices({});
+            setServices({ error: "Failed to fetch service scan results." });
         } finally {
             setIsScanning(false);
         }
     };
 
+    const handleClear = () => {
+        setIpAddress("");
+        setServices({});
+    };
+
     return (
-        <div className="mt-6 w-[100%]">
-            <form onSubmit={(e) => { e.preventDefault(); handleScan(); }} className="bg-slate-300 p-3 gap-3 w-[90%] flex flex-col gap-3">
-                <label>IP Address:</label>
-                <input
-                    className="bg-white p-2 rounded"
-                    type="text"
-                    placeholder="Enter IP address"
-                    value={ipAddress}
-                    onChange={(e) => setIpAddress(e.target.value)}
-                />
-                <button type="submit" className="btn w-fit btn-primary mt-2">
+        <div className="bg-gray-200 p-4 rounded-lg shadow-md w-full mt-6 min-h-screen">
+            <h2 className="text-lg font-bold mb-2">Service Scan</h2>
+
+            <input
+                className="bg-white p-2 rounded w-full border border-gray-400 mb-2"
+                type="text"
+                placeholder="Enter IP address"
+                value={ipAddress}
+                onChange={(e) => setIpAddress(e.target.value)}
+            />
+
+            <div className="flex gap-2 mt-2">
+                <button
+                    className={`px-4 py-2 rounded ${isScanning ? "bg-gray-400" : "bg-blue-500 hover:bg-blue-600"} text-white`}
+                    onClick={handleScan}
+                    disabled={isScanning}
+                >
                     {isScanning ? "Scanning..." : "Scan Services"}
                 </button>
-            </form>
+                <button
+                    className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded"
+                    onClick={handleClear}
+                >
+                    Clear
+                </button>
+            </div>
 
             <div className="mt-5">
-                <h2 className="font-bold ">Detected Services</h2>
-                {isScanning ? (
-                    <p>Scanning...</p>
-                ) : Object.keys(services).length > 0 ? (
-                    <ul className="bg-gray-200 p-3 rounded">
-                        {Object.entries(services).map(([port, info]) => (
-                            <li key={port} className="border-b py-2">
-                                <strong>Port {port}:</strong> {info.name || "Unknown"} ({info.state})
-                            </li>
-                        ))}
-                    </ul>
-                ) : (
-                    <p>No services detected.</p>
-                )}
+                <h2 className="font-bold">Detected Services</h2>
+                <div className="bg-gray-300 p-3 rounded mt-2 max-h-[350px] overflow-y-auto">
+                    {isScanning ? (
+                        <p className="text-yellow-600">Scanning in progress...</p>
+                    ) : Object.keys(services).length > 0 ? (
+                        <ul>
+                            {Object.entries(services).map(([port, info]) => (
+                                <li key={port} className="border-b py-2">
+                                    <strong>Port {port}:</strong> {info.name || "Unknown"} ({info.state})
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p>No services detected.</p>
+                    )}
+                </div>
             </div>
         </div>
     );
 };
+
 
 //subnet scan
 export const SubnetScan = () => {
@@ -601,8 +625,8 @@ export const AggressiveScan = () => {
     const [isScanning, setIsScanning] = useState(false);
 
     const handleScan = async () => {
-        if (!ipAddress) {
-            alert("Please enter an IP address.");
+        if (!ipAddress.trim()) {
+            alert("Please enter a valid IP address.");
             return;
         }
 
@@ -610,9 +634,9 @@ export const AggressiveScan = () => {
         setIsScanning(true);
 
         try {
-            const response = await fetch('http://127.0.0.1:5000/api/scan_aggressive', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+            const response = await fetch("http://127.0.0.1:5000/api/scan_aggressive", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ ip: ipAddress }),
             });
 
@@ -632,35 +656,42 @@ export const AggressiveScan = () => {
     };
 
     return (
-        <div className="mt-6 w-[100%]">
-            <form onSubmit={(e) => { e.preventDefault(); handleScan(); }} className="bg-slate-300 p-3 w-[90%] flex flex-col gap-3">
-                <label>IP Address:</label>
-                <input
-                    className="bg-white p-2 rounded"
-                    type="text"
-                    placeholder="Enter IP"
-                    value={ipAddress}
-                    onChange={(e) => setIpAddress(e.target.value)}
-                />
-                <div className="flex gap-2 mt-2">
-                    <button type="submit" className="btn btn-primary">
-                        {isScanning ? "Scanning..." : "Aggressive Scan"}
-                    </button>
-                    <button type="button" className="btn btn-secondary" onClick={handleClear}>
-                        Clear
-                    </button>
-                </div>
-            </form>
+        <div className="bg-gray-200 p-4 rounded-lg shadow-md w-full mt-6 min-h-screen">
+            <h2 className="text-lg font-bold mb-2">Aggressive Scan</h2>
 
-            <div className="mt-5">
-                <h2 className="font-bold">Aggressive Scan Results</h2>
-                {isScanning ? (
-                    <p className="text-yellow-600">Scanning in progress...</p>
-                ) : Object.keys(results).length > 0 ? (
-                    <pre className="bg-gray-200 p-3 rounded">{JSON.stringify(results, null, 2)}</pre>
-                ) : (
-                    <p>No results available.</p>
-                )}
+            <input
+                className="bg-white p-2 rounded w-full border border-gray-400 mb-2"
+                type="text"
+                placeholder="Enter IP address"
+                value={ipAddress}
+                onChange={(e) => setIpAddress(e.target.value)}
+            />
+
+            <div className="flex gap-2 mt-2">
+                <button
+                    className={`px-4 py-2 rounded ${isScanning ? "bg-gray-400" : "bg-red-500 hover:bg-red-600"} text-white`}
+                    onClick={handleScan}
+                    disabled={isScanning}
+                >
+                    {isScanning ? "Scanning..." : "Run Aggressive Scan"}
+                </button>
+                <button
+                    className="bg-gray hover:bg-gray-600 text-white px-4 py-2 rounded" onClick={handleClear} >
+                    Clear
+                </button>
+            </div>
+
+            <div className="mt-5 w-[90%] md:w-[95%]">
+                <h2 className="font-bold text-lg">Aggressive Scan Results</h2>
+                <div className="bg-gray-200 p-3 rounded shadow-md mt-2 max-h-[300px] overflow-y-auto">
+                    {isScanning ? (
+                        <p className="text-yellow-600">Scanning in progress...</p>
+                    ) : Object.keys(results).length > 0 ? (
+                        <pre className="bg-gray-100 p-3 rounded">{JSON.stringify(results, null, 2)}</pre>
+                    ) : (
+                        <p>No results available.</p>
+                    )}
+                </div>
             </div>
         </div>
     );
@@ -704,42 +735,42 @@ export const FirewallScan = () => {
     };
 
     return (
-        <div className="mt-6 w-[100%]">
-            <form onSubmit={(e) => { e.preventDefault(); handleScan(); }} className="bg-slate-300 p-3 flex flex-col gap-3">
-                <label>IP Address:</label>
-                <input
-                    className="bg-white p-2 rounded"
-                    type="text"
-                    placeholder="Enter IP"
+        <div className="mt-6 w-full min-h-screen flex flex-col">
+            <form onSubmit={(e) => { e.preventDefault(); handleScan(); }} 
+                className="bg-slate-300 p-3 flex flex-col gap-3 w-[100%] md:w-[80%] shadow-lg rounded-lg">
+                <label className="font-semibold">IP Address:</label>
+                <input className="bg-white p-2 rounded border border-gray-400" type="text" placeholder="Enter IP"
                     value={ipAddress}
                     onChange={(e) => setIpAddress(e.target.value)}
                 />
                 <div className="flex gap-2 mt-2">
-                    <button type="submit" className="btn btn-primary">
+                    <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
                         {isScanning ? "Scanning..." : "Firewall Evasion Scan"}
                     </button>
-                    <button type="button" className="btn btn-secondary" onClick={handleClear}>
+                    <button type="button" className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600" onClick={handleClear}>
                         Clear
                     </button>
                 </div>
             </form>
 
-            <div className="mt-5">
-                <h2 className="font-bold">Firewall Scan Results</h2>
-                {isScanning ? (
-                    <p className="text-yellow-600">Scanning in progress...</p>
-                ) : Object.keys(results).length > 0 ? (
-                    <pre className="bg-gray-200 p-3 rounded">{JSON.stringify(results, null, 2)}</pre>
-                ) : (
-                    <p>No results available.</p>
-                )}
+            <div className="mt-5 w-[90%] md:w-[95%]">
+                <h2 className="font-bold text-lg">Firewall Scan Results</h2>
+                <div className="bg-gray-200 p-3 rounded shadow-md mt-2 max-h-[300px] overflow-y-auto">
+                    {isScanning ? (
+                        <p className="text-yellow-600">Scanning in progress...</p>
+                    ) : Object.keys(results).length > 0 ? (
+                        <pre className="whitespace-pre-wrap break-words">{JSON.stringify(results, null, 2)}</pre>
+                    ) : (
+                        <p>No results available.</p>
+                    )}
+                </div>
             </div>
         </div>
     );
 };
 
 // custom scan 
- export const CustomScan = () => {
+export const CustomScan = () => {
 
     const [customCommand, setCustomCommand] = useState("");
     const [results, setResults] = useState("");
@@ -817,7 +848,6 @@ export const FirewallScan = () => {
         </div>
     );
 };
-
 // free tcp 
 export const TcpScan = () =>{
 

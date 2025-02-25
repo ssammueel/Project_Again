@@ -2,10 +2,10 @@ import React from 'react'
 
 export const Footer = () => {
   return (
-    <section className='bg-none pt-4'> 
+    <section className='bg-none pt-4 mt-auto'> 
     {/* bg-base-300 */}
   
-          <footer className="footer bg-slate-400d text-base-content p-20">
+          <footer className="footer bg-black text-base-content p-10">
             <nav>
               <h6 className="footer-title">Services</h6>
               <a className="link link-hover">Branding</a>

@@ -46,7 +46,7 @@ from routes.nickto_scans.nikto_header_scan import nikto_header_bp
 from routes.nickto_scans.outdated_software import nikto_outdated_bp
 from routes.nickto_scans.file_upload_scan import upload_scan_bp
 from routes.nickto_scans.admin_panel_scan import admin_panel_bp
-from routes.nickto_scans.custom_scan import nickto_custom_bp
+from routes.nickto_scans.nkt_custom import nkt_custom_bp
 
 # sploit
 from routes.metasploit.exploits import exploits_bp
@@ -93,7 +93,7 @@ app.register_blueprint(nikto_header_bp)
 app.register_blueprint(nikto_outdated_bp)
 app.register_blueprint(upload_scan_bp)
 app.register_blueprint(admin_panel_bp)
-app.register_blueprint(nickto_custom_bp, name="nickto_custom_scan")
+app.register_blueprint(nkt_custom_bp)
 
 # sploit scan
 app.register_blueprint(exploits_bp)

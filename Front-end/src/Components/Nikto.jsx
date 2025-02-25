@@ -55,8 +55,6 @@ export const GeneralScan = () => {
 
 
 // ssl 
-
-
 export const SSLScan = () => {
     const [target, setTarget] = useState("");
     const [scanResult, setScanResult] = useState("");
@@ -111,7 +109,6 @@ export const SSLScan = () => {
 };
 
 // header scan
-
 export const HeaderScan = () => {
     const [target, setTarget] = useState("");
     const [scanResult, setScanResult] = useState("");
@@ -166,7 +163,6 @@ export const HeaderScan = () => {
 };
 
 //Outetad software 
-
 export const OutdatedSoftwareScan = () => {
     const [target, setTarget] = useState("");
     const [scanResult, setScanResult] = useState("");
@@ -222,8 +218,6 @@ export const OutdatedSoftwareScan = () => {
 
 
 // file upload 
-
-
 export const FileUploadScan = () => {
     const [target, setTarget] = useState("");
     const [scanResult, setScanResult] = useState("");
@@ -278,7 +272,6 @@ export const FileUploadScan = () => {
 };
 
 //admin pannel
-
 export const AdminPanelScan = () => {
     const [target, setTarget] = useState("");
     const [scanResult, setScanResult] = useState("");
@@ -333,31 +326,35 @@ export const AdminPanelScan = () => {
 };
 
 // custom scan 
-
-export const CustomScan = () => {
+export const CustomScanNt = () => {
     const [target, setTarget] = useState("");
     const [options, setOptions] = useState("");
     const [scanResult, setScanResult] = useState("");
-    const [loading, setLoading] = useState(false); // Track scan progress
+    const [loading, setLoading] = useState(false); 
 
     const handleScan = async (e) => {
         e.preventDefault();
-        setScanResult(""); // Clear previous results
-        setLoading(true);  // Show loading indicator
+        setScanResult("");
+        setLoading(true);
 
         try {
-            const response = await fetch("http://127.0.0.1:5000/nikto/custom_scan", {
+            const response = await fetch("http://127.0.0.1:5000/nikto/nkt_custom", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ target, options }),
             });
+
             const data = await response.json();
-            setScanResult(data.scan_result || data.error);
+            if (!response.ok) {
+                throw new Error(data.error || `HTTP error! Status: ${response.status}`);
+            }
+
+            setScanResult(data.scan_result || "No response from server.");
         } catch (error) {
             console.error("Scan error:", error);
-            setScanResult("Error running scan");
+            setScanResult("Error running scan: " + error.message);
         } finally {
-            setLoading(false); // Hide loading indicator after scan
+            setLoading(false);
         }
     };
 
@@ -370,6 +367,7 @@ export const CustomScan = () => {
                 placeholder="Enter Target URL or IP"
                 value={target}
                 onChange={(e) => setTarget(e.target.value)}
+                required
             />
             <input 
                 className="bg-white p-2 rounded border mt-2" 
@@ -378,17 +376,15 @@ export const CustomScan = () => {
                 value={options}
                 onChange={(e) => setOptions(e.target.value)}
             />
-            <button type="submit" className="mt-3 p-2 bg-blue-600 w-fit text-white rounded">
-                {loading ? "Scanning..." : "Run Custom Scan"} {/* Change button text while loading */}
+            <button type="submit" className="mt-3 p-2 bg-blue-600 w-fit text-white rounded" disabled={loading}>
+                {loading ? "Scanning..." : "Run Custom Scan"}
             </button>
 
-            {/* Show loading indicator */}
             {loading && <p className="mt-3 text-yellow-600">Scanning in progress...</p>}
 
-            {/* Show scan results only when not loading */}
             {!loading && scanResult && (
                 <pre className="mt-4 p-3 bg-white border rounded overflow-auto whitespace-pre-wrap break-words max-w-full">
-                    {typeof scanResult === "string" ? scanResult : JSON.stringify(scanResult, null, 2)}
+                    {typeof scanResult === "object" ? JSON.stringify(scanResult, null, 2) : scanResult}
                 </pre>
             )}
         </form>

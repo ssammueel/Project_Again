@@ -1,52 +1,23 @@
-import React from 'react'
+import React from 'react';
+import { DocNmap } from './DocNmap';
 
 export const Documentation = () => {
-    
   return (
-    <div className='p-20 bg-slate-50 text-2xl text-sky-600'>
-      
-        Documentation
-        <p className='text-black'> Edit
-nmap -p 80,443,8080,8443 10.0.1.11
-📌 Checks if a web server is running.
+    <div className="p-10 mt-10 bg-slate-50 text-gray-800 min-h-screen">
 
-🔹 7. Scan UDP Ports
-Scans for open UDP ports.
+      {/* documentation header  */}
+      <div className='flex gap-10 px-[100px]'>
+        <h1 className="text-4xl font-bold text-sky-700 mb-6">📖 Documentation</h1>
+        <ul className='text-xl font-bold text-sky-700 mb-6 flex gap-4'>
+            <li>nmap</li>
+            <li>nickto</li>
+            <li>nmap</li>
+            <li>nickto</li>
+          </ul>
+      </div>
 
-bash
-Copy
-Edit
-sudo nmap -sU -p 53,161,123 10.0.1.11
-📌 Useful for checking DNS (53), SNMP (161), and NTP (123).
-
-🔹 8. Scan for Vulnerabilities (Nmap Scripts - NSE)
-Runs vulnerability scripts using NSE.
-
-bash
-Copy
-Edit
-nmap --script=vuln 10.0.1.11
-📌 Finds known vulnerabilities (like CVEs) on the target system.
-
-🔹 9. Aggressive Scan (OS + Services + Scripts)
-A comprehensive scan using multiple techniques.
-
-bash
-Copy
-Edit
-sudo nmap -A 10.0.1.11
-📌 Gathers maximum information but is noisy (easily detected).
-
-🔹 10. Stealth Scan (Avoid Detection)
-Uses SYN scan to stay undetected by firewalls.
-
-bash
-Copy
-Edit
-sudo nmap -sS 10.0.1.11
-📌 Commonly used in penetration testing for stealth reconnaissance.</p>
-
+      {/* Nmap Section */}
+      <DocNmap/>
     </div>
-    
-  )
-}
+  );
+};
