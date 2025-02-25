@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
 import nmap
+from models.user import ScanCollection  # Import ScanCollection
 
 scan_bp = Blueprint('scan', __name__)
 
@@ -32,6 +33,9 @@ def scan_ports():
                     if nm[host][proto][port]['state'] == 'open':
                         open_ports.append(port)
 
+        # Save scan result in database
+        ScanCollection.save_scan(ip, start_port, end_port, open_ports)
+
         return jsonify({'openPorts': open_ports}), 200
 
     except nmap.PortScannerError as e:
@@ -40,3 +44,12 @@ def scan_ports():
     except Exception as e:
         print(f"Unexpected error: {str(e)}")  # Debug log
         return jsonify({'error': f'An unexpected error occurred: {str(e)}'}), 500
+
+@scan_bp.route('/scans/<date>', methods=['GET'])
+def get_scans_by_date(date):
+    try:
+        scans = ScanCollection.get_scans_by_date(date)
+        return jsonify(scans), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+

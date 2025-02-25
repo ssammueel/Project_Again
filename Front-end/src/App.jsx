@@ -20,6 +20,7 @@ import { BasicScan, CustomSQL, DbEnum, TableExtract } from './Components/Sqlscan
 import { CaptureHandshake, CrackPassword, DeauthAttack, ScanNetworks } from './Components/Wificracking'
 import { Home } from './Home/Home'
 import { MainCrausel } from './Home/MainCrausel'
+import { ScanResults } from './History/ScanResults'
 function App() {
   
 
@@ -97,6 +98,7 @@ function App() {
 
       <Route path='/register' element={<Register/>}/>
       <Route path='/documentation' element={<Documentation/>}/>
+      <Route path='/history' element={<ScanResults/>}/>
       <Route path='/news' element={<News/>}/>
 
       <Route path='/me' element={<Me/>}/>

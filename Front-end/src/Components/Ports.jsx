@@ -7,24 +7,18 @@ export const PtScan = () => {
     const [startPort, setStartPort] = useState('');
     const [endPort, setEndPort] = useState('');
     const [openPorts, setOpenPorts] = useState([]);
-    const[isScanning, setIsScanning] = useState(false)
-
-    const handleKeyDown = (e, nextInput) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            if (nextInput) {
-                nextInput.focus();
-            }
-        }
-    };
+    const [isScanning, setIsScanning] = useState(false);
+    const [scanDate, setScanDate] = useState('');
+    const [previousScans, setPreviousScans] = useState([]);
 
     const handleScan = async () => {
         if (!ipAddress || !startPort || !endPort) {
             alert('Please fill in all fields.');
             return;
         }
-        setOpenPorts([]) // this is to clear the previous ports
-        setIsScanning(true) 
+
+        setOpenPorts([]);
+        setIsScanning(true);
 
         try {
             const response = await fetch('http://127.0.0.1:5000/api/scan', {
@@ -41,57 +35,78 @@ export const PtScan = () => {
 
             const data = await response.json();
             setOpenPorts(data.openPorts || []);
-            
+
         } catch (error) {
             alert('Error scanning ports. Please check your connection and input.');
             console.error('Error:', error);
-        }finally{
-            setIsScanning(false)
+        } finally {
+            setIsScanning(false);
+        }
+    };
+
+    const fetchScansByDate = async () => {
+        if (!scanDate) {
+            alert('Please select a date.');
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://127.0.0.1:5000/api/scans/${scanDate}`);
+            const data = await response.json();
+            setPreviousScans(data);
+        } catch (error) {
+            alert('Error fetching previous scans.');
+            console.error('Error:', error);
         }
     };
 
     return (
-        <>
-            <form onSubmit={(e) => { e.preventDefault(); handleScan(); }} className="bg-slate-300 flex flex-col p-3 gap-3 w-[60%] h-fit">
-                
+        <div className='w-[100%] flex gap-[2%]'>
+            <form onSubmit={(e) => { e.preventDefault(); handleScan(); }} className="bg-slate-300 flex flex-col p-3 gap-3 w-[40%] h-fit]">
                 <label>IP Address:</label>
-                <input className="bg-white p-2 indent-3 outline-none rounded-btn" type="text" placeholder="Enter IP address"
-                    id="ipenter" value={ipAddress} onChange={(e) => setIpAddress(e.target.value)}
-                    onKeyDown={(e) => handleKeyDown(e, document.getElementById('startport'))}
-                />
+                <input className="bg-white p-2 rounded border border-gray-400"  type="text" placeholder="Enter IP address" value={ipAddress} onChange={(e) => setIpAddress(e.target.value)} />
 
                 <label>Start Port:</label>
-                <input
-                    className="bg-white p-2 indent-3 outline-none rounded-btn"
-                    type="text"
-                    placeholder="Enter start port"
-                    id="startport"
-                    value={startPort}
-                    onChange={(e) => setStartPort(e.target.value)}
-                    onKeyDown={(e) => handleKeyDown(e, document.getElementById('endport'))}
-                />
+                <input className="bg-white p-2 rounded border border-gray-400"  type="text" placeholder="Enter start port" value={startPort} onChange={(e) => setStartPort(e.target.value)} />
 
                 <label>End Port:</label>
-                <input className="bg-white p-2 indent-3 outline-none rounded-btn" type="text" placeholder="Enter end port"
-                    id="endport" value={endPort} onChange={(e) => setEndPort(e.target.value)}
-                    onKeyDown={(e) => handleKeyDown(e, document.getElementById('scan'))} />
+                <input className="bg-white p-2 rounded border border-gray-400"  type="text" placeholder="Enter end port" value={endPort} onChange={(e) => setEndPort(e.target.value)} />
 
-                <button className="btn btn-accent w-fit px-5 mt-4" id="scan" disabled={isScanning} >
-                {isScanning ? "Scanning..." : "Scan"}
+                <button className='w-fit p-3 bg-blue-300' disabled={isScanning}>
+                    {isScanning ? "Scanning..." : "Scan"}
                 </button>
             </form>
-            <div className="mt-5">
-    <h2 className="font-bold">Open Ports</h2>
-    {isScanning ? (
-        <p className="text-yellow-600">Scanning in progress...</p>
-    ) : openPorts.length > 0 ? (
-        openPorts.map((port) => <p key={port}>Port {port} is open</p>)
-    ) : (
-        <p>No open ports detected.</p>
-    )}
-</div>
 
-        </>
+            <div className='w-[20%]'>
+                <h2>Open Ports</h2>
+                {isScanning ? <p>Scanning in progress...</p> : openPorts.length > 0 ? (
+                    openPorts.map((port) => <p key={port}>Port {port} is open</p>)
+                ) : (
+                    <p>No open ports detected.</p>
+                )}
+            </div>
+
+            {/* Fetch Scans by Date */}
+            <div className="mt-5">
+                <h2>Retrieve Previous Scans</h2>
+                <input type="date" value={scanDate} onChange={(e) => setScanDate(e.target.value)} />
+                <button onClick={fetchScansByDate}>Fetch Scans</button>
+
+                {previousScans.length > 0 && (
+                    <div>
+                        <h3>Scans from {scanDate}</h3>
+                        {previousScans.map((scan, index) => (
+                            <div key={index} className="border p-2 mt-2">
+                                <p><strong>IP:</strong> {scan.ip}</p>
+                                <p><strong>Start Port:</strong> {scan.start_port}</p>
+                                <p><strong>End Port:</strong> {scan.end_port}</p>
+                                <p><strong>Open Ports:</strong> {scan.open_ports.join(', ') || 'None'}</p>
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
+        </div>
     );
 };
 

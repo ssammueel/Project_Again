@@ -30,7 +30,7 @@ export const Header = () => {
           <li><Link to="/features" className="link link-hover">Features</Link></li> {/* Fix this */}
           <li><Link to="/documentation" className="link link-hover">Documentations</Link></li>
           <li><Link to="/news" className="link link-hover">News</Link></li>
-          <li><Link to="/documentation" className="link link-hover">Contacts</Link></li> {/* Fix this */}
+          <li><Link to="/history" className="link link-hover">History</Link></li> {/* Fix this */}
         </ul>
           </div><div className="w-[20%] h-5 flex justify-center gap-6 relative">
   <div className="avatar flex justify-center w-10 h-10">

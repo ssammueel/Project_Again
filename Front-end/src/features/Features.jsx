@@ -120,15 +120,15 @@ export const Features = () => {
 
           </section>
 
-          <section className="border-1  w-[53%] h-[100%] p-[1%] flex gap-[5%]"> 
+          <section className="border-1  w-[83%] h-[100%] p-[1%] flex gap-[5%]"> 
            <Outlet/>
           </section>
 
-          <section className="w-[30%] h-full bg-f p-[2%] outline outline-2 outline-blue-500">
+          {/* <section className="w-[30%] h-full bg-f p-[2%] outline outline-2 outline-blue-500">
             <h1>short manual</h1>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam, quibusdam quas. Maiores dolore beatae, laudantium unde quos odit voluptatem veritatis! Reprehenderit eligendi maxime sapiente asperiores? Consectetur sit quos rem illo!</p>
 
-          </section>
+          </section> */}
 
         </div>
           
