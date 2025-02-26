@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 
 export const ScanResults = () => {
-    const [date, setDate] = useState("");
+  const [date, setDate] = useState("");
   const [scans, setScans] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -12,6 +12,8 @@ export const ScanResults = () => {
     setError(null);
     try {
       const response = await fetch(`http://127.0.0.1:5000/api/scans/${date}`);
+      if (!response.ok) throw new Error("Server error: " + response.statusText);
+
       const data = await response.json();
       setScans(data);
     } catch (err) {
@@ -19,6 +21,7 @@ export const ScanResults = () => {
     }
     setLoading(false);
   };
+
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center p-6 mt-10">
       <h1 className="text-2xl font-bold mb-4">Scan Results</h1>
@@ -39,7 +42,7 @@ export const ScanResults = () => {
 
       {loading && <p>Loading...</p>}
       {error && <p className="text-red-500">{error}</p>}
-      
+
       {scans.length > 0 ? (
         <div className="w-full max-w-4xl overflow-x-auto">
           <table className="w-full bg-white shadow-md rounded-lg overflow-hidden">
@@ -58,7 +61,9 @@ export const ScanResults = () => {
                   <td className="p-3 text-center">{scan.ip}</td>
                   <td className="p-3 text-center">{scan.start_port}</td>
                   <td className="p-3 text-center">{scan.end_port}</td>
-                  <td className="p-3 text-center">{scan.open_ports.join(", ") || "None"}</td>
+                  <td className="p-3 text-center">
+                    {scan.open_ports.length > 0 ? scan.open_ports.join(", ") : "No open ports detected"}
+                  </td>
                   <td className="p-3 text-center">{new Date(scan.scan_date).toLocaleString()}</td>
                 </tr>
               ))}
@@ -69,6 +74,5 @@ export const ScanResults = () => {
         <p className="mt-4 text-gray-600">No scan results available for this date.</p>
       )}
     </div>
-  
-  )
-}
+  );
+};

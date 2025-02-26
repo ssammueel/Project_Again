@@ -1,6 +1,6 @@
 import pymongo
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 
 client = pymongo.MongoClient(os.getenv("DATABASE_URL"))  # Fetch from .env
 db = client['NCBA']  # Ensure your database name is correct
@@ -56,11 +56,8 @@ class ScanCollection:
 
     @staticmethod
     def get_scans_by_date(date):
-        """
-        Fetch scans done on a specific date.
-        The date format should be YYYY-MM-DD.
-        """
         start = datetime.strptime(date, "%Y-%m-%d")
-        end = start.replace(hour=23, minute=59, second=59)
-
-        return list(scans_collection.find({"scan_date": {"$gte": start, "$lte": end}})) 
+        start_utc = start - timedelta(hours=3)
+        end_utc = start_utc.replace(hour=23, minute=59, second=59)
+        
+        return list(scans_collection.find({"scan_date": {"$gte": start_utc, "$lte": end_utc}}))

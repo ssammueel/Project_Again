@@ -1,13 +1,22 @@
 from flask import Blueprint, request, jsonify
 import nmap
+from models.user import ScanCollection
 
 udp_scan_bp = Blueprint('udp_scan', __name__)
 
 def udp_scan(ip):
     try:
         nm = nmap.PortScanner()
-        nm.scan(ip, arguments='-sU')  # UDP Scan
-        return nm[ip]
+        nm.scan(ip, arguments='-sU')
+        open_ports = []
+
+        if ip in nm.all_hosts():
+            for proto in nm[ip].all_protocols():
+                for port, data in nm[ip][proto].items():
+                    if data['state'] == 'open':
+                        open_ports.append(port)
+
+        return open_ports
     except Exception as e:
         return f"Error: {e}"
 

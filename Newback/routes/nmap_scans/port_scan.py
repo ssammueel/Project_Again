@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 import nmap
-from models.user import ScanCollection  # Import ScanCollection
+from models.user import ScanCollection  # Correct import
 
 scan_bp = Blueprint('scan', __name__)
 
@@ -45,11 +45,7 @@ def scan_ports():
         print(f"Unexpected error: {str(e)}")  # Debug log
         return jsonify({'error': f'An unexpected error occurred: {str(e)}'}), 500
 
-@scan_bp.route('/scans/<date>', methods=['GET'])
-def get_scans_by_date(date):
-    try:
-        scans = ScanCollection.get_scans_by_date(date)
-        return jsonify(scans), 200
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
-
+@scan_bp.route("/scans/<date>", methods=["GET"])  # Fix route definition
+def get_scans(date):
+    scans = ScanCollection.get_scans_by_date(date)
+    return jsonify(scans)
