@@ -42,9 +42,7 @@ class UserCollection:
 class ScanCollection:
     @staticmethod
     def save_scan(ip, start_port, end_port, open_ports):
-        """
-        Save scan results in the database.
-        """
+        
         scan_data = {
             "ip": ip,
             "start_port": start_port,

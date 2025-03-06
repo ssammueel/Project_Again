@@ -22,7 +22,7 @@ export const Header = () => {
 
   return (
     <div>
-      <section className='fixed z-10 bg-white top-0 w-full p-[1%] flex gap-[3%] border-1 shadow-sm shadow-gray-500 '>
+      <section className='fixed z-10 bg-white top-0 w-full p-[1%] flex gap-[3%] border-1 shadow-sm shadow-gray-500'>
         <h1 className='w-[19%] pl-10 font-bold text-2xl'>NPAP</h1>
         <div className="w-[55%] h-5">
         <ul className='flex justify-between text-xl'>

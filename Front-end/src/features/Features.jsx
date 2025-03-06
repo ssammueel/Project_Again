@@ -18,8 +18,6 @@ export const Features = () => {
                 <ul className='flex flex-col gap-2'>
                   
                     <Link to='ptScan'><li className='text-[16px] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-[#4cd830] to-[#0276a3]  text-[#02080a] link link-hover'>PortScan</li></Link>
-                    <Link to='UdpScan'><li className='text-[16px] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-[#4cd830] to-[#0276a3]  text-[#02080a] link link-hover'>UDPScan</li></Link>
-
                     <Link to='SynScan'><li className='text-[16px] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-[#4cd830] to-[#0276a3]  text-[#02080a] link link-hover'>SynScan</li></Link>                  
                     <Link to='TracerouteScan'><li className='text-[16px] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-[#4cd830] to-[#0276a3]  text--[#02080a]link link-hover'>TraceRtScan</li></Link>                
             

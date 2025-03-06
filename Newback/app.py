@@ -34,7 +34,6 @@ from routes.nmap_scans.subnet_scan import subnet_scan_bp
 from routes.nmap_scans.vuln_scan import vuln_scan_bp
 from routes.nmap_scans.aggressive_scan import aggressive_scan_bp
 from routes.nmap_scans.firewall_evasion_scan import firewall_scan_bp
-from routes.nmap_scans.udp_scan import udp_scan_bp
 from routes.nmap_scans.syn_scan import syn_scan_bp
 from routes.nmap_scans.traceroute_scan import traceroute_scan_bp
 from routes.nmap_scans.nmap_custom import custom_scan_bp
@@ -69,7 +68,6 @@ app.register_blueprint(service_scan_bp, url_prefix="/api")
 app.register_blueprint(vuln_scan_bp, url_prefix="/api")
 app.register_blueprint(aggressive_scan_bp, url_prefix="/api")
 app.register_blueprint(firewall_scan_bp,url_prefix="/api")
-app.register_blueprint(udp_scan_bp, url_prefix="/api")
 app.register_blueprint(syn_scan_bp, url_prefix="/api")
 app.register_blueprint(traceroute_scan_bp, url_prefix="/api")
 app.register_blueprint(custom_scan_bp,url_prefix="/api")

@@ -61,7 +61,11 @@ export const PtScan = () => {
     };
 
     return (
-        <div className='w-[100%] flex gap-[2%] mt-[3%]'>
+        <div className='w-[100%]'>
+            <h2 className='text-[16px] ml-[20%] mt-[1%] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-[#272725] to-[#010507]  text-[#ffffff]'>PortScan</h2>
+
+        <div className='w-[100%] flex gap-[5%] mt-[1%]'>
+            
             <form onSubmit={(e) => { e.preventDefault(); handleScan(); }} className="bg-slate-300 flex flex-col p-3 gap-3 w-[40%] h-fit">
                 <label>IP Address:</label>
                 <input className="bg-white p-2 rounded border border-gray-400"  type="text" placeholder="Enter IP address" value={ipAddress} onChange={(e) => setIpAddress(e.target.value)} />
@@ -77,8 +81,8 @@ export const PtScan = () => {
                 </button>
             </form>
 
-            <div className='w-[20%]'>
-                <h2>Open Ports</h2>
+            <div className='w-[35%] py-[2%] px-[4%] mt-[-5%] h-[calc(100vh-70px)] overflow-y-auto sticky  shadow-[#464746] shadow-md rounded-md'>
+                <h2 className='p-3 font-bold text-[17px] border-l-4 border-red-500 bg-slate-100 rounded-lg'>Open Ports</h2>
                 {isScanning ? <p>Scanning in progress...</p> : openPorts.length > 0 ? (
                     openPorts.map((port) => <p key={port}>Port {port} is open</p>)
                 ) : (
@@ -87,67 +91,6 @@ export const PtScan = () => {
             </div>
 
         </div>
-    );
-};
-
-// udp scan 
-export const UdpScan = () => {
-    const [ipAddress, setIpAddress] = useState("");
-    const [results, setResults] = useState({});
-    const [isScanning, setIsScanning] = useState(false); // Track scan progress
-
-    const handleScan = async () => {
-        if (!ipAddress) {
-            alert("Please enter an IP address.");
-            return;
-        }
-
-        setResults({}); // Clear previous results
-        setIsScanning(true); // Show scanning state
-
-        try {
-            const response = await fetch("http://127.0.0.1:5000/api/scan_udp", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ ip: ipAddress }),
-            });
-
-            const result = await response.json();
-            setResults(result.udp_scan_results || {});
-        } catch (error) {
-            console.error("Error scanning UDP ports:", error);
-            setResults({});
-        } finally {
-            setIsScanning(false); // Hide scanning state
-        }
-    };
-
-    return (
-        <div className='pt-7 w-[100%]'>
-            <form onSubmit={(e) => { e.preventDefault(); handleScan(); }} className="bg-slate-300 p-3 flex flex-col gap-4 w-[70%]">
-                <label>IP Address:</label>
-                <input 
-                    className="bg-white p-2 rounded" 
-                    type="text" 
-                    placeholder="Enter IP" 
-                    value={ipAddress} 
-                    onChange={(e) => setIpAddress(e.target.value)} 
-                />
-                <button type="submit" className="btn w-fit btn-primary mt-2" disabled={isScanning}>
-                    {isScanning ? "Scanning..." : "UDP Scan"}
-                </button>
-            </form>
-
-            <div className="mt-5">
-                <h2>UDP Scan Results</h2>
-                {isScanning ? (
-                    <p className="text-yellow-600">Scanning in progress...</p>
-                ) : Object.keys(results).length > 0 ? (
-                    <pre>{JSON.stringify(results, null, 2)}</pre>
-                ) : (
-                    <p>No results available.</p>
-                )}
-            </div>
         </div>
     );
 };

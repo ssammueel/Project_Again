@@ -10,7 +10,7 @@ import { Documentation } from './documentation/Documentation'
 import { News } from './news/News'
 import { ChangePassword } from './profile/ChangePassword'
 import { ChangePic } from './profile/ChangePic'
-import { AggressiveScan, CustomScan, Detectos, FirewallScan, PtScan, ServiceScan, SubnetScan, SynScan, TcpScan, TracerouteScan, UdpScan, VulnScan } from './Components/Ports'
+import { AggressiveScan, CustomScan, Detectos, FirewallScan, PtScan, ServiceScan, SubnetScan, SynScan, TcpScan, TracerouteScan, VulnScan } from './Components/Ports'
 import { ExploitSearch } from './features/more/ExploitSearch'
 import { Footer } from './Components/Footer'
 import { AdminPanelScan, CustomScanNt, FileUploadScan, GeneralScan, HeaderScan, NiktoScan, OutdatedSoftwareScan, SSLScan } from './Components/Nikto'
@@ -38,7 +38,6 @@ function App() {
                 <Route path='' element={<PtScan/>}/>
                 <Route path='ptScan' element={<PtScan/>}/>
                 <Route path='tcpScan' element={<TcpScan/>}/>
-                <Route path='UdpScan' element={<UdpScan/>}/>
                 <Route path='detectos' element={<Detectos/>} />        
                 <Route path='exploit' element={<ExploitSearch/>}/>
                 <Route path='ServiceSca' element={<ServiceScan/>} />
