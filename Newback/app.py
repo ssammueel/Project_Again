@@ -48,17 +48,6 @@ from routes.nickto_scans.file_upload_scan import upload_scan_bp
 from routes.nickto_scans.admin_panel_scan import admin_panel_bp
 from routes.nickto_scans.nkt_custom import nkt_custom_bp
 
-# sploit
-from routes.metasploit.exploits import exploits_bp
-from routes.metasploit.scanner import sploit_scanners_bp
-from routes.metasploit.post_exploitation import post_exploit_bp
-from routes.metasploit.persistence import persistence_bp
-from routes.metasploit.msf_rpc import msf_rpc_bp
-from routes.metasploit.payloads import payloads_bp
-from routes.metasploit.auxiliary_scans import auxiliary_bp
-from routes.metasploit.listeners import listeners_bp
-from routes.metasploit.listeners_auto import listeners_blueprint
-
 import os
 from dotenv import load_dotenv
 
@@ -85,7 +74,6 @@ app.register_blueprint(syn_scan_bp, url_prefix="/api")
 app.register_blueprint(traceroute_scan_bp, url_prefix="/api")
 app.register_blueprint(custom_scan_bp,url_prefix="/api")
 
-
 # nicto scan
 app.register_blueprint(general_scan_bp)
 app.register_blueprint(ssl_scan_bp)
@@ -94,17 +82,6 @@ app.register_blueprint(nikto_outdated_bp)
 app.register_blueprint(upload_scan_bp)
 app.register_blueprint(admin_panel_bp)
 app.register_blueprint(nkt_custom_bp)
-
-# sploit scan
-app.register_blueprint(exploits_bp)
-app.register_blueprint(sploit_scanners_bp)
-app.register_blueprint(post_exploit_bp)
-app.register_blueprint(persistence_bp)
-app.register_blueprint(msf_rpc_bp)
-app.register_blueprint(payloads_bp)
-app.register_blueprint(auxiliary_bp)
-app.register_blueprint(listeners_bp)
-app.register_blueprint(listeners_blueprint)
 
 #hydra
 app.register_blueprint(ssh_bruteforce_bp, url_prefix="/hydra")

@@ -61,8 +61,8 @@ export const PtScan = () => {
     };
 
     return (
-        <div className='w-[100%] flex gap-[2%]'>
-            <form onSubmit={(e) => { e.preventDefault(); handleScan(); }} className="bg-slate-300 flex flex-col p-3 gap-3 w-[40%] h-fit]">
+        <div className='w-[100%] flex gap-[2%] mt-[3%]'>
+            <form onSubmit={(e) => { e.preventDefault(); handleScan(); }} className="bg-slate-300 flex flex-col p-3 gap-3 w-[40%] h-fit">
                 <label>IP Address:</label>
                 <input className="bg-white p-2 rounded border border-gray-400"  type="text" placeholder="Enter IP address" value={ipAddress} onChange={(e) => setIpAddress(e.target.value)} />
 
@@ -86,26 +86,6 @@ export const PtScan = () => {
                 )}
             </div>
 
-            {/* Fetch Scans by Date */}
-            <div className="mt-5">
-                <h2>Retrieve Previous Scans</h2>
-                <input type="date" value={scanDate} onChange={(e) => setScanDate(e.target.value)} />
-                <button onClick={fetchScansByDate}>Fetch Scans</button>
-
-                {previousScans.length > 0 && (
-                    <div>
-                        <h3>Scans from {scanDate}</h3>
-                        {previousScans.map((scan, index) => (
-                            <div key={index} className="border p-2 mt-2">
-                                <p><strong>IP:</strong> {scan.ip}</p>
-                                <p><strong>Start Port:</strong> {scan.start_port}</p>
-                                <p><strong>End Port:</strong> {scan.end_port}</p>
-                                <p><strong>Open Ports:</strong> {scan.open_ports.join(', ') || 'None'}</p>
-                            </div>
-                        ))}
-                    </div>
-                )}
-            </div>
         </div>
     );
 };

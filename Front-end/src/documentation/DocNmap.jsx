@@ -40,7 +40,7 @@ export const DocNmap = () => {
         </div>
 
         {/* All Ports */}
-        <div className="p-4 border-l-4 border-green-500 bg-slate-100 rounded-lg">
+        <div className="p-4 border-l-4 border-purple-500 bg-slate-100 rounded-lg">
           <h3 className="text-xl font-semibold">🔹 All Ports</h3>
           <p className="mt-2 text-gray-700">
             To scan all ports (1-65535):
@@ -48,6 +48,89 @@ export const DocNmap = () => {
             <code className="bg-gray-200 p-1 rounded">nmap -p- [target IP]</code>
           </p>
         </div>
+
+        {/* os Detection  */}
+        <div className='p-4 border-l-4 border-green-500 bg-slate-100 rounded-lg'>
+          <h3 className='text-xl font-semibold'>Operating system detection</h3>
+          <p className='mt-2 text-gray-700'>
+            to scan the os the
+            <br/>
+            <code className='bg-gray-200 p-1 rounded'>nmap -O [target Ip]</code>
+          </p>
+        </div>
+
+        <div className='p-4 border-l-4 border-sky-500 bg-slate-100 rounded-lg'>
+          <h3 className='text-xl font-semibold'>Operating system detection</h3>
+          <p className='mt-2 text-gray-700'>
+            to scan the os the
+            <br/>
+            <code className='bg-gray-200 p-1 rounded'>nmap -O [target Ip]</code>
+          </p>
+        </div>
+
+        <div className='p-4 border-l-4 border-sky-500 bg-slate-100 rounded-lg'>
+          <h3 className='text-xl font-semibold'>Operating system detection</h3>
+          <p className='mt-2 text-gray-700'>
+            to scan the os the
+            <br/>
+            <code className='bg-gray-200 p-1 rounded'>nmap -O [target Ip]</code>
+          </p>
+        </div>
+
+        <div className='p-4 border-l-4 border-green-500 bg-slate-100 rounded-lg'>
+          <h3 className='text-xl font-semibold'>Operating system detection</h3>
+          <p className='mt-2 text-gray-700'>
+            to scan the os the
+            <br/>
+            <code className='bg-gray-200 p-1 rounded'>nmap -O [target Ip]</code>
+          </p>
+        </div>
+
+        <div className='p-4 border-l-4 border-green-500 bg-slate-100 rounded-lg'>
+          <h3 className='text-xl font-semibold'>Operating system detection</h3>
+          <p className='mt-2 text-gray-700'>
+            to scan the os the
+            <br/>
+            <code className='bg-gray-200 p-1 rounded'>nmap -O [target Ip]</code>
+          </p>
+        </div>
+
+        <div className='p-4 border-l-4 border-sky-500 bg-slate-100 rounded-lg'>
+          <h3 className='text-xl font-semibold'>Operating system detection</h3>
+          <p className='mt-2 text-gray-700'>
+            to scan the os the
+            <br/>
+            <code className='bg-gray-200 p-1 rounded'>nmap -O [target Ip]</code>
+          </p>
+        </div>
+
+        <div className='p-4 border-l-4 border-green-500 bg-slate-100 rounded-lg'>
+          <h3 className='text-xl font-semibold'>Operating system detection</h3>
+          <p className='mt-2 text-gray-700'>
+            to scan the os the
+            <br/>
+            <code className='bg-gray-200 p-1 rounded'>nmap -O [target Ip]</code>
+          </p>
+        </div>
+
+        <div className='p-4 border-l-4 border-green-500 bg-slate-100 rounded-lg'>
+          <h3 className='text-xl font-semibold'>Operating system detection</h3>
+          <p className='mt-2 text-gray-700'>
+            to scan the os the
+            <br/>
+            <code className='bg-gray-200 p-1 rounded'>nmap -O [target Ip]</code>
+          </p>
+        </div>
+
+        <div className='p-4 border-l-4 border-green-500 bg-slate-100 rounded-lg'>
+          <h3 className='text-xl font-semibold'>Operating system detection</h3>
+          <p className='mt-2 text-gray-700'>
+            to scan the os the
+            <br/>
+            <code className='bg-gray-200 p-1 rounded'>nmap -O [target Ip]</code>
+          </p>
+        </div>
+
       </div>
     </div>
   )
