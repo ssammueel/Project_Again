@@ -25,13 +25,8 @@ from routes.register import register_bp
 from routes.login import login_bp
 
 #nmap
-from routes.nmap_scans.os_scan import os_scan_bp
 from routes.nmap_scans.port_scan import scan_bp
-from routes.nmap_scans.exploit_search import search_bp
-from routes.nmap_scans.payload_generator import payload_gen_bp
-from routes.nmap_scans.service_version_scan import service_scan_bp
 from routes.nmap_scans.subnet_scan import subnet_scan_bp
-from routes.nmap_scans.vuln_scan import vuln_scan_bp
 from routes.nmap_scans.aggressive_scan import aggressive_scan_bp
 from routes.nmap_scans.firewall_evasion_scan import firewall_scan_bp
 from routes.nmap_scans.syn_scan import syn_scan_bp
@@ -60,12 +55,7 @@ app.register_blueprint(register_bp, url_prefix="/api")
 app.register_blueprint(login_bp, url_prefix="/api")
 
 app.register_blueprint(scan_bp,url_prefix="/api")
-app.register_blueprint(search_bp,url_prefix="/api")
-app.register_blueprint(os_scan_bp,url_prefix="/api")
-app.register_blueprint(payload_gen_bp,url_prefix="/api")
 app.register_blueprint(subnet_scan_bp, url_prefix="/api")
-app.register_blueprint(service_scan_bp, url_prefix="/api")
-app.register_blueprint(vuln_scan_bp, url_prefix="/api")
 app.register_blueprint(aggressive_scan_bp, url_prefix="/api")
 app.register_blueprint(firewall_scan_bp,url_prefix="/api")
 app.register_blueprint(syn_scan_bp, url_prefix="/api")

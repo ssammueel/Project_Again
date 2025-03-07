@@ -7,10 +7,9 @@ import { Register } from './Components/Register'
 import { Header } from './Components/Header'
 import { ProtectedRoute } from './features/ProtectedRoute'
 import { Documentation } from './documentation/Documentation'
-import { News } from './news/News'
 import { ChangePassword } from './profile/ChangePassword'
 import { ChangePic } from './profile/ChangePic'
-import { AggressiveScan, CustomScan, Detectos, FirewallScan, PtScan, ServiceScan, SubnetScan, SynScan, TcpScan, TracerouteScan, VulnScan } from './Components/Ports'
+import { AggressiveScan, CustomScan, FirewallScan, PtScan, SubnetScan, SynScan, TracerouteScan} from './Components/Ports'
 import { ExploitSearch } from './features/more/ExploitSearch'
 import { Footer } from './Components/Footer'
 import { AdminPanelScan, CustomScanNt, FileUploadScan, GeneralScan, HeaderScan, NiktoScan, OutdatedSoftwareScan, SSLScan } from './Components/Nikto'
@@ -37,12 +36,6 @@ function App() {
                 <Route path='/features' element={<Features/>}>
                 <Route path='' element={<PtScan/>}/>
                 <Route path='ptScan' element={<PtScan/>}/>
-                <Route path='tcpScan' element={<TcpScan/>}/>
-                <Route path='detectos' element={<Detectos/>} />        
-                <Route path='exploit' element={<ExploitSearch/>}/>
-                <Route path='ServiceSca' element={<ServiceScan/>} />
-                <Route path='SubnetScan' element={<SubnetScan/>}/>
-                <Route path='VulnScan' element={<VulnScan/>}/>
                 <Route path='AggressiveScan' element={<AggressiveScan/>} />
                 <Route path='FirewallScan' element={<FirewallScan/>} />
                 <Route path='SynScan' element={<SynScan/>}/>
@@ -85,7 +78,6 @@ function App() {
             <Route path='/register' element={<Register/>}/>
             <Route path='/documentation' element={<Documentation/>}/>
             <Route path='/history' element={<ScanResults/>}/>
-            <Route path='/news' element={<News/>}/>
 
             <Route path='/me' element={<Me/>}/>
             <Route path='/changepassword' element={<ChangePassword/>}/>

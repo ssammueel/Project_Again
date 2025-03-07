@@ -7,7 +7,7 @@ export const Header = () => {
     const userDataString = localStorage.getItem('user');
     if (userDataString && userDataString !== "undefined") {
       const userData = JSON.parse(userDataString);
-      setUser(userData.name);  // Ensure 'name' is correct according to your user data structure
+      setUser(userData.name);  
     }
   }, []);
   
@@ -29,7 +29,6 @@ export const Header = () => {
           <li><Link to="/home" className="link link-hover">Home</Link></li>
           <li><Link to="/features" className="link link-hover">Features</Link></li> {/* Fix this */}
           <li><Link to="/documentation" className="link link-hover">Documentations</Link></li>
-          <li><Link to="/news" className="link link-hover">News</Link></li>
           <li><Link to="/history" className="link link-hover">History</Link></li> {/* Fix this */}
         </ul>
           </div><div className="w-[20%] h-5 flex justify-center gap-6 relative">
