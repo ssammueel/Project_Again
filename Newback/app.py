@@ -1,6 +1,9 @@
 from flask import Flask
 from flask_cors import CORS
 
+#fetching scans
+from  routes.fetchs.fetchPortScans import fetchPortScan_bp
+
 # wificracking 
 from routes.wificracking.scan_networks import scan_networks
 from routes.wificracking.capture_handshake import capture_handshake
@@ -61,6 +64,8 @@ app.register_blueprint(firewall_scan_bp,url_prefix="/api")
 app.register_blueprint(syn_scan_bp, url_prefix="/api")
 app.register_blueprint(traceroute_scan_bp, url_prefix="/api")
 app.register_blueprint(custom_scan_bp,url_prefix="/api")
+#fetch
+app.register_blueprint(fetchPortScan_bp, url_prefix="/api")
 
 # nicto scan
 app.register_blueprint(general_scan_bp)

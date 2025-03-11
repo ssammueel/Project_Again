@@ -7,29 +7,30 @@ scan_bp = Blueprint('scan', __name__)
 @scan_bp.route('/scan', methods=['POST'])
 def scan_ports():
     data = request.get_json()
+
     ip = data.get('ip')
     start_port = data.get('startPort')
     end_port = data.get('endPort')
 
     if not ip or not start_port or not end_port:
-        return jsonify({'error': 'Invalid input. IP, startPort, and endPort are required.'}), 400
+        return jsonify({'message':"Please fill all the fields"})
+        
 
     try:
         nm = nmap.PortScanner()
         port_range = f"{start_port}-{end_port}"
-        print(f"Scanning {ip} on ports {port_range}...")  # Debug log
+        print(f"Scanning {ip} on ports {port_range}...")
 
-        # Run the Nmap scan
         scan_result = nm.scan(ip, arguments=f'-p {port_range}')
-        print("Scan result:", scan_result)  # Debug log
+        print("Scan result:", scan_result)
 
         open_ports = []
         for host in nm.all_hosts():
-            print(f"Host: {host} ({nm[host].state()})")  # Debug log
+            print(f"Host: {host} ({nm[host].state()})")
             for proto in nm[host].all_protocols():
                 ports = nm[host][proto].keys()
                 for port in ports:
-                    print(f"Port {port}: {nm[host][proto][port]['state']}")  # Debug log
+                    print(f"Port {port}: {nm[host][proto][port]['state']}")
                     if nm[host][proto][port]['state'] == 'open':
                         open_ports.append(port)
 

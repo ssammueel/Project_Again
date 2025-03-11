@@ -42,30 +42,30 @@ export const Features = () => {
                 </ul>     
 
   {/* hydra  */}
-            <details>
-            <summary className='text-slate-300 font-bold text-[18px] p-0 cursor-pointer'>Hydra</summary>
+            
+            <p className='text-slate-300 font-bold text-[18px] p-0 cursor-pointer'>Hydra</p>
               <ul className='flex flex-col gap-1'>
 
-              <Link to='SSHBruteforce'><li className='text-[16px] text-white pl-5 pt-0 link link-hover'>ssh_bruteforce</li></Link>
-                <Link to='FTPBruteforce'><li className='text-[16px] text-white pl-5 pt-0 link link-hover'>FTPBruteforce</li></Link>
-              <Link to='MySQLBruteforce'><li className='text-[16px] text-white pl-5 pt-0 link link-hover'>MySQLBruteforce</li></Link>
+              <Link to='SSHBruteforce'><li className='text-[16px] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-[#999d9e] to-[#a5083c]  text-[#f0f2f3] link link-hover'>ssh_bruteforce</li></Link>
+                <Link to='FTPBruteforce'><li className='text-[16px] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-[#999d9e] to-[#a5083c]  text-[#f0f2f3] link link-hover'>FTPBruteforce</li></Link>
+              <Link to='MySQLBruteforce'><li className='text-[16px] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-[#999d9e] to-[#a5083c]  text-[#f0f2f3] link link-hover'>MySQLBruteforce</li></Link>
 
-              <Link to='RDPBruteforce'><li className='text-[16px] text-white pl-5 pt-0 link link-hover'>DPBruteforce</li></Link>
-              <Link to='CustomBruteforce'><li className='text-[16px] text-white pl-5 pt-0 link link-hover'>customBruteforce.</li></Link>
+              <Link to='RDPBruteforce'><li className='text-[16px] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-[#999d9e] to-[#a5083c]  text-[#f0f2f3] link link-hover'>DPBruteforce</li></Link>
+              <Link to='CustomBruteforce'><li className='text-[16px] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-[#999d9e] to-[#a5083c]  text-[#f0f2f3] link link-hover'>customBruteforce.</li></Link>
 
               </ul>
-            </details>
+            
 
   {/* sql scan  */}
             <details>
             <summary className='text-slate-300 font-bold text-[18px] p-0 cursor-pointer'>SQL vunerability</summary>
               <ul className='flex flex-col gap-1'>
 
-              <Link to='BasicScan'><li className='text-[16px] text-white pl-5 pt-0 link link-hover'>BasicScan</li></Link>
-              <Link to='DbEnum'><li className='text-[16px] text-white pl-5 pt-0 link link-hover'>DBEnum</li></Link>
+              <Link to='BasicScan'><li className='text-[16px] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-[#999d9e] to-[#a5083c]  text-[#f0f2f3] link link-hover'>BasicScan</li></Link>
+              <Link to='DbEnum'><li className='text-[16px] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-[#999d9e] to-[#a5083c]  text-[#f0f2f3] link link-hover'>DBEnum</li></Link>
 
-              <Link to='TableExtract'><li className='text-[16px] text-white pl-5 pt-0 link link-hover'>TableExtract</li></Link>
-              <Link to='CustomSQL'><li className='text-[16px] text-white pl-5 pt-0 link link-hover'>CustomSQL</li></Link>
+              <Link to='TableExtract'><li className='text-[16px] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-[#999d9e] to-[#a5083c]  text-[#f0f2f3] link link-hover'>TableExtract</li></Link>
+              <Link to='CustomSQL'><li className='text-[16px] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-[#999d9e] to-[#a5083c]  text-[#f0f2f3] link link-hover'>CustomSQL</li></Link>
               
               </ul>
             </details>
@@ -75,11 +75,11 @@ export const Features = () => {
             <summary className='text-slate-300 font-bold text-[18px] p-0 cursor-pointer'>Wifi Cracking</summary>
               <ul className='flex flex-col gap-1'>
 
-              <Link to='ScanNetworks'><li className='text-[16px] text-white pl-5 pt-0 link link-hover'>networkScan</li></Link>
-                <Link to='CaptureHandshake'><li className='text-[16px] text-white pl-5 pt-0 link link-hover'>CaptureHandshake</li></Link>
-              <Link to='CrackPassword'><li className='text-[16px] text-white pl-5 pt-0 link link-hover'>CrackPassword</li></Link>
+              <Link to='ScanNetworks'><li className='text-[16px] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-[#999d9e] to-[#a5083c]  text-[#f0f2f3] link link-hover'>networkScan</li></Link>
+                <Link to='CaptureHandshake'><li className='text-[16px] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-[#999d9e] to-[#a5083c]  text-[#f0f2f3] link link-hover'>CaptureHandshake</li></Link>
+              <Link to='CrackPassword'><li className='text-[16px] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-[#999d9e] to-[#a5083c]  text-[#f0f2f3] link link-hover'>CrackPassword</li></Link>
 
-              <Link to='DeauthAttack'><li className='text-[16px] text-white pl-5 pt-0 link link-hover'>DeauthAttack</li></Link>
+              <Link to='DeauthAttack'><li className='text-[16px] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-[#999d9e] to-[#a5083c]  text-[#f0f2f3] link link-hover'>DeauthAttack</li></Link>
               </ul>
             </details>
 

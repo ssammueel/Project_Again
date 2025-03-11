@@ -29,4 +29,6 @@ def ssh_attack():
         return jsonify({"output": result.stdout})
     
     except Exception as e:
+        print("Error running Hydra:", str(e))
         return jsonify({"error": str(e)}), 500
+

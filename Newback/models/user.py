@@ -1,9 +1,9 @@
 import pymongo
 import os
-from datetime import datetime, timedelta
+from datetime import datetime
 
 client = pymongo.MongoClient(os.getenv("DATABASE_URL"))  # Fetch from .env
-db = client['NCBA']  # Ensure your database name is correct
+db = client['NCBA']
 
 # Collections
 users_collection = db['users']  
@@ -39,23 +39,16 @@ class UserCollection:
         return list(users_collection.find({}))
 
 # Scan results management
+from datetime import datetime
+
 class ScanCollection:
     @staticmethod
     def save_scan(ip, start_port, end_port, open_ports):
-        
         scan_data = {
             "ip": ip,
             "start_port": start_port,
             "end_port": end_port,
             "open_ports": open_ports,
-            "scan_date": datetime.utcnow()  # Store timestamp in UTC
+            "scan_date": datetime.utcnow()  # Store as MongoDB Date object
         }
         scans_collection.insert_one(scan_data)
-
-    @staticmethod
-    def get_scans_by_date(date):
-        start = datetime.strptime(date, "%Y-%m-%d")
-        start_utc = start - timedelta(hours=3)
-        end_utc = start_utc.replace(hour=23, minute=59, second=59)
-        
-        return list(scans_collection.find({"scan_date": {"$gte": start_utc, "$lte": end_utc}}))

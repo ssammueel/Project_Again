@@ -13,7 +13,7 @@ def ssl_scan():
 
     try:
         # Run SSLScan and capture output
-        result = subprocess.run(["sslscan", target], capture_output=True, text=True)
+        result = subprocess.run(["sslscan", "--no-color", target], capture_output=True, text=True)
         return jsonify({"scan_result": result.stdout})
 
     except Exception as e:
