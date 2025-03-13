@@ -6,82 +6,68 @@ export const PortRst = () => {
 
   useEffect(() => {
     fetchScans();
-  }, []);
+  }, []); //call the function when the component mounts
 
-  const fetchScans = (date = null) => {
-    let url = "http://127.0.0.1:5000/api/scans"; // Default fetch all scans
-
+  const fetchScans = async (date = null) => {
+    let url = "http://127.0.0.1:5000/api/scans";
     if (date) {
-        url += `?date=${date}`;
+      url += `?date=${date}`;
     }
 
-    console.log("🔍 Fetching from:", url);
-
-    fetch(url)
-        .then((res) => res.json())
-        .then((data) => {
-            console.log("✅ Scans received:", data);
-            setScans(data); // Ensure this updates your UI
-        })
-        .catch((error) => console.error("Error fetching scans:", error));
-};
-
-const handleDateChange = (event) => {
-    let selectedDate = event.target.value; // Raw date from input
-    console.log("Raw selected date:", selectedDate);
-
-    // Ensure it's in YYYY-MM-DD format
-    if (!selectedDate) {
-        console.error("No date selected!");
-        return;
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data = await response.json();
+      setScans(data);
+    } catch (error) {
+      console.error("Error fetching scans:", error);
     }
+  };
 
-    let formattedDate = new Date(selectedDate).toISOString().split("T")[0]; // Converts to YYYY-MM-DD
-    console.log("Formatted date sent to backend:", formattedDate);
+  const handleDateChange = async (event) => {
+    const selectedDate = event.target.value;
+    if (!selectedDate) return;
 
-    fetchScans(formattedDate);
-};
+    setSelectedDate(selectedDate);
 
-
-  const filteredScans = selectedDate
-    ? scans.filter((scan) => scan.scan_date.startsWith(selectedDate))
-    : scans;
+    // Ensure the date is in YYYY-MM-DD format
+    const formattedDate = new Date(selectedDate).toISOString().split("T")[0];
+    
+    // Fetch scans for selected date
+    await fetchScans(formattedDate);
+  };
 
   return (
-    <div className="container mx-auto p-6">
+    <div className="container mx-auto px-6">
       <h2 className="text-2xl font-bold text-center mb-4">Port Scan Results</h2>
 
-      {/* Date Filter */}
       <div className="flex justify-center mb-4">
-        <input
-          type="date"
-          className="input input-bordered w-full max-w-xs"
-          value={selectedDate}
-          onChange={handleDateChange}
-        />
+        <input type="date" className="p-2 rounded-md input w-full font-bold text-white max-w-xs bg-[#090a09]" value={selectedDate}
+          onChange={handleDateChange} />
       </div>
 
-      {/* Results Table */}
       <div className="overflow-x-auto">
         <table className="table w-full border border-gray-300">
           <thead>
-            <tr className="bg-gray-800 text-white">
-              <th>IP Address</th>
-              <th>Start Port</th>
-              <th>End Port</th>
-              <th>Open Ports</th>
-              <th>Scan Date</th>
+            <tr className="bg-gray-800 text-white font-semibold text-[17px]">
+              <th className="border border-gray-300">IP Address</th>
+              <th className="border border-gray-300">Start Port</th>
+              <th className="border border-gray-300">End Port</th>
+              <th className="border border-gray-300">Open Ports</th>
+              <th className="border border-gray-300]">Scan Date</th>
             </tr>
           </thead>
           <tbody>
-            {filteredScans.length > 0 ? (
-              filteredScans.map((scan) => (
+            {scans.length > 0 ? (
+              scans.map((scan) => (
                 <tr key={scan._id} className="hover:bg-gray-100">
-                  <td>{scan.ip}</td>
-                  <td>{scan.start_port}</td>
-                  <td>{scan.end_port}</td>
-                  <td>{scan.open_ports.join(", ")}</td>
-                  <td>{new Date(scan.scan_date).toLocaleString()}</td>
+                  <td className="border border-gray-300">{scan.ip}</td>
+                  <td className="border border-gray-300">{scan.start_port}</td>
+                  <td className="border border-gray-300">{scan.end_port}</td>
+                  <td className="border border-gray-300">{scan.open_ports.join(", ")}</td>
+                  <td className="border border-gray-300">{new Date(scan.scan_date).toLocaleString()}</td>
                 </tr>
               ))
             ) : (

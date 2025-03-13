@@ -6,15 +6,15 @@ import { Footer } from '../Components/Footer'
 export const Features = () => {
   return (
     <div className='min-h-screen flex flex-col w-[100%]'>
-      <Header/>
 
+      <Header/>
       <div className='mt-[50px] bg-slate-50'>
-        
+      
         <div className='flex w-[100%] h-screen'>
 
-        <section className="w-[17%] m-7 p-[2%] bg-[#ebe9e9] h-[calc(100vh-50px)] overflow-y-auto sticky top-[50px] shadow-[#464746] shadow-md rounded-md"> 
+          <section className="w-[17%] m-7 p-[2%] bg-[#ebe9e9] h-[calc(100vh-50px)] overflow-y-auto sticky top-[50px] shadow-[#464746] shadow-md rounded-md"> 
               
-{/* nmap  */}
+                {/* nmap  */}
                 <ul className='flex flex-col gap-2'>
                   
                     <Link to='ptScan'><li className='text-[16px] border-l-4 border-[#f02626] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-[#4cd830] to-[#0276a3]  text-[#02080a] link link-hover'>PortScan</li></Link>
@@ -27,8 +27,8 @@ export const Features = () => {
             
                 </ul>
                   
-  {/* nickto web */}
-                        <p className='w-[110%] text-[2px] mt-3 bg-black'>..</p>`
+                 {/* nickto web */}
+                <p className='w-[110%] text-[2px] mt-3 bg-black'>..</p>`
                 <ul className='flex flex-col gap-1'>
                 
                   <Link to='GeneralScans'><li className='text-[16px] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-[#999d9e] to-[#a5083c]  text-[#f0f2f3] link link-hover'>General scans</li></Link>
@@ -57,31 +57,26 @@ export const Features = () => {
             
 
   {/* sql scan  */}
-            <details>
-            <summary className='text-slate-300 font-bold text-[18px] p-0 cursor-pointer'>SQL vunerability</summary>
+            <p className='text-slate-300 font-bold text-[18px] p-0 cursor-pointer'>SQL vunerability</p>
               <ul className='flex flex-col gap-1'>
 
-              <Link to='BasicScan'><li className='text-[16px] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-[#999d9e] to-[#a5083c]  text-[#f0f2f3] link link-hover'>BasicScan</li></Link>
-              <Link to='DbEnum'><li className='text-[16px] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-[#999d9e] to-[#a5083c]  text-[#f0f2f3] link link-hover'>DBEnum</li></Link>
+                <Link to='BasicScan'><li className='text-[16px] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-[#999d9e] to-[#a5083c]  text-[#f0f2f3] link link-hover'>BasicScan</li></Link>
+                <Link to='DbEnum'><li className='text-[16px] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-[#999d9e] to-[#a5083c]  text-[#f0f2f3] link link-hover'>DBEnum</li></Link>
 
-              <Link to='TableExtract'><li className='text-[16px] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-[#999d9e] to-[#a5083c]  text-[#f0f2f3] link link-hover'>TableExtract</li></Link>
-              <Link to='CustomSQL'><li className='text-[16px] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-[#999d9e] to-[#a5083c]  text-[#f0f2f3] link link-hover'>CustomSQL</li></Link>
+                <Link to='TableExtract'><li className='text-[16px] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-[#999d9e] to-[#a5083c]  text-[#f0f2f3] link link-hover'>TableExtract</li></Link>
+                <Link to='CustomSQL'><li className='text-[16px] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-[#999d9e] to-[#a5083c]  text-[#f0f2f3] link link-hover'>CustomSQL</li></Link>
               
               </ul>
-            </details>
 
   {/* wifi cracking  */}
-            <details>
-            <summary className='text-slate-300 font-bold text-[18px] p-0 cursor-pointer'>Wifi Cracking</summary>
+            <p className='text-slate-300 font-bold text-[18px] p-0 cursor-pointer'>Wifi Cracking</p>
               <ul className='flex flex-col gap-1'>
 
-              <Link to='ScanNetworks'><li className='text-[16px] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-[#999d9e] to-[#a5083c]  text-[#f0f2f3] link link-hover'>networkScan</li></Link>
+                <Link to='ScanNetworks'><li className='text-[16px] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-[#999d9e] to-[#a5083c]  text-[#f0f2f3] link link-hover'>networkScan</li></Link>
                 <Link to='CaptureHandshake'><li className='text-[16px] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-[#999d9e] to-[#a5083c]  text-[#f0f2f3] link link-hover'>CaptureHandshake</li></Link>
-              <Link to='CrackPassword'><li className='text-[16px] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-[#999d9e] to-[#a5083c]  text-[#f0f2f3] link link-hover'>CrackPassword</li></Link>
-
-              <Link to='DeauthAttack'><li className='text-[16px] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-[#999d9e] to-[#a5083c]  text-[#f0f2f3] link link-hover'>DeauthAttack</li></Link>
+                <Link to='CrackPassword'><li className='text-[16px] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-[#999d9e] to-[#a5083c]  text-[#f0f2f3] link link-hover'>CrackPassword</li></Link>
+                <Link to='DeauthAttack'><li className='text-[16px] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-[#999d9e] to-[#a5083c]  text-[#f0f2f3] link link-hover'>DeauthAttack</li></Link>
               </ul>
-            </details>
 
           </section>
 

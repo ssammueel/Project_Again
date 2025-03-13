@@ -18,6 +18,12 @@ import { BasicScan, CustomSQL, DbEnum, TableExtract } from './Components/Sqlscan
 import { CaptureHandshake, CrackPassword, DeauthAttack, ScanNetworks } from './Components/Wificracking'
 import { Home } from './Home/Home'
 import { ScanResults } from './History/ScanResults'
+import { PortRst } from './History/port_rst'
+import { Syn_history } from './History/Syn_history'
+import { TracertHistory } from './History/TracertHistory'
+import { FirewallHistory } from './History/FirewallHistory'
+import { AggHistory } from './History/AggHistory'
+import { CustomHistory } from './History/CustomHistory'
 function App() {
   
 
@@ -73,12 +79,24 @@ function App() {
 
                 </Route>
             </Route>
+
+            {/* history  */}
+            <Route path='/history' element={<ScanResults/>}>
+              <Route path='' element={<PortRst/>}/>
+
+              <Route path='port' element={<PortRst/>}/>
+              <Route path='Syn_history' element={<Syn_history/>}/>
+              <Route path='TracertHistory'element={<TracertHistory/>}/>
+              <Route path='FirewallHistory' element={<FirewallHistory/>}/>
+              <Route path='AggHistory' element={<AggHistory/>}/>
+              <Route path='CustomHistory' element={<CustomHistory/>}/>
+              
+            </Route>
             
 
             <Route path='/register' element={<Register/>}/>
             <Route path='/documentation' element={<Documentation/>}/>
-            <Route path='/history' element={<ScanResults/>}/>
-
+            
             <Route path='/me' element={<Me/>}/>
             <Route path='/changepassword' element={<ChangePassword/>}/>
             <Route path='/changepic' element={<ChangePic/>}/>
