@@ -12,7 +12,7 @@ import { ChangePic } from './profile/ChangePic'
 import { AggressiveScan, CustomScan, FirewallScan, PtScan, SynScan, TracerouteScan} from './Components/Ports'
 import { ExploitSearch } from './features/more/ExploitSearch'
 import { Footer } from './Components/Footer'
-import { AdminPanelScan, CustomScanNt, FileUploadScan, GeneralScan, HeaderScan, NiktoScan, OutdatedSoftwareScan, SSLScan } from './Components/Nikto'
+import {CustomScanNt, FileUploadScan, GeneralScan, HeaderScan, NiktoScan, OutdatedSoftwareScan, } from './Components/Nikto'
 import { CustomBruteforce, FTPBruteforce, MySQLBruteforce, RDPBruteforce, SSHBruteforce } from './Components/Hydra'
 import { BasicScan, CustomSQL, DbEnum, TableExtract } from './Components/Sqlscan'
 import { CaptureHandshake, CrackPassword, DeauthAttack, ScanNetworks } from './Components/Wificracking'
@@ -51,11 +51,9 @@ function App() {
                 {/* nicto scan  */}
                 <Route path='NiktoScan' element={<NiktoScan/>}/>
                 <Route path='GeneralScans' element={<GeneralScan/>}/>
-                <Route path='SSLScan' element={<SSLScan/>} />
                 <Route path='HeaderScan' element={<HeaderScan/>}/>
                 <Route path='OutdatedSoftwareScan' element={<OutdatedSoftwareScan/>}/>
                 <Route path='FileUploadScan' element={<FileUploadScan/>}/>
-                <Route path='AdminPanelScan' element={<AdminPanelScan/>}/>
                 <Route path='CustomScanNt' element={<CustomScanNt/>}/>
 
                 {/* hydra  */}

@@ -40,7 +40,7 @@ export const PortRst = () => {
   };
 
   return (
-    <div className="container mx-auto px-6">
+    <div className="container mx-auto px  -6">
       <h2 className="text-2xl font-bold text-center mb-4">Port Scan Results</h2>
 
       <div className="flex justify-center mb-4">

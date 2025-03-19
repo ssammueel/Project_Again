@@ -96,10 +96,12 @@ export const PtScan = () => {
 };
 
 //sysscan
+
 export const SynScan = () => {
     const [ipAddress, setIpAddress] = useState("");
-    const [results, setResults] = useState({});
+    const [scanResults, setScanResults] = useState(null);  // Change default state
     const [isScanning, setIsScanning] = useState(false);
+    const [error, setError] = useState("");  // Track errors
 
     const handleScan = async () => {
         if (!ipAddress) {
@@ -107,7 +109,8 @@ export const SynScan = () => {
             return;
         }
 
-        setResults({});
+        setScanResults(null); // Reset previous results
+        setError("");  // Clear errors
         setIsScanning(true);
 
         try {
@@ -118,39 +121,59 @@ export const SynScan = () => {
             });
 
             const result = await response.json();
-            setResults(result.syn_scan_results || {});
+
+            if (!response.ok) {
+                throw new Error(result.error || "Unknown error occurred");
+            }
+
+            setScanResults(result.syn_scan_results);  // Store full scan result
         } catch (error) {
             console.error("Error scanning SYN ports:", error);
-            alert("Scan failed. Please try again.");
+            setError(error.message);
         } finally {
             setIsScanning(false);
         }
     };
 
     return (
-        <div className='w-[100%]'>
-            <h2 className='text-[16px] ml-[20%] mt-[1%] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-[#272725] to-[#010507] text-[#ffffff]'>SYN Scan</h2>
+        <div className="w-[100%]">
+            <h2 className="text-[16px] ml-[20%] mt-[1%] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-[#272725] to-[#010507] text-[#ffffff]">
+                SYN Scan
+            </h2>
 
-            <div className='w-[100%] flex gap-[5%] mt-[1%]'>
-                
+            <div className="w-[100%] flex gap-[5%] mt-[1%]">
                 <form onSubmit={(e) => { e.preventDefault(); handleScan(); }} className="bg-slate-300 flex flex-col p-3 gap-3 w-[40%] h-fit">
                     <label>IP Address:</label>
-                    <input className="bg-white p-2 rounded border border-gray-400" type="text" placeholder="Enter IP address" value={ipAddress} onChange={(e) => setIpAddress(e.target.value)} />
+                    <input 
+                        className="bg-white p-2 rounded border border-gray-400" 
+                        type="text" 
+                        placeholder="Enter IP address" 
+                        value={ipAddress} 
+                        onChange={(e) => setIpAddress(e.target.value)} 
+                    />
 
-                    <button className='w-fit p-3 bg-blue-300' disabled={isScanning}>
+                    <button className="w-fit p-3 bg-blue-300" disabled={isScanning}>
                         {isScanning ? "Scanning..." : "Start SYN Scan"}
                     </button>
                 </form>
 
                 <div className='w-[50%] py-[2%] px-[4%] mt-[-5%] h-[calc(100vh-70px)] overflow-y-auto sticky shadow-[#464746] shadow-md rounded-md'>
-                    <h2 className='p-3 font-bold text-[17px] border-l-4 border-[#ee9228] mb-4 bg-slate-100 rounded-lg'>SYN Scan Results</h2>
-                    {isScanning ? <p>Scanning in progress...</p> : Object.keys(results).length > 0 ? (
-                        <pre className="whitespace-pre-wrap break-words">{JSON.stringify(results, null, 2)}</pre>
+                    <h2 className='p-3 font-bold text-[17px] border-l-4 border-[#ee9228] mb-4 bg-slate-100 rounded-lg'>
+                        SYN Scan Results
+                    </h2>
+
+                    {isScanning ? (
+                        <p>Scanning in progress...</p>
+                    ) : error ? (
+                        <p className="text-red-500">Error: {error}</p>
+                    ) : scanResults ? (
+                        <pre className="whitespace-pre-wrap break-words">
+                            {JSON.stringify(scanResults, null, 2)}
+                        </pre>
                     ) : (
-                        <p>No results available.</p>
+                        <p>No scan results available.</p>
                     )}
                 </div>
-
             </div>
         </div>
     );

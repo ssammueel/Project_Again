@@ -1,5 +1,7 @@
 import subprocess
 from flask import Blueprint, request, jsonify
+from datetime import datetime
+from models.user import outdated_software_nikto_collection  # Import the correct collection
 
 nikto_outdated_bp = Blueprint("nikto_outdated_software", __name__)
 
@@ -12,7 +14,7 @@ def outdated_software_scan():
         return jsonify({"error": "Target is required"}), 400
 
     try:
-        # Run Nikto with normal scan and extract outdated software info
+        # Run Nikto scan
         result = subprocess.run(["nikto", "-h", target], capture_output=True, text=True)
         raw_output = result.stdout
 
@@ -22,7 +24,15 @@ def outdated_software_scan():
         ]
         outdated_summary = "\n".join(outdated_lines) if outdated_lines else "No outdated software detected."
 
-        return jsonify({"scan_result": outdated_summary})
+        # Store in MongoDB
+        scan_data = {
+            "target": target,
+            "scan_result": outdated_summary,
+            "timestamp": datetime.utcnow().isoformat()  # Store timestamp in a serializable format
+        }
+        outdated_software_nikto_collection.insert_one(scan_data)
+
+        return jsonify({"message": "Scan saved successfully", "scan_result": outdated_summary})
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500

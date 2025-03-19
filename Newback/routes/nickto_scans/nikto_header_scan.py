@@ -1,5 +1,7 @@
 import subprocess
 from flask import Blueprint, request, jsonify
+from datetime import datetime
+from models.user import header_nikto_collection  # Import the correct collection
 
 nikto_header_bp = Blueprint("nikto_header_scan", __name__)
 
@@ -12,9 +14,19 @@ def header_scan():
         return jsonify({"error": "Target is required"}), 400
 
     try:
-        # Run Nikto with options focused on headers (-T 2 limits testing to headers)
+        # Run Nikto scan focusing on headers
         result = subprocess.run(["nikto", "-h", target, "-T", "2"], capture_output=True, text=True)
-        return jsonify({"scan_result": result.stdout})
+        scan_result = result.stdout
+
+        # Store in MongoDB
+        scan_data = {
+            "target": target,
+            "scan_result": scan_result,
+            "timestamp": datetime.utcnow()
+        }
+        header_nikto_collection.insert_one(scan_data)
+
+        return jsonify({"target": target, "scan_result": scan_result})
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500

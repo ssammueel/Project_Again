@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 import nmap
-from models.user import ScanCollection  # Correct import
+from models.user import ScanCollection 
 
 scan_bp = Blueprint('scan', __name__)
 

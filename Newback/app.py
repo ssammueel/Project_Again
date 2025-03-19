@@ -3,6 +3,7 @@ from flask_cors import CORS
 
 #fetching scans
 from  routes.fetchs.fetchPortScans import fetchPortScan_bp
+from routes.fetchs.sysFetch import fetchSynScan_bp
 
 # wificracking 
 from routes.wificracking.scan_networks import scan_networks
@@ -38,11 +39,9 @@ from routes.nmap_scans.nmap_custom import custom_scan_bp
 
 #nickto
 from routes.nickto_scans.general_scan import general_scan_bp
-from routes.nickto_scans.ssl_scan import ssl_scan_bp
 from routes.nickto_scans.nikto_header_scan import nikto_header_bp
 from routes.nickto_scans.outdated_software import nikto_outdated_bp
 from routes.nickto_scans.file_upload_scan import upload_scan_bp
-from routes.nickto_scans.admin_panel_scan import admin_panel_bp
 from routes.nickto_scans.nkt_custom import nkt_custom_bp
 
 import os
@@ -66,14 +65,13 @@ app.register_blueprint(traceroute_scan_bp, url_prefix="/api")
 app.register_blueprint(custom_scan_bp,url_prefix="/api")
 #fetch
 app.register_blueprint(fetchPortScan_bp, url_prefix="/api")
+app.register_blueprint(fetchSynScan_bp, url_prefix="/api")
 
 # nicto scan
 app.register_blueprint(general_scan_bp)
-app.register_blueprint(ssl_scan_bp)
 app.register_blueprint(nikto_header_bp)
 app.register_blueprint(nikto_outdated_bp)
 app.register_blueprint(upload_scan_bp)
-app.register_blueprint(admin_panel_bp)
 app.register_blueprint(nkt_custom_bp)
 
 #hydra
