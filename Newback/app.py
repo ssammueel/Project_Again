@@ -4,6 +4,9 @@ from flask_cors import CORS
 #fetching scans
 from  routes.fetchs.fetchPortScans import fetchPortScan_bp
 from routes.fetchs.sysFetch import fetchSynScan_bp
+from routes.fetchs.tracefetch import fetchTraceroute_bp
+from routes.fetchs.aggfetch import fetchAggressive_bp
+from routes.fetchs.customfetch import fetch_custom_scan_bp
 
 # wificracking 
 from routes.wificracking.scan_networks import scan_networks
@@ -30,7 +33,6 @@ from routes.login import login_bp
 
 #nmap
 from routes.nmap_scans.port_scan import scan_bp
-from routes.nmap_scans.subnet_scan import subnet_scan_bp
 from routes.nmap_scans.aggressive_scan import aggressive_scan_bp
 from routes.nmap_scans.firewall_evasion_scan import firewall_scan_bp
 from routes.nmap_scans.syn_scan import syn_scan_bp
@@ -57,15 +59,13 @@ app.register_blueprint(register_bp, url_prefix="/api")
 app.register_blueprint(login_bp, url_prefix="/api")
 
 app.register_blueprint(scan_bp,url_prefix="/api")
-app.register_blueprint(subnet_scan_bp, url_prefix="/api")
 app.register_blueprint(aggressive_scan_bp, url_prefix="/api")
 app.register_blueprint(firewall_scan_bp,url_prefix="/api")
 app.register_blueprint(syn_scan_bp, url_prefix="/api")
 app.register_blueprint(traceroute_scan_bp, url_prefix="/api")
 app.register_blueprint(custom_scan_bp,url_prefix="/api")
-#fetch
-app.register_blueprint(fetchPortScan_bp, url_prefix="/api")
-app.register_blueprint(fetchSynScan_bp, url_prefix="/api")
+
+
 
 # nicto scan
 app.register_blueprint(general_scan_bp)
@@ -92,6 +92,13 @@ app.register_blueprint(scan_networks, url_prefix="/aircrack")
 app.register_blueprint(capture_handshake, url_prefix="/aircrack")
 app.register_blueprint(crack_password, url_prefix="/aircrack")
 app.register_blueprint(deauth_attack, url_prefix="/aircrack")
+
+#fetch
+app.register_blueprint(fetchPortScan_bp, url_prefix="/api")
+app.register_blueprint(fetchSynScan_bp, url_prefix="/api")
+app.register_blueprint(fetchTraceroute_bp, url_prefix="/api")
+app.register_blueprint(fetchAggressive_bp, url_prefix="/api")
+app.register_blueprint(fetch_custom_scan_bp, url_prefix="/api")
 
 
 if __name__ == '__main__':

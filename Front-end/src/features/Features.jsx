@@ -28,14 +28,14 @@ export const Features = () => {
                 </ul>
                   
                  {/* nickto web */}
-                <p className='w-[110%] text-[2px] mt-3 bg-black'>..</p>`
-                <ul className='flex flex-col gap-1'>
+                {/* <p className='w-[110%] text-[2px] mt-3 bg-black'>..</p>` */}
+                <ul className='mt-5 flex flex-col gap-1'>
                 
-                  <Link to='GeneralScans'><li className='text-[16px] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-[#999d9e] to-[#a5083c]  text-[#f0f2f3] link link-hover'>General scans</li></Link>
-                  <Link to='HeaderScan'><li className='text-[16px] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-[#999d9e] to-[#a5083c]  text-[#f0f2f3] link link-hover'>Headers Scan</li></Link>
+                  <Link to='GeneralScans'><li className='text-[16px] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-green-600 to-green-900  text-[#f0f2f3] link link-hover'>General scans</li></Link>
+                  <Link to='HeaderScan'><li className='text-[16px] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-green-600 to-green-900  text-[#f0f2f3] link link-hover'>Headers Scan</li></Link>
 
-                  <Link to='FileUploadScan'><li className='text-[16px] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-[#999d9e] to-[#a5083c]  text-[#f0f2f3] link link-hover'>fileupload</li></Link>                  
-                  <Link to='OutdatedSoftwareScan'><li className='text-[16px] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-[#999d9e] to-[#a5083c]  text-[#f0f2f3] link link-hover'>Outdatedsw</li></Link>
+                  <Link to='FileUploadScan'><li className='text-[16px] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-green-600 to-green-900  text-[#f0f2f3] link link-hover'>fileupload</li></Link>                  
+                  <Link to='OutdatedSoftwareScan'><li className='text-[16px] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-green-600 to-green-900  text-[#f0f2f3] link link-hover'>Outdatedsw</li></Link>
                 </ul>     
 
   {/* hydra  */}

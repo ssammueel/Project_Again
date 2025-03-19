@@ -1,107 +1,94 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 export const Syn_history = () => {
   const [scans, setScans] = useState([]);
-  const [selectedDate, setSelectedDate] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [expandedScan, setExpandedScan] = useState(null);
+
+  const API_URL = "http://127.0.0.1:5000/api/syn_scans";
 
   useEffect(() => {
     fetchScans();
   }, []);
 
-  const fetchScans = async (date = null) => {
-    let url = "http://127.0.0.1:5000/api/syn_scans";
-    if (date) {
-      url += `?date=${date}`;
-    }
-
+  const fetchScans = async () => {
     try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
+      setLoading(true);
+      const response = await fetch(API_URL);
       const data = await response.json();
+      if (data.error) throw new Error(data.error);
       setScans(data);
-    } catch (error) {
-      console.error("Error fetching SYN scans:", error);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleDateChange = async (event) => {
-    const selectedDate = event.target.value;
-    setSelectedDate(selectedDate);
-
-    const formattedDate = new Date(selectedDate).toISOString().split("T")[0];
-    await fetchScans(formattedDate);
+  const toggleExpand = (index) => {
+    setExpandedScan(expandedScan === index ? null : index);
   };
+
+  const formatDetails = (scan) => {
+    const ip = scan.ip || "Unknown";
+    const mac = scan.scan_results?.addresses?.mac || "N/A";
+    const vendor = scan.scan_results?.vendor?.[mac] || "Unknown Vendor";
+    const os = scan.scan_results?.osmatch?.[0]?.name || "Unknown OS";
+    const osAccuracy = scan.scan_results?.osmatch?.[0]?.accuracy || "N/A";
+    const uptimeSeconds = scan.scan_results?.uptime?.seconds || "Unknown";
+    const lastBoot = scan.scan_results?.uptime?.lastboot || "Unknown";
+    
+    const openPorts = Object.entries(scan.scan_results?.tcp || {})
+      .filter(([_, details]) => details.state === "open")
+      .map(([port, details]) => `${port} (${details.name})`);
+
+    return (
+      <div className="bg-gray-100 p-4 rounded">
+        <p><strong>🔹 IP Address:</strong> {ip}</p>
+        <p><strong>🔹 MAC Address:</strong> {mac} (Vendor: {vendor})</p>
+        <p><strong>🔹 OS Detected:</strong> {os} (Accuracy: {osAccuracy}%)</p>
+        <p><strong>🔹 Open Ports:</strong> {openPorts.length > 0 ? openPorts.join(", ") : "None"}</p>
+        <p><strong>🔹 System Uptime:</strong> {Math.floor(uptimeSeconds / 60)} minutes</p>
+        <p><strong>🔹 Last Boot Time:</strong> {lastBoot}</p>
+      </div>
+    );
+  };
+
+  if (loading) return <p className="text-center text-blue-600">Loading...</p>;
+  if (error) return <p className="text-center text-red-600">Error: {error}</p>;
 
   return (
-    <div className="container mx-auto px-6">
-      <h2 className="text-2xl font-bold text-center mb-4">SYN Scan Results</h2>
-
-      <div className="flex justify-center mb-4">
-        <input
-          type="date"
-          className="p-2 rounded-md input w-full font-bold text-white max-w-xs bg-[#090a09]"
-          value={selectedDate}
-          onChange={handleDateChange}
-        />
-      </div>
-
+    <div className="p-6 bg-gray-100 min-h-screen">
+      <h1 className="text-3xl font-bold mb-6 text-center text-gray-900">SYN Scan History</h1>
       <div className="overflow-x-auto">
-        <table className="table w-full border border-gray-300">
-          <thead>
-            <tr className="bg-gray-800 text-white font-semibold text-[17px]">
-              <th className="border border-gray-300">IP Address</th>
-              <th className="border border-gray-300">Status</th>
-              <th className="border border-gray-300">OS Detected</th>
-              <th className="border border-gray-300">Open Ports</th>
-              <th className="border border-gray-300">Scan Date</th>
+        <table className="min-w-full bg-white shadow-md rounded-lg border border-gray-300">
+          <thead className="bg-gray-200">
+            <tr className="text-gray-700">
+              <th className="p-3 border border-gray-300">Timestamp</th>
+              <th className="p-3 border border-gray-300">IP Address</th>
+              <th className="p-3 border border-gray-300">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {scans.length > 0 ? (
-              scans.map((scan) => (
-                <tr key={scan._id ? scan._id.toString() : scan.ip} className="hover:bg-gray-100">
-                  <td className="border border-gray-300">{scan.ip}</td>
-                  <td className="border border-gray-300">
-                    <span
-                      className={`px-2 py-1 rounded ${
-                        scan.status === "up" ? "bg-green-500 text-white" : "bg-red-500 text-white"
-                      }`}
-                    >
-                      {scan.status}
-                    </span>
-                  </td>
-                  <td className="border border-gray-300">
-                    {scan.scan_results.osmatch.length > 0
-                      ? scan.scan_results.osmatch[0].name
-                      : "Unknown"}
-                  </td>
-                  <td className="border border-gray-300">
-                    {scan.scan_results.tcp && Object.keys(scan.scan_results.tcp).length > 0 ? (
-                      <ul className="list-disc pl-4">
-                        {Object.entries(scan.scan_results.tcp).map(([port, details]) => (
-                          <li key={port} className="text-gray-700">
-                            {port} ({details.name || "unknown service"})
-                          </li>
-                        ))}
-                      </ul>
-                    ) : (
-                      "No open ports"
-                    )}
-                  </td>
-                  <td className="border border-gray-300">
-                    {new Date(scan.scan_date).toLocaleString()}
+            {scans.map((scan, index) => (
+              <React.Fragment key={index}>
+                <tr className="border border-gray-300 hover:bg-gray-100">
+                  <td className="p-3 border border-gray-300">{new Date(scan.timestamp).toLocaleString()}</td>
+                  <td className="p-3 border border-gray-300">{scan.ip}</td>
+                  <td className="p-3 border border-gray-300 text-center">
+                    <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition" onClick={() => toggleExpand(index)}>
+                      {expandedScan === index ? "Hide Details" : "View Details"}
+                    </button>
                   </td>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="5" className="text-center text-gray-500 py-4">
-                  No scans found
-                </td>
-              </tr>
-            )}
+                {expandedScan === index && (
+                  <tr>
+                    <td colSpan="3" className="p-4">{formatDetails(scan)}</td>
+                  </tr>
+                )}
+              </React.Fragment>
+            ))}
           </tbody>
         </table>
       </div>
