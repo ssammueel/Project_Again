@@ -15,10 +15,12 @@ def get_firewall_scans():
     try:
         ip = request.args.get("ip")
         date = request.args.get("date")
+        page = int(request.args.get("page", 1))
+        per_page = int(request.args.get("per_page", 10))
 
         query = {}
         if ip:
-            query["ip"] = ip
+            query["ip"] = {"$regex": ip, "$options": "i"}
         if date:
             try:
                 start_date = datetime.strptime(date, "%Y-%m-%d")
@@ -27,13 +29,21 @@ def get_firewall_scans():
             except ValueError:
                 return jsonify({"error": "Invalid date format, use YYYY-MM-DD"}), 400
 
-        scans = list(firewall_scans_collection.find(query).sort("scan_date", DESCENDING))
+        total = firewall_scans_collection.count_documents(query)
+        scans = list(firewall_scans_collection.find(query)
+                    .sort("scan_date", DESCENDING)
+                    .skip((page - 1) * per_page)
+                    .limit(per_page))
 
-        # Convert ObjectId to string
         for scan in scans:
             scan["_id"] = str(scan["_id"])
 
-        return jsonify(scans), 200
+        return jsonify({
+            "scans": scans,
+            "total": total,
+            "page": page,
+            "per_page": per_page
+        }), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -55,5 +65,22 @@ def delete_firewall_scan(scan_id):
             return jsonify({"error": "Scan not found"}), 404
             
         return jsonify({"message": "Scan deleted successfully"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@firewall_fetch_bp.route('/firewall_scans/bulk_delete', methods=['DELETE'])
+def bulk_delete_firewall_scans():
+    try:
+        data = request.get_json()
+        if not data or 'scan_ids' not in data:
+            return jsonify({"error": "Missing scan_ids in request body"}), 400
+
+        object_ids = [ObjectId(scan_id) for scan_id in data['scan_ids']]
+        result = firewall_scans_collection.delete_many({"_id": {"$in": object_ids}})
+        
+        return jsonify({
+            "message": f"{result.deleted_count} scans deleted successfully",
+            "deleted_count": result.deleted_count
+        }), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
