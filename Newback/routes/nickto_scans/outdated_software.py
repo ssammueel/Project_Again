@@ -14,17 +14,14 @@ def outdated_software_scan():
         return jsonify({"error": "Target is required"}), 400
 
     try:
-        # Run Nikto scan
         result = subprocess.run(["nikto", "-h", target], capture_output=True, text=True)
         raw_output = result.stdout
 
-        # Extract lines related to outdated software
         outdated_lines = [
             line for line in raw_output.split("\n") if "outdated" in line.lower() or "vulnerable" in line.lower()
         ]
         outdated_summary = "\n".join(outdated_lines) if outdated_lines else "No outdated software detected."
 
-        # Store in MongoDB
         scan_data = {
             "target": target,
             "scan_result": outdated_summary,

@@ -24,6 +24,10 @@ import { TracertHistory } from './History/TracertHistory'
 import { FirewallHistory } from './History/FirewallHistory'
 import { AggHistory } from './History/AggHistory'
 import { CustomHistory } from './History/CustomHistory'
+import { Generalhistory } from './History/Generalhistory'
+import { Outdated } from './History/OutdatedFetch'
+import { FileHistory } from './History/FileuploadHistory'
+import { HeaderHistory } from './History/HeaderHistory'
 function App() {
   
 
@@ -88,6 +92,12 @@ function App() {
               <Route path='FirewallHistory' element={<FirewallHistory/>}/>
               <Route path='AggHistory' element={<AggHistory/>}/>
               <Route path='CustomHistory' element={<CustomHistory/>}/>
+
+              <Route path='Generalhistory' element={<Generalhistory/>}/>
+              <Route path='HeaderHistory' element={<HeaderHistory/>}/>
+              <Route path='FileHistory' element={<FileHistory/>}/>
+              <Route path='Outdated' element={<Outdated/>}/>
+              
               
             </Route>
             

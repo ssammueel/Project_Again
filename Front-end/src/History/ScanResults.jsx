@@ -16,6 +16,11 @@ export const ScanResults = () => {
         <Link to='AggHistory'> <li className="p-2 bg-[#a3a0a0] w-[95%] flex justify-center rounded-2xl hover:bg-[#0f1047] hover:text-[#dddde0] hover:font-extrabold">AggHistory</li></Link>
         <Link to='CustomHistory'> <li className="p-2 bg-[#a3a0a0] w-[95%] flex justify-center rounded-2xl hover:bg-[#0f1047] hover:text-[#dddde0] hover:font-extrabold">CustomHistory</li></Link>
 
+        <Link to='Generalhistory'> <li className="p-2 bg-[#a3a0a0] w-[95%] flex justify-center rounded-2xl hover:bg-[#0f1047] hover:text-[#dddde0] hover:font-extrabold">General Scan</li></Link>
+        <Link to='HeaderHistory'> <li className="p-2 bg-[#a3a0a0] w-[95%] flex justify-center rounded-2xl hover:bg-[#0f1047] hover:text-[#dddde0] hover:font-extrabold">Header Scan</li></Link>
+        <Link to='FileHistory'> <li className="p-2 bg-[#a3a0a0] w-[95%] flex justify-center rounded-2xl hover:bg-[#0f1047] hover:text-[#dddde0] hover:font-extrabold">FileUpload</li></Link>
+        <Link to='Outdated'> <li className="p-2 bg-[#a3a0a0] w-[95%] flex justify-center rounded-2xl hover:bg-[#0f1047] hover:text-[#dddde0] hover:font-extrabold">OutdaterSW</li></Link>
+
       </ul>
     </div>
 

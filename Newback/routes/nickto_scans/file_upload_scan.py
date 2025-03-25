@@ -14,9 +14,8 @@ def run_file_upload_scan():
         return jsonify({"error": "Target is required"}), 400
 
     try:
-        # Run Nikto scan for file upload vulnerabilities
         result = subprocess.run(
-            ["nikto", "-h", target, "-Tuning", "4"],  # '4' targets file upload issues
+            ["nikto", "-h", target, "-Tuning", "4"],
             capture_output=True, text=True
         )
         raw_output = result.stdout.strip()  # Remove leading/trailing spaces

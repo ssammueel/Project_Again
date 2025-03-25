@@ -5,25 +5,42 @@ export const CustomHistory = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [expandedScan, setExpandedScan] = useState(null);
+  const [selectedDate, setSelectedDate] = useState("");
 
   const API_URL = "http://127.0.0.1:5000/api/fetch_custom_scan";
 
   useEffect(() => {
-    const fetchScans = async () => {
-      try {
-        const response = await fetch(API_URL);
-        const data = await response.json();
-        if (data.error) throw new Error(data.error);
-        setScans(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchScans();
   }, []);
+
+  const fetchScans = async (date = null) => {
+    setLoading(true);
+    setError(null);
+    let url = API_URL;
+    if (date) {
+      url += `?date=${date}`;
+    }
+
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      if (data.error) throw new Error(data.error);
+      setScans(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDateChange = async (event) => {
+    const selectedDate = event.target.value;
+    if (!selectedDate) return;
+
+    setSelectedDate(selectedDate);
+    const formattedDate = new Date(selectedDate).toISOString().split("T")[0];
+    await fetchScans(formattedDate);
+  };
 
   const toggleExpand = (index) => {
     setExpandedScan(expandedScan === index ? null : index);
@@ -42,6 +59,16 @@ export const CustomHistory = () => {
       <h2 className="text-3xl font-bold mb-6 text-center text-gray-900">
         Custom Scan History
       </h2>
+
+      <div className="flex justify-center mb-4">
+        <input
+          type="date"
+          className="p-2 rounded-md input w-full font-bold text-white max-w-xs bg-[#090a09]"
+          value={selectedDate}
+          onChange={handleDateChange}
+        />
+      </div>
+
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white shadow-md rounded-lg border border-gray-300">
           <thead className="bg-gray-200">
@@ -56,7 +83,7 @@ export const CustomHistory = () => {
             {scans.map((scan, index) => (
               <React.Fragment key={index}>
                 <tr className="border border-gray-300 hover:bg-gray-100">
-                  <td className="p-3 border border-gray-300 text-gray-800">{scan.timestamp}</td>
+                  <td className="p-3 border border-gray-300 text-gray-800">{new Date(scan.timestamp).toLocaleString()}</td>
                   <td className="p-3 border border-gray-300 text-gray-800">{extractIP(scan.command)}</td>
                   <td className="p-3 border border-gray-300 text-gray-800">{scan.command}</td>
                   <td className="p-3 border border-gray-300 text-center">

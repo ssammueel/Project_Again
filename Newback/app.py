@@ -7,18 +7,12 @@ from routes.fetchs.sysFetch import fetchSynScan_bp
 from routes.fetchs.tracefetch import fetchTraceroute_bp
 from routes.fetchs.aggfetch import fetchAggressive_bp
 from routes.fetchs.customfetch import fetch_custom_scan_bp
+from routes.fetchs.firewallfetch import firewall_fetch_bp
 
-# wificracking 
-from routes.wificracking.scan_networks import scan_networks
-from routes.wificracking.capture_handshake import capture_handshake
-from routes.wificracking.crack_password import crack_password
-from routes.wificracking.deauth_attack import deauth_attack
-
-# sqlmap 
-from routes.sqlmap.basic_scan import basic_scan
-from routes.sqlmap.db_enum import db_enum
-from routes.sqlmap.table_extract import table_extract
-from routes.sqlmap.custom_sql import custom_sql
+from routes.fetchs.outdatedFetch import fetch_outdated_software_bp
+from routes.fetchs.fileuploadFetch import fetch_scan_bp
+from routes.fetchs.nickto_custom import custom_nikto_fetch_bp
+from routes.fetchs.headerFetch import header_fetch_bp
 
 #hydra
 from routes.hydra.ssh_bruteforce import ssh_bruteforce_bp
@@ -81,17 +75,6 @@ app.register_blueprint(mysql_bruteforce, url_prefix="/hydra")
 app.register_blueprint(rdp_bruteforce, url_prefix="/hydra")
 app.register_blueprint(custom_bruteforce, url_prefix="/hydra")
 
-# sqlmap 
-app.register_blueprint(basic_scan, url_prefix="/sqlmap")
-app.register_blueprint(db_enum, url_prefix="/sqlmap")
-app.register_blueprint(table_extract, url_prefix="/sqlmap")
-app.register_blueprint(custom_sql, url_prefix="/sqlmap")
-
-# wifi cracking 
-app.register_blueprint(scan_networks, url_prefix="/aircrack")
-app.register_blueprint(capture_handshake, url_prefix="/aircrack")
-app.register_blueprint(crack_password, url_prefix="/aircrack")
-app.register_blueprint(deauth_attack, url_prefix="/aircrack")
 
 #fetch
 app.register_blueprint(fetchPortScan_bp, url_prefix="/api")
@@ -99,6 +82,12 @@ app.register_blueprint(fetchSynScan_bp, url_prefix="/api")
 app.register_blueprint(fetchTraceroute_bp, url_prefix="/api")
 app.register_blueprint(fetchAggressive_bp, url_prefix="/api")
 app.register_blueprint(fetch_custom_scan_bp, url_prefix="/api")
+app.register_blueprint(firewall_fetch_bp, url_prefix="/api")
+
+app.register_blueprint(fetch_outdated_software_bp)
+app.register_blueprint(fetch_scan_bp)
+app.register_blueprint(header_fetch_bp)
+app.register_blueprint(custom_nikto_fetch_bp)
 
 
 if __name__ == '__main__':
