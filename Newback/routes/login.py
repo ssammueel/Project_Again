@@ -1,11 +1,12 @@
 import jwt
 import datetime
-from flask import Blueprint, request, jsonify, current_app
+from flask import Blueprint, request, jsonify
+from werkzeug.security import check_password_hash
 from models.user import UserCollection
 
 login_bp = Blueprint('login', __name__)
 
-SECRET_KEY = 'Samuel'
+SECRET_KEY = 'your-secret-key-here'  # Change this to a strong secret
 
 @login_bp.route('/login', methods=['POST'])
 def login_user():
@@ -16,20 +17,28 @@ def login_user():
     if not email or not password:
         return jsonify({"message": "Email and password are required"}), 400
 
-    user = UserCollection.find_by_email(email)
+    user = UserCollection.get_user_by_email(email)
     if not user:
-        return jsonify({"message": "User does not exist"}), 404
+        return jsonify({"message": "Invalid credentials"}), 401
 
-    if user['password'] == password:  # Replace this with proper password hashing
-        user_data = {
-        "name": user["name"],  # Ensure your user model has "name" and "email"
-        "email": user["email"]
-    }
-        token = jwt.encode(
-            {'email':user['email'],"exp": datetime.datetime.utcnow() + datetime.timedelta(hours=1)},
+    if not check_password_hash(user['password'], password):
+        return jsonify({"message": "Invalid credentials"}), 401
+
+    token = jwt.encode(
+        {
+            'email': user['email'],
+            'username': user['username'],
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=1)
+        },
         SECRET_KEY,
         algorithm="HS256"
-        )
-        return jsonify(message="Login successful", user=user_data,  token = token), 200
+    )
 
-    return jsonify({"message": "Incorrect password"}), 401
+    return jsonify({
+        "message": "Login successful",
+        "token": token,
+        "user": {
+            "username": user['username'],
+            "email": user['email']
+        }
+    }), 200

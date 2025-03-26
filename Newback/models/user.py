@@ -2,6 +2,7 @@ import pymongo
 import os
 from datetime import datetime
 import json
+from werkzeug.security import generate_password_hash, check_password_hash
 
 client = pymongo.MongoClient(os.getenv("DATABASE_URL"))  # Fetch from .env
 db = client['NCBA']
@@ -20,25 +21,89 @@ file_upload_nikto_collection = db["FileUploadNikto"]
 outdated_software_nikto_collection = db["OutdatedSoftwareNikto"]
 
 
-# users 
 class UserCollection:
     @staticmethod
     def create_user(email, password, username):
+        hashed_password = generate_password_hash(password)
         user_data = {
             "email": email,
-            "password": password,  # Hash the password before storing in real applications
+            "password": hashed_password,
             "username": username,
-            "created_at": datetime.utcnow()
+            "created_at": datetime.utcnow(),
+            "password_history": [hashed_password],  # Initialize with first password
+            "password_changed_at": datetime.utcnow()
         }
         users_collection.insert_one(user_data)
 
     @staticmethod
     def get_user_by_email(email):
-        return users_collection.find_one({"email": email})
+        return users_collection.find_one({"email": {"$regex": f"^{email}$", "$options": "i"}})
 
     @staticmethod
     def get_all_users():
         return list(users_collection.find({}))
+
+    @staticmethod
+    def update_password(email, new_password):
+        # First get current password to add to history
+        user = users_collection.find_one({"email": {"$regex": f"^{email}$", "$options": "i"}})
+        
+        if user:
+            users_collection.update_one(
+                {"email": {"$regex": f"^{email}$", "$options": "i"}},
+                {"$set": {
+                    "password": new_password,
+                    "password_changed_at": datetime.utcnow()
+                },
+                "$push": {
+                    "password_history": {
+                        "$each": [user['password']],  # Add current password to history
+                        "$slice": -5  # Keep only last 5 passwords
+                    }
+                }}
+            )
+
+    @staticmethod
+    def add_to_password_history(email, hashed_password):
+        """Store previous passwords to prevent reuse"""
+        users_collection.update_one(
+            {"email": {"$regex": f"^{email}$", "$options": "i"}},
+            {"$push": {
+                "password_history": {
+                    "$each": [hashed_password],
+                    "$slice": -5  # Keep last 5 passwords
+                }
+            }}
+        )
+
+    @staticmethod
+    def is_password_in_history(email, new_password):
+        """Check if password was used before"""
+        user = users_collection.find_one(
+            {"email": {"$regex": f"^{email}$", "$options": "i"}},
+            {"password_history": 1}
+        )
+        if user and 'password_history' in user:
+            return any(check_password_hash(ph, new_password) for ph in user['password_history'])
+        return False
+
+    @staticmethod
+    def get_password_history(email):
+        """Get list of previous passwords (hashed)"""
+        user = users_collection.find_one(
+            {"email": {"$regex": f"^{email}$", "$options": "i"}},
+            {"password_history": 1}
+        )
+        return user.get('password_history', []) if user else []
+
+    @staticmethod
+    def update_user_profile(email, update_data):
+        """Update user profile information"""
+        users_collection.update_one(
+            {"email": {"$regex": f"^{email}$", "$options": "i"}},
+            {"$set": update_data}
+        )
+
 
 # open port 
 class ScanCollection:

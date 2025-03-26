@@ -5,7 +5,7 @@ import { Link, Outlet } from "react-router-dom";
 export const ScanResults = () => {
   
   return (
-  <div className="w-[100%] p-0 h-fit mt-[4%] bg-white flex">
+  <div className="w-[100%] p-0 h-fit mt-[6%] bg-[#051c2e] flex">
 
     <div className="w-[17%] mx-3 my-3 p-[2%] bg-[#ebe9e9] h-[calc(100vh-50px)] overflow-y-auto sticky top-[50px] shadow-[#464746] shadow-md rounded-md">
       <ul className="flex flex-col gap-2">
@@ -24,7 +24,7 @@ export const ScanResults = () => {
       </ul>
     </div>
 
-    <div className="w-[85%] mt-4">
+    <div className="w-[85%] mt-4 bg-[#ffff]">
       <Outlet/>
     </div>
 

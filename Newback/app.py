@@ -23,6 +23,7 @@ from routes.hydra.custom_bruteforce import custom_bruteforce
 
 #login and register
 from routes.register import register_bp
+from routes.change_password import change_password_bp
 from routes.login import login_bp
 
 #nmap
@@ -51,6 +52,7 @@ CORS(app)
 # nmap 
 app.register_blueprint(register_bp, url_prefix="/api")
 app.register_blueprint(login_bp, url_prefix="/api")
+app.register_blueprint(change_password_bp)
 
 app.register_blueprint(scan_bp,url_prefix="/api")
 app.register_blueprint(aggressive_scan_bp, url_prefix="/api")

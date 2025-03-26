@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request
 from pymongo import MongoClient, DESCENDING
 from datetime import datetime, timedelta
 import os
+from bson.objectid import ObjectId
 
 fetch_outdated_software_bp = Blueprint("fetch_outdated_software", __name__)
 
@@ -25,13 +26,12 @@ def fetch_outdated_software_scans():
                 return jsonify({"error": "Invalid date format, use YYYY-MM-DD"}), 400
 
         if target:
-            query["target"] = target
+            query["target"] = {"$regex": f"^{target}", "$options": "i"}
 
         scans = list(outdated_software_nikto_collection.find(query).sort("timestamp", DESCENDING))
 
         for scan in scans:
-            scan["_id"] = str(scan["_id"])  # Convert ObjectId to string
-            
+            scan["_id"] = str(scan["_id"])
 
         return jsonify(scans)
     
@@ -41,7 +41,23 @@ def fetch_outdated_software_scans():
 @fetch_outdated_software_bp.route('/nikto/outdated_software_scans/unique_targets', methods=['GET'])
 def get_unique_targets():
     try:
-        unique_ips = outdated_software_nikto_collection.distinct("target")
+        query = request.args.get("query", "")
+        regex_pattern = f"^{query}" if query else ""
+        
+        unique_ips = outdated_software_nikto_collection.distinct(
+            "target", 
+            {"target": {"$regex": regex_pattern, "$options": "i"}}
+        )
         return jsonify(unique_ips)
     except Exception as e:
         return jsonify({"error": "Failed to fetch unique targets", "details": str(e)}), 500
+
+@fetch_outdated_software_bp.route('/nikto/outdated_software_scans/<scan_id>', methods=['DELETE'])
+def delete_scan(scan_id):
+    try:
+        result = outdated_software_nikto_collection.delete_one({"_id": ObjectId(scan_id)})
+        if result.deleted_count == 0:
+            return jsonify({"error": "Scan not found"}), 404
+        return jsonify({"message": "Scan deleted successfully"}), 200
+    except Exception as e:
+        return jsonify({"error": "Failed to delete scan", "details": str(e)}), 500

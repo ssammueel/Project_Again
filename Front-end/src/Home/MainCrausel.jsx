@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 
-export const MainCrausel = () => {
+export const AutoCarousel = () => {
   const images = [
-    "https://zibtek-ghost-blog.sfo3.cdn.digitaloceanspaces.com/2020/06/image-33.png",
-    "https://lansa.com/wp-content/uploads/2024/01/system-Integration.png",
-    "https://redmondmag.com/-/media/ECG/redmondmag/Images/introimages2014/0914red_WinInsider.jpg"
+    "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+    "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1472&q=80",
+    "https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -12,37 +12,45 @@ export const MainCrausel = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 5000); // Change slide every 5 seconds
-    return () => clearInterval(interval); // Clean up interval on unmount
+    }, 5000);
+    return () => clearInterval(interval);
   }, [images.length]);
 
+  const goToSlide = (index) => {
+    setCurrentIndex(index);
+  };
+
   return (
-    <div className="w-[100%] h-[100%] overflow-hidden relative">
-      {/* Carousel Items */}
+    <div className="relative w-full h-full group">
       <div
-        className="flex transition-transform duration-1000 ease-in-out"
+        className="flex h-full transition-transform duration-1000 ease-in-out"
         style={{ transform: `translateX(-${currentIndex * 100}%)` }}
       >
         {images.map((image, index) => (
-          <div key={index} className="min-w-full h-full">
+          <div key={index} className="min-w-full h-full relative">
             <img
               src={image}
-              alt={`Slide ${index + 1}`}
+              alt={`Security ${index + 1}`}
               className="w-full h-full object-cover"
             />
+            <div className="absolute inset-0 bg-black/20"></div>
           </div>
         ))}
       </div>
 
       {/* Navigation Dots */}
-      <div className="absolute bottom-4 w-full flex justify-center gap-2">
+      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex gap-2">
         {images.map((_, index) => (
-          <span
+          <button
             key={index}
-            className={`w-3 h-3 rounded-full ${
-              index === currentIndex ? "bg-blue-500" : "bg-gray-400"
+            onClick={() => goToSlide(index)}
+            className={`w-3 h-3 rounded-full transition-all ${
+              index === currentIndex 
+                ? "bg-blue-500 w-6" 
+                : "bg-gray-300 hover:bg-gray-400"
             }`}
-          ></span>
+            aria-label={`Go to slide ${index + 1}`}
+          />
         ))}
       </div>
     </div>

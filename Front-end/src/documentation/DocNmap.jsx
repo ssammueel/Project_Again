@@ -1,294 +1,211 @@
-import React from 'react'
-
 export const DocNmap = () => {
+  const nmapCommands = [
+    {
+      title: "Basic Scan",
+      cmd: "nmap 192.168.1.1",
+      desc: "Scans 1000 most common ports"
+    },
+    {
+      title: "Specific Port",
+      cmd: "nmap -p 80,443 192.168.1.1",
+      desc: "Scan only ports 80 and 443"
+    },
+    {
+      title: "Version Detection",
+      cmd: "nmap -sV 192.168.1.1",
+      desc: "Detects service versions"
+    },
+    {
+      title: "Aggressive Scan",
+      cmd: "nmap -A 192.168.1.1",
+      desc: "Performs OS detection, version detection, script scanning, and traceroute"
+    },
+    {
+      title: "OS Detection",
+      cmd: "nmap -O 192.168.1.1",
+      desc: "Detects the operating system of the target"
+    },
+    {
+      title: "Ping Scan",
+      cmd: "nmap -sn 192.168.1.1",
+      desc: "Checks if the host is up without scanning ports"
+    },
+    {
+      title: "UDP Scan",
+      cmd: "nmap -sU 192.168.1.1",
+      desc: "Scans for open UDP ports"
+    },
+    {
+      title: "Stealth Scan",
+      cmd: "nmap -sS 192.168.1.1",
+      desc: "Performs a stealthy SYN scan to avoid detection"
+    },
+    {
+      title: "No DNS Resolution",
+      cmd: "nmap -n 192.168.1.1",
+      desc: "Disables DNS resolution for faster scanning"
+    },
+    {
+      title: "Scan a Subnet",
+      cmd: "nmap 192.168.1.0/24",
+      desc: "Scans an entire subnet for live hosts"
+    },
+    {
+      title: "Detect Firewalls",
+      cmd: "nmap -sA 192.168.1.1",
+      desc: "Determines if a firewall is blocking packets"
+    },
+    {
+      title: "Detect Open Ports Only",
+      cmd: "nmap --open 192.168.1.1",
+      desc: "Shows only open ports in the scan results"
+    },
+    {
+      title: "Scan with Default Scripts",
+      cmd: "nmap -sC 192.168.1.1",
+      desc: "Runs default scripts to gather more information"
+    },
+    {
+      title: "Slow Comprehensive Scan",
+      cmd: "nmap -p- -sS -sV -O -A 192.168.1.1",
+      desc: "Scans all 65,535 ports with detailed information"
+    },
+    {
+      title: "Scan IPv6 Host",
+      cmd: "nmap -6 2001:db8::1",
+      desc: "Scans an IPv6 address"
+    },
+    {
+      title: "Scan with Spoofed MAC",
+      cmd: "nmap --spoof-mac 00:11:22:33:44:55 192.168.1.1",
+      desc: "Changes the MAC address for the scan"
+    },
+    {
+      title: "Scan Using TCP Connect",
+      cmd: "nmap -sT 192.168.1.1",
+      desc: "Uses a full TCP connection scan"
+    },
+    {
+      title: "Scan Without Ping",
+      cmd: "nmap -Pn 192.168.1.1",
+      desc: "Skips host discovery and scans even if the host does not respond to pings"
+    },
+    {
+      title: "Scan Multiple Targets",
+      cmd: "nmap 192.168.1.1 192.168.1.2",
+      desc: "Scans multiple IP addresses"
+    },
+    {
+      title: "Scan a Range of IPs",
+      cmd: "nmap 192.168.1.1-50",
+      desc: "Scans IPs from 192.168.1.1 to 192.168.1.50"
+    },
+    {
+      title: "Scan from a File",
+      cmd: "nmap -iL targets.txt",
+      desc: "Scans targets listed in a file"
+    },
+    {
+      title: "Exclude Hosts",
+      cmd: "nmap 192.168.1.0/24 --exclude 192.168.1.10",
+      desc: "Scans the subnet but excludes a specific IP"
+    },
+    {
+      title: "Fast Scan",
+      cmd: "nmap -F 192.168.1.1",
+      desc: "Scans the top 100 most common ports"
+    },
+    {
+      title: "Scan Only Specific Port Ranges",
+      cmd: "nmap -p 20-100 192.168.1.1",
+      desc: "Scans ports 20 to 100"
+    },
+    {
+      title: "Scan Without Host Discovery",
+      cmd: "nmap -Pn 192.168.1.1",
+      desc: "Skips ping checks and scans even offline hosts"
+    },
+    {
+      title: "Scan for Specific Services",
+      cmd: "nmap -p 22,80,443 --open 192.168.1.1",
+      desc: "Scans only ports 22, 80, and 443 and shows only open ones"
+    },
+    {
+      title: "Intense Scan",
+      cmd: "nmap -T4 -A -v 192.168.1.1",
+      desc: "Aggressive scan with increased speed and verbosity"
+    },
+    {
+      title: "Evade IDS with Decoy",
+      cmd: "nmap -D RND:10 192.168.1.1",
+      desc: "Uses random decoy IPs to hide the real scan source"
+    },
+    {
+      title: "Evade IDS with Fragmentation",
+      cmd: "nmap -f 192.168.1.1",
+      desc: "Uses tiny fragmented packets to bypass detection"
+    },
+    {
+      title: "Use a Specific Source Port",
+      cmd: "nmap --source-port 53 192.168.1.1",
+      desc: "Scans using port 53 as the source port"
+    },
+    {
+      title: "Detect Web Vulnerabilities",
+      cmd: "nmap --script=http-vuln* 192.168.1.1",
+      desc: "Runs vulnerability scripts against web services"
+    },
+    {
+      title: "Check for Anonymous FTP Access",
+      cmd: "nmap --script=ftp-anon 192.168.1.1",
+      desc: "Checks if anonymous FTP access is allowed"
+    },
+    {
+      title: "Check for SMB Vulnerabilities",
+      cmd: "nmap --script=smb-vuln* -p 139,445 192.168.1.1",
+      desc: "Scans for SMB vulnerabilities on ports 139 and 445"
+    },
+    {
+      title: "Check for Heartbleed",
+      cmd: "nmap --script=ssl-heartbleed -p 443 192.168.1.1",
+      desc: "Detects Heartbleed vulnerability in SSL"
+    },
+    {
+      title: "Check for SQL Injection",
+      cmd: "nmap --script=http-sql-injection 192.168.1.1",
+      desc: "Tests web services for SQL injection vulnerabilities"
+    },
+    {
+      title: "Brute Force SSH",
+      cmd: "nmap --script=ssh-brute -p 22 192.168.1.1",
+      desc: "Attempts SSH login brute force attack"
+    },
+    {
+      title: "DNS Zone Transfer",
+      cmd: "nmap --script=dns-zone-transfer -p 53 192.168.1.1",
+      desc: "Attempts to retrieve DNS zone information"
+    }
+    // Add more commands as needed
+  ];
+
   return (
-    <div>
-      <div className="bg-white p-6 shadow-md rounded-lg flex flex-col gap-5">
-        <h2 className="text-2xl font-semibold text-sky-600 mb-4">Nmap</h2>
-        
-        {/* Nmap Port States */}
-        <div className="p-4 border-l-4 border-purple-500 bg-slate-100 rounded-lg">
-          <h3 className="text-xl font-semibold">🔹 Nmap Port States</h3>
-          <ul className="mt-2 text-gray-700 list-disc pl-5">
-            <li><strong>Open:</strong> A service is actively listening on this port.</li>
-            <li><strong>Closed:</strong> The port is reachable but no service is listening.</li>
-            <li><strong>Filtered:</strong> Firewall or filtering prevents determining state.</li>
-            <li><strong>Unfiltered:</strong> The port is reachable but state is unknown.</li>
-            <li><strong>Open|Filtered:</strong> Could be open or filtered; no response received.</li>
-            <li><strong>Closed|Filtered:</strong> Could be closed or filtered; uncertain state.</li>
-          </ul>
-        </div>
-
-        {/* Specific Port */}
-        <div className="p-4 border-l-4 border-sky-500 bg-slate-100 rounded-lg">
-          <h3 className="text-xl font-semibold">🔹 Specific Port</h3>
-          <p className="mt-2 text-gray-700">
-            To scan a specific port:
-            <br />
-            <code className="bg-gray-200 p-1 rounded">nmap -p [port] [target IP]</code>
-          </p>
-        </div>
-
-        {/* Range of Ports */}
-        <div className="p-4 border-l-4 border-green-500 bg-slate-100 rounded-lg">
-          <h3 className="text-xl font-semibold">🔹 Range of Ports</h3>
-          <p className="mt-2 text-gray-700">
-            To scan a range of ports:
-            <br />
-            <code className="bg-gray-200 p-1 rounded">nmap -p [start_port]-[end_port] [target IP]</code>
-          </p>
-        </div>
-
-        {/* All Ports */}
-        <div className="p-4 border-l-4 border-purple-500 bg-slate-100 rounded-lg">
-          <h3 className="text-xl font-semibold">🔹 All Ports</h3>
-          <p className="mt-2 text-gray-700">
-            To scan all ports (1-65535):
-            <br />
-            <code className="bg-gray-200 p-1 rounded">nmap -p- [target IP]</code>
-          </p>
-        </div>
-
-        <div className="p-4 border-l-4 border-blue-500 bg-gray-100 rounded-lg">
-          <h3 className="text-xl font-semibold">🖥️ OS Detection</h3>
-          <p className="mt-2 text-gray-700">
-            Detect the operating system of a target:
-            <br />
-            <code className="bg-gray-200 p-1 rounded">nmap -O [target IP]</code>
-          </p>
-        </div>
-
-        {/* Service Version Detection */}
-        <div className="p-4 border-l-4 border-yellow-500 bg-gray-100 rounded-lg">
-          <h3 className="text-xl font-semibold">🔍 Service Version Detection</h3>
-          <p className="mt-2 text-gray-700">
-            Identify service versions running on open ports:
-            <br />
-            <code className="bg-gray-200 p-1 rounded">nmap -sV [target IP]</code>
-          </p>
-        </div>
-
-        {/* Aggressive Scan */}
-        <div className="p-4 border-l-4 border-red-500 bg-gray-100 rounded-lg">
-          <h3 className="text-xl font-semibold">⚡ Aggressive Scan</h3>
-          <p className="mt-2 text-gray-700">
-            Perform an aggressive scan (OS detection, version detection, script scanning):
-            <br />
-            <code className="bg-gray-200 p-1 rounded">nmap -A [target IP]</code>
-          </p>
-        </div>
-
-        {/* Stealth Scan */}
-        <div className="p-4 border-l-4 border-purple-500 bg-gray-100 rounded-lg">
-          <h3 className="text-xl font-semibold">🕵️ Stealth Scan</h3>
-          <p className="mt-2 text-gray-700">
-            Conduct a stealth scan using SYN packets:
-            <br />
-            <code className="bg-gray-200 p-1 rounded">nmap -sS [target IP]</code>
-          </p>
-        </div>
-
-        {/* UDP Scan */}
-        <div className="p-4 border-l-4 border-green-500 bg-gray-100 rounded-lg">
-          <h3 className="text-xl font-semibold">📡 UDP Scan</h3>
-          <p className="mt-2 text-gray-700">
-            Scan for open UDP ports:
-            <br />
-            <code className="bg-gray-200 p-1 rounded">nmap -sU [target IP]</code>
-          </p>
-        </div>
-
-        {/* Script Scanning */}
-        <div className="p-4 border-l-4 border-teal-500 bg-gray-100 rounded-lg">
-          <h3 className="text-xl font-semibold">📜 Script Scanning</h3>
-          <p className="mt-2 text-gray-700">
-            Use built-in scripts to scan vulnerabilities:
-            <br />
-            <code className="bg-gray-200 p-1 rounded">nmap --script=vuln [target IP]</code>
-          </p>
-        </div>
-
-        {/* Scan a Subnet */}
-        <div className="p-4 border-l-4 border-orange-500 bg-gray-100 rounded-lg">
-          <h3 className="text-xl font-semibold">🌐 Scan a Subnet</h3>
-          <p className="mt-2 text-gray-700">
-            Scan an entire subnet for live hosts:
-            <br />
-            <code className="bg-gray-200 p-1 rounded">nmap [target subnet]/24</code>
-          </p>
-        </div>
-
-        {/* Scan Multiple Targets */}
-        <div className="p-4 border-l-4 border-pink-500 bg-gray-100 rounded-lg">
-          <h3 className="text-xl font-semibold">📌 Scan Multiple Targets</h3>
-          <p className="mt-2 text-gray-700">
-            Scan multiple hosts in one command:
-            <br />
-            <code className="bg-gray-200 p-1 rounded">nmap [target1] [target2]</code>
-          </p>
-        </div>
-
-        {/* Output Scan Results */}
-        <div className="p-4 border-l-4 border-indigo-500 bg-gray-100 rounded-lg">
-          <h3 className="text-xl font-semibold">📄 Output Scan Results</h3>
-          <p className="mt-2 text-gray-700">
-            Save scan results to a file:
-            <br />
-            <code className="bg-gray-200 p-1 rounded">nmap -oN output.txt [target IP]</code>
-          </p>
-        </div>
-
-        {/* Fast Scan */}
-        <div className="p-4 border-l-4 border-blue-400 bg-gray-100 rounded-lg">
-          <h3 className="text-xl font-semibold">⚡ Fast Scan</h3>
-          <p className="mt-2 text-gray-700">
-            Scan the 100 most common ports quickly:
-            <br />
-            <code className="bg-gray-200 p-1 rounded">nmap -F [target IP]</code>
-          </p>
-        </div>
-
-        {/* Detect Firewalls and IDS */}
-        <div className="p-4 border-l-4 border-red-400 bg-gray-100 rounded-lg">
-          <h3 className="text-xl font-semibold">🚧 Detect Firewalls/IDS</h3>
-          <p className="mt-2 text-gray-700">
-            Detect if a firewall or Intrusion Detection System (IDS) is present:
-            <br />
-            <code className="bg-gray-200 p-1 rounded">nmap -sA [target IP]</code>
-          </p>
-        </div>
-
-        {/* Evading Firewalls */}
-        <div className="p-4 border-l-4 border-purple-500 bg-gray-100 rounded-lg">
-          <h3 className="text-xl font-semibold">🕵️ Evading Firewalls</h3>
-          <p className="mt-2 text-gray-700">
-            Fragment packets to bypass firewalls:
-            <br />
-            <code className="bg-gray-200 p-1 rounded">nmap -f [target IP]</code>
-          </p>
-        </div>
-
-        {/* Scan with Custom Timing */}
-        <div className="p-4 border-l-4 border-green-500 bg-gray-100 rounded-lg">
-          <h3 className="text-xl font-semibold">⏳ Scan with Custom Timing</h3>
-          <p className="mt-2 text-gray-700">
-            Adjust scan speed (0 = slow, 5 = fast):
-            <br />
-            <code className="bg-gray-200 p-1 rounded">nmap -T[0-5] [target IP]</code>
-          </p>
-        </div>
-
-        {/* Scan with Spoofed MAC Address */}
-        <div className="p-4 border-l-4 border-teal-500 bg-gray-100 rounded-lg">
-          <h3 className="text-xl font-semibold">🎭 Spoof MAC Address</h3>
-          <p className="mt-2 text-gray-700">
-            Change the source MAC address for scanning:
-            <br />
-            <code className="bg-gray-200 p-1 rounded">nmap --spoof-mac [MAC] [target IP]</code>
-          </p>
-        </div>
-
-        {/* DNS Brute Force */}
-        <div className="p-4 border-l-4 border-orange-500 bg-gray-100 rounded-lg">
-          <h3 className="text-xl font-semibold">🌐 DNS Brute Force</h3>
-          <p className="mt-2 text-gray-700">
-            Enumerate subdomains via DNS brute force:
-            <br />
-            <code className="bg-gray-200 p-1 rounded">nmap --script dns-brute [target domain]</code>
-          </p>
-        </div>
-
-        {/* Scan using Decoy IPs */}
-        <div className="p-4 border-l-4 border-pink-500 bg-gray-100 rounded-lg">
-          <h3 className="text-xl font-semibold">🕶️ Scan Using Decoys</h3>
-          <p className="mt-2 text-gray-700">
-            Mask real IP with decoys to evade detection:
-            <br />
-            <code className="bg-gray-200 p-1 rounded">nmap -D RND:5 [target IP]</code>
-          </p>
-        </div>
-
-        {/* TCP Connect Scan */}
-        <div className="p-4 border-l-4 border-indigo-500 bg-gray-100 rounded-lg">
-          <h3 className="text-xl font-semibold">🔌 TCP Connect Scan</h3>
-          <p className="mt-2 text-gray-700">
-            Perform a full TCP connection scan:
-            <br />
-            <code className="bg-gray-200 p-1 rounded">nmap -sT [target IP]</code>
-          </p>
-        </div>
-
-        {/* Null Scan */}
-        <div className="p-4 border-l-4 border-gray-500 bg-gray-100 rounded-lg">
-          <h3 className="text-xl font-semibold">🚫 Null Scan</h3>
-          <p className="mt-2 text-gray-700">
-            Scan without setting any TCP flags (stealthy):
-            <br />
-            <code className="bg-gray-200 p-1 rounded">nmap -sN [target IP]</code>
-          </p>
-        </div>
-
-        {/* Xmas Scan */}
-        <div className="p-4 border-l-4 border-red-600 bg-gray-100 rounded-lg">
-          <h3 className="text-xl font-semibold">🎄 Xmas Scan</h3>
-          <p className="mt-2 text-gray-700">
-            Set FIN, PSH, and URG flags to check for open ports:
-            <br />
-            <code className="bg-gray-200 p-1 rounded">nmap -sX [target IP]</code>
-          </p>
-        </div>
-
-        {/* FIN Scan */}
-        <div className="p-4 border-l-4 border-yellow-600 bg-gray-100 rounded-lg">
-          <h3 className="text-xl font-semibold">🛑 FIN Scan</h3>
-          <p className="mt-2 text-gray-700">
-            Send FIN flag to detect open ports:
-            <br />
-            <code className="bg-gray-200 p-1 rounded">nmap -sF [target IP]</code>
-          </p>
-        </div>
-
-        {/* Scan for Specific Vulnerabilities */}
-        <div className="p-4 border-l-4 border-lime-600 bg-gray-100 rounded-lg">
-          <h3 className="text-xl font-semibold">🛡️ Scan for Vulnerabilities</h3>
-          <p className="mt-2 text-gray-700">
-            Check for known vulnerabilities using NSE scripts:
-            <br />
-            <code className="bg-gray-200 p-1 rounded">nmap --script vuln [target IP]</code>
-          </p>
-        </div>
-
-        {/* Traceroute Scan */}
-        <div className="p-4 border-l-4 border-cyan-500 bg-gray-100 rounded-lg">
-          <h3 className="text-xl font-semibold">🔀 Traceroute</h3>
-          <p className="mt-2 text-gray-700">
-            Map the network path to the target:
-            <br />
-            <code className="bg-gray-200 p-1 rounded">nmap --traceroute [target IP]</code>
-          </p>
-        </div>
-
-        {/* Scan for IPv6 Hosts */}
-        <div className="p-4 border-l-4 border-emerald-500 bg-gray-100 rounded-lg">
-          <h3 className="text-xl font-semibold">🟢 IPv6 Scan</h3>
-          <p className="mt-2 text-gray-700">
-            Scan an IPv6 address:
-            <br />
-            <code className="bg-gray-200 p-1 rounded">nmap -6 [target IPv6]</code>
-          </p>
-        </div>
-
-        {/* Scan Hosts from a File */}
-        <div className="p-4 border-l-4 border-violet-500 bg-gray-100 rounded-lg">
-          <h3 className="text-xl font-semibold">📂 Scan from a File</h3>
-          <p className="mt-2 text-gray-700">
-            Scan multiple hosts from a file:
-            <br />
-            <code className="bg-gray-200 p-1 rounded">nmap -iL hosts.txt</code>
-          </p>
-        </div>
-
+    <div className="p-4 md:p-6">
+      <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
+        <span className="bg-blue-100 text-blue-800 p-1.5 rounded-md">🛡️</span>
+        Nmap Port Scanning Guide
+      </h2>
+      
+      <div className="grid gap-4 md:grid-cols-2">
+        {nmapCommands.map((item, index) => (
+          <div key={index} className="bg-gray-50 p-3 rounded-md border border-gray-200">
+            <h3 className="font-medium text-gray-800 mb-1.5">{item.title}</h3>
+            <code className="block bg-gray-200/80 p-1.5 rounded text-sm mb-1.5 overflow-x-auto">
+              {item.cmd}
+            </code>
+            <p className="text-xs md:text-sm text-gray-600">{item.desc}</p>
+          </div>
+        ))}
       </div>
     </div>
-  )
-}
+  );
+};
