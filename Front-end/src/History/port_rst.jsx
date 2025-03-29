@@ -4,8 +4,10 @@ import { saveAs } from 'file-saver';
 
 export const PortRst = () => {
   const [scans, setScans] = useState([]);
+  const [customDays, setCustomDays] = useState("");
   const [searchIp, setSearchIp] = useState("");
   const [ipSuggestions, setIpSuggestions] = useState([]);
+  const [daysFilter, setDaysFilter] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -22,13 +24,16 @@ export const PortRst = () => {
     fetchUniqueIps();
   }, [pagination.page]);
 
-  const fetchScans = async (ip = "") => {
+  const fetchScans = async (ip = "", days = "") => {
     setLoading(true);
     setError(null);
-
+  
     let url = `http://127.0.0.1:5000/api/scans?page=${pagination.page}&per_page=${pagination.perPage}`;
     if (ip) {
       url += `&ip=${ip}`;
+    }
+    if (daysFilter) {
+      url += `&days=${daysFilter}`;
     }
 
     try {
@@ -65,7 +70,8 @@ export const PortRst = () => {
 
   const handleSearch = () => {
     setPagination(prev => ({ ...prev, page: 1 }));
-    fetchScans(searchIp);
+    const days = daysFilter === 'custom' ? customDays : daysFilter;
+    fetchScans(searchIp, days);
   };
 
   const handleDelete = async (scanId) => {
@@ -177,17 +183,13 @@ export const PortRst = () => {
       {/* Search and Action Bar */}
       <div className="flex flex-col md:flex-row gap-4 mb-6">
         <div className="flex-1 relative">
-          <input
-            type="text"
-            placeholder="Search by IP"
-            className="p-2 border border-gray-400 rounded-md w-full bg-gray-50 text-gray-900 placeholder-gray-500 focus:border-green-500 focus:ring-2 focus:ring-green-300"
-            value={searchIp}
-            onChange={(e) => {
+          <input type="text" placeholder="Search by IP" className="p-2 border border-gray-400 rounded-md w-full bg-gray-50 text-gray-900 placeholder-gray-500 focus:border-green-500 focus:ring-2 focus:ring-green-300"
+            value={searchIp} onChange={(e) => {
               setSearchIp(e.target.value);
               setShowDropdown(e.target.value !== "");
             }}
-            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-          />
+            onKeyDown={(e) => e.key === "Enter" && handleSearch()}/>
+
           {showDropdown && ipSuggestions.length > 0 && (
             <div className="absolute z-10 bg-white border border-gray-300 rounded-md w-full mt-1 max-h-40 overflow-y-auto shadow-lg">
               {ipSuggestions
@@ -208,12 +210,43 @@ export const PortRst = () => {
             </div>
           )}
         </div>
-        <button
-          className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition"
-          onClick={handleSearch}
-        >
-          Search
-        </button>
+        <select
+  className="p-2 border border-gray-400 rounded-md bg-gray-50 text-gray-900 focus:border-green-500 focus:ring-2 focus:ring-green-300"
+  value={daysFilter}
+  onChange={(e) => {
+    if (e.target.value !== 'custom') {
+      setDaysFilter(e.target.value);
+    } else {
+      setDaysFilter('custom');
+    }
+  }}
+>
+  <option value="">All Time</option>
+  <option value="1">Last 24 Hours</option>
+  <option value="7">Last 7 Days</option>
+  <option value="30">Last 30 Days</option>
+  <option value="90">Last 90 Days</option>
+  <option value="custom">Custom Days</option>
+</select>
+
+{daysFilter === 'custom' && (
+  <input
+    type="number"
+    placeholder="Enter days"
+    className="p-2 border border-gray-400 rounded-md bg-gray-50 text-gray-900 placeholder-gray-500 focus:border-green-500 focus:ring-2 focus:ring-green-300"
+    value={customDays}
+    onChange={(e) => setCustomDays(e.target.value)}
+    min="1"
+  />
+)}
+  
+  <button
+    className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition"
+    onClick={handleSearch}
+  >
+    Search
+  </button>
+
       </div>
 
       {/* Action Buttons */}
@@ -340,5 +373,4 @@ export const PortRst = () => {
         </div>
       )}
     </div>
-  );
-};
+  );}

@@ -16,19 +16,28 @@ export const Syn_history = () => {
     perPage: 10,
     total: 0
   });
+  const [daysFilter, setDaysFilter] = useState("");
 
   const API_URL = "http://127.0.0.1:5000/api/syn_scans";
 
   useEffect(() => {
     fetchScans();
     fetchUniqueIps();
-  }, [pagination.page, searchIp]);
+  }, [pagination.page, daysFilter]);
 
   const fetchScans = async () => {
     try {
       setLoading(true);
       setError(null);
-      const url = `${API_URL}?page=${pagination.page}&per_page=${pagination.perPage}&ip=${searchIp}`;
+      let url = `${API_URL}?page=${pagination.page}&per_page=${pagination.perPage}`;
+      
+      if (searchIp) {
+        url += `&ip=${searchIp}`;
+      }
+      if (daysFilter) {
+        url += `&days=${daysFilter}`;
+      }
+
       const response = await fetch(url);
       const data = await response.json();
       if (data.error) throw new Error(data.error);
@@ -56,6 +65,13 @@ export const Syn_history = () => {
   };
 
   const handleSearch = () => {
+    setPagination(prev => ({ ...prev, page: 1 }));
+    fetchScans();
+  };
+
+  const handleClearFilters = () => {
+    setSearchIp("");
+    setDaysFilter("");
     setPagination(prev => ({ ...prev, page: 1 }));
     fetchScans();
   };
@@ -179,7 +195,6 @@ export const Syn_history = () => {
                     onClick={() => {
                       setSearchIp(ip);
                       setShowDropdown(false);
-                      handleSearch();
                     }}
                     className="p-2 hover:bg-green-100 cursor-pointer"
                   >
@@ -189,11 +204,34 @@ export const Syn_history = () => {
             </div>
           )}
         </div>
+
+        <select
+          className="p-2 border border-gray-400 rounded-md bg-gray-50 text-gray-900 focus:border-green-500 focus:ring-2 focus:ring-green-300"
+          value={daysFilter}
+          onChange={(e) => {
+            setDaysFilter(e.target.value);
+            setPagination(prev => ({ ...prev, page: 1 }));
+          }}
+        >
+          <option value="">All Time</option>
+          <option value="1">Last 24 Hours</option>  {/* Add this line */}
+          <option value="7">Last 7 Days</option>
+          <option value="30">Last 30 Days</option>
+          <option value="90">Last 90 Days</option>
+        </select>
+
         <button
           className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition"
           onClick={handleSearch}
         >
           Search
+        </button>
+
+        <button
+          onClick={handleClearFilters}
+          className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition"
+        >
+          Clear Filters
         </button>
       </div>
 
@@ -220,6 +258,13 @@ export const Syn_history = () => {
           Export to JSON
         </button>
       </div>
+
+      {/* Date Filter Info */}
+      {daysFilter && (
+        <div className="mb-4 text-sm text-gray-600">
+          Showing scans from last {daysFilter} days
+        </div>
+      )}
 
       {/* Loading Indicator */}
       {loading && (

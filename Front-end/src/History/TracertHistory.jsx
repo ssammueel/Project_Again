@@ -15,21 +15,36 @@ export const TracertHistory = () => {
     perPage: 10,
     total: 0
   });
+  const [daysFilter, setDaysFilter] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [showDateRange, setShowDateRange] = useState(false);
 
   useEffect(() => {
     fetchScans();
     fetchUniqueIps();
-  }, [pagination.page, searchIp]);
+  }, [pagination.page, daysFilter, startDate, endDate]);
 
   const fetchScans = async () => {
     setLoading(true);
     setError(null);
     try {
-      const url = `http://127.0.0.1:5000/api/traceroute_scans?page=${pagination.page}&per_page=${pagination.perPage}&ip=${searchIp}`;
+      let url = `http://127.0.0.1:5000/api/traceroute_scans?page=${pagination.page}&per_page=${pagination.perPage}`;
+      
+      if (searchIp) {
+        url += `&ip=${searchIp}`;
+      }
+      if (daysFilter) {
+        url += `&days=${daysFilter}`;
+      }
+      if (showDateRange && startDate && endDate) {
+        url += `&start_date=${startDate}&end_date=${endDate}`;
+      }
+
       const response = await fetch(url);
       if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
       const data = await response.json();
-      setScans(data.scans || data); // Handle both paginated and non-paginated responses
+      setScans(data.scans || data);
       setPagination(prev => ({
         ...prev,
         total: data.total || data.length || 0
@@ -54,6 +69,16 @@ export const TracertHistory = () => {
   };
 
   const handleSearch = () => {
+    setPagination(prev => ({ ...prev, page: 1 }));
+    fetchScans();
+  };
+
+  const handleClearFilters = () => {
+    setSearchIp("");
+    setDaysFilter("");
+    setStartDate("");
+    setEndDate("");
+    setShowDateRange(false);
     setPagination(prev => ({ ...prev, page: 1 }));
     fetchScans();
   };
@@ -155,45 +180,98 @@ export const TracertHistory = () => {
       <h2 className="text-2xl font-bold text-center mb-4 text-gray-900">Traceroute Scan Results</h2>
 
       {/* Search and Action Bar */}
-      <div className="flex flex-col md:flex-row gap-4 mb-6">
-        <div className="flex-1 relative">
-          <input
-            type="text"
-            placeholder="Search by IP"
-            className="p-2 border border-gray-400 rounded-md w-full bg-gray-50 text-gray-900 placeholder-gray-500 focus:border-green-500 focus:ring-2 focus:ring-green-300"
-            value={searchIp}
+      <div className="flex flex-col gap-4 mb-6">
+        <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex-1 relative">
+            <input
+              type="text"
+              placeholder="Search by IP"
+              className="p-2 border border-gray-400 rounded-md w-full bg-gray-50 text-gray-900 placeholder-gray-500 focus:border-green-500 focus:ring-2 focus:ring-green-300"
+              value={searchIp}
+              onChange={(e) => {
+                setSearchIp(e.target.value);
+                setShowDropdown(e.target.value !== "");
+              }}
+              onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+            />
+            {showDropdown && ipSuggestions.length > 0 && (
+              <div className="absolute z-10 bg-white border border-gray-300 rounded-md w-full mt-1 max-h-40 overflow-y-auto shadow-lg">
+                {ipSuggestions
+                  .filter(ip => ip.toLowerCase().includes(searchIp.toLowerCase()))
+                  .map((ip, index) => (
+                    <div
+                      key={index}
+                      onClick={() => {
+                        setSearchIp(ip);
+                        setShowDropdown(false);
+                        handleSearch();
+                      }}
+                      className="p-2 hover:bg-green-100 cursor-pointer"
+                    >
+                      {ip}
+                    </div>
+                  ))}
+              </div>
+            )}
+          </div>
+
+          <select
+            className="p-2 border border-gray-400 rounded-md bg-gray-50 text-gray-900 focus:border-green-500 focus:ring-2 focus:ring-green-300"
+            value={daysFilter}
             onChange={(e) => {
-              setSearchIp(e.target.value);
-              setShowDropdown(e.target.value !== "");
+              setDaysFilter(e.target.value);
+              setShowDateRange(e.target.value === "custom");
+              setPagination(prev => ({ ...prev, page: 1 }));
             }}
-            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-          />
-          {showDropdown && ipSuggestions.length > 0 && (
-            <div className="absolute z-10 bg-white border border-gray-300 rounded-md w-full mt-1 max-h-40 overflow-y-auto shadow-lg">
-              {ipSuggestions
-                .filter(ip => ip.toLowerCase().includes(searchIp.toLowerCase()))
-                .map((ip, index) => (
-                  <div
-                    key={index}
-                    onClick={() => {
-                      setSearchIp(ip);
-                      setShowDropdown(false);
-                      handleSearch();
-                    }}
-                    className="p-2 hover:bg-green-100 cursor-pointer"
-                  >
-                    {ip}
-                  </div>
-                ))}
-            </div>
-          )}
+          >
+            <option value="">All Time</option>
+            <option value="1">Last 24 Hours</option>
+            <option value="7">Last 7 Days</option>
+            <option value="30">Last 30 Days</option>
+            <option value="90">Last 90 Days</option>
+            <option value="custom">Custom Range</option>
+          </select>
+
+          <button
+            className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition"
+            onClick={handleSearch}
+          >
+            Search
+          </button>
+
+          <button
+            onClick={handleClearFilters}
+            className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition"
+          >
+            Clear
+          </button>
         </div>
-        <button
-          className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition"
-          onClick={handleSearch}
-        >
-          Search
-        </button>
+
+        {showDateRange && (
+          <div className="flex flex-col md:flex-row gap-4 items-center">
+            <div className="flex items-center gap-2">
+              <label className="whitespace-nowrap">From:</label>
+              <input
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                className="p-2 border border-gray-400 rounded-md bg-gray-50"
+                placeholder="YYYY-MM-DD"
+              />
+            </div>
+            <div className="flex items-center gap-2">
+              <label className="whitespace-nowrap">To:</label>
+              <input
+                type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                className="p-2 border border-gray-400 rounded-md bg-gray-50"
+                placeholder="YYYY-MM-DD"
+                min={startDate}
+              />
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Action Buttons */}

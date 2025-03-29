@@ -14,12 +14,18 @@ syn_scans_collection = db['syn_scans']
 def fetchSynScan():
     try:
         ip = request.args.get("ip")
+        days = request.args.get("days")
         page = int(request.args.get("page", 1))
         per_page = int(request.args.get("per_page", 10))
 
         query = {}
         if ip:
-            query["ip"] = {"$regex": ip, "$options": "i"}
+            query["ip"] = ip  # Exact match now instead of regex
+        
+        if days and days.isdigit():
+            days = int(days)
+            start_date = datetime.utcnow() - timedelta(days=days)
+            query["timestamp"] = {"$gte": start_date}
 
         total = syn_scans_collection.count_documents(query)
         scans = list(syn_scans_collection.find(query)

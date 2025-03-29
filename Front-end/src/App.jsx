@@ -44,43 +44,38 @@ function App() {
             <Route path='/login' element={<Login/>}/>
             <Route element={<ProtectedRoute/>}>
                 <Route path='/features' element={<Features/>}>
-                <Route path='' element={<PtScan/>}/>
-                <Route path='ptScan' element={<PtScan/>}/>
-                <Route path='AggressiveScan' element={<AggressiveScan/>} />
-                <Route path='FirewallScan' element={<FirewallScan/>} />
-                <Route path='SynScan' element={<SynScan/>}/>
-                <Route path='TracerouteScan' element={<TracerouteScan/>}/>
-                <Route path='CustomScan' element={<CustomScan/>}/>
-                
-                {/* nicto scan  */}
-            
-                <Route path='GeneralScans' element={<GeneralScan/>}/>
-                <Route path='HeaderScan' element={<HeaderScan/>}/>
-                <Route path='OutdatedSoftwareScan' element={<OutdatedSoftwareScan/>}/>
-                <Route path='FileUploadScan' element={<FileUploadScan/>}/>
-            
-
-                {/* hydra  */}
-                <Route path='SSHBruteforce' element={<SSHBruteforce/>}/>
-                <Route path='FTPBruteforce' element={<FTPBruteforce/>}/>
-                <Route path='MySQLBruteforce' element={<MySQLBruteforce/>}/>
-                <Route path='RDPBruteforce' element={<RDPBruteforce/>}/>
-                <Route path='CustomBruteforce' element={<CustomBruteforce/>}/>
-
-                {/* sqlmap  */}
-                <Route path='BasicScan' element={<BasicScan/>}/>
-                <Route path='DbEnum' element={<DbEnum/>}/>
-                <Route path='TableExtract' element={<TableExtract/>}/>
-                <Route path='CustomSQL' element={<CustomSQL/>}/>
-
-                {/* wifi Cracking  */}
-                <Route path='ScanNetworks' element={<ScanNetworks/>}/>
-                <Route path='CaptureHandshake' element={<CaptureHandshake/>}/>
-                <Route path='CrackPassword' element={<CrackPassword/>}/>
-                <Route path='DeauthAttack' element={<DeauthAttack/>}/>
+                  <Route path='' element={<PtScan/>}/>
+                  <Route path='ptScan' element={<PtScan/>}/>
+                  <Route path='AggressiveScan' element={<AggressiveScan/>} />
+                  <Route path='FirewallScan' element={<FirewallScan/>} />
+                  <Route path='SynScan' element={<SynScan/>}/>
+                  <Route path='TracerouteScan' element={<TracerouteScan/>}/>
+                  <Route path='CustomScan' element={<CustomScan/>}/>
+                  
+                  {/* nicto scan  */}
+                  <Route path='GeneralScans' element={<GeneralScan/>}/>
+                  <Route path='HeaderScan' element={<HeaderScan/>}/>
+                  <Route path='OutdatedSoftwareScan' element={<OutdatedSoftwareScan/>}/>
+                  <Route path='FileUploadScan' element={<FileUploadScan/>}/>
 
                 </Route>
-            </Route>
+
+                <Route path='/history' element={<ScanResults/>}>
+                  <Route path='' element={<PortRst/>}/>
+
+                  <Route path='port' element={<PortRst/>}/>
+                  <Route path='Syn_history' element={<Syn_history/>}/>
+                  <Route path='TracertHistory'element={<TracertHistory/>}/>
+                  <Route path='FirewallHistory' element={<FirewallHistory/>}/>
+                  <Route path='AggHistory' element={<AggHistory/>}/>
+                  <Route path='CustomHistory' element={<CustomHistory/>}/>
+
+                  <Route path='Generalhistory' element={<Generalhistory/>}/>
+                  <Route path='HeaderHistory' element={<HeaderHistory/>}/>
+                  <Route path='FileHistory' element={<FileHistory/>}/>
+                  <Route path='Outdated' element={<Outdated/>}/>
+                </Route>
+              </Route>
 
             {/* history  */}
             <Route path='/history' element={<ScanResults/>}>

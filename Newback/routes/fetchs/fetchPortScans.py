@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, request
 from pymongo import MongoClient, DESCENDING
 import os
 from bson import ObjectId
-from datetime import datetime
+from datetime import datetime, timedelta
 import json
 from bson.json_util import dumps
 
@@ -16,12 +16,19 @@ scans_collection = db["scans"]
 def fetchPortScan():
     try:
         ip = request.args.get("ip")
+        days = request.args.get("days")
         page = int(request.args.get("page", 1))
         per_page = int(request.args.get("per_page", 10))
 
         query = {}
         if ip:
             query["ip"] = ip
+            
+        # Add date filtering if days parameter is provided
+        if days and days.isdigit():
+            days = int(days)
+            start_date = datetime.utcnow() - timedelta(days=days)
+            query["scan_date"] = {"$gte": start_date}
 
         total = scans_collection.count_documents(query)
         scans = list(scans_collection.find(query)
@@ -39,9 +46,8 @@ def fetchPortScan():
             "per_page": per_page
         }), 200
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": str(e)}), 500@fetchPortScan_bp.route('/scans/<scan_id>', methods=['DELETE'])
 
-@fetchPortScan_bp.route('/scans/<scan_id>', methods=['DELETE'])
 def delete_scan(scan_id):
     try:
         result = scans_collection.delete_one({"_id": ObjectId(scan_id)})

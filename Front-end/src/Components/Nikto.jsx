@@ -34,7 +34,7 @@ export const GeneralScan = () => {
     return (
         <div className="w-[100%]">
             <h2 className="text-[16px] ml-[20%] mt-[1%] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-green-600 to-green-800 text-white">
-                Nikto General Scan
+                General Scan
             </h2>
 
             <div className="w-[100%] flex gap-[5%] mt-[1%]">
@@ -114,7 +114,7 @@ export const HeaderScan = () => {
     return (
         <div className="w-[100%]">
             <h2 className="text-[16px] ml-[20%] mt-[1%] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-blue-600 to-blue-800 text-white">
-                Nikto Header Scan
+                Header Scan
             </h2>
 
             <div className="w-[100%] flex gap-[5%] mt-[1%]">
@@ -194,7 +194,7 @@ export const OutdatedSoftwareScan = () => {
     return (
         <div className="w-[100%]">
             <h2 className="text-[16px] ml-[12%] mt-[1%] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-purple-600 to-purple-800 text-white">
-                Nikto Outdated Software Scan
+                Outdated Software Scan
             </h2>
 
             <div className="w-[100%] flex gap-[5%] mt-[1%]">
@@ -274,7 +274,7 @@ export const FileUploadScan = () => {
     return (
         <div className="w-[100%]">
             <h2 className="text-[16px] ml-[15%] mt-[1%] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-red-600 to-red-800 text-white">
-                Nikto File Upload Scan
+                deFile Upload Scan
             </h2>
 
             <div className="w-[100%] flex gap-[5%] mt-[1%]">

@@ -14,12 +14,35 @@ traceroute_collection = db["traceroutedb"]
 def fetchTracerouteScan():
     try:
         ip = request.args.get("ip")
+        days = request.args.get("days")
+        start_date = request.args.get("start_date")
+        end_date = request.args.get("end_date")
         page = int(request.args.get("page", 1))
         per_page = int(request.args.get("per_page", 10))
 
         query = {}
+        
+        # IP filter
         if ip:
             query["ip"] = {"$regex": ip, "$options": "i"}
+        
+        # Date range filter
+        date_query = {}
+        if days and days.isdigit():
+            days = int(days)
+            start_date = datetime.utcnow() - timedelta(days=days)
+            date_query["$gte"] = start_date
+        elif start_date and end_date:
+            try:
+                start_date = datetime.strptime(start_date, "%Y-%m-%d")
+                end_date = datetime.strptime(end_date, "%Y-%m-%d")
+                date_query["$gte"] = start_date
+                date_query["$lte"] = end_date + timedelta(days=1)  # Include entire end day
+            except ValueError:
+                return jsonify({"error": "Invalid date format. Use YYYY-MM-DD"}), 400
+        
+        if date_query:
+            query["scan_date"] = date_query
 
         total = traceroute_collection.count_documents(query)
         scans = list(traceroute_collection.find(query)
