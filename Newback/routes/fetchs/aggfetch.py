@@ -14,20 +14,17 @@ aggressive_collection = db["aggressive_scans"]
 def fetchAggressiveScan():
     try:
         ip = request.args.get("ip")
-        date = request.args.get("date")
+        days = request.args.get("days")  # Add days parameter
         page = int(request.args.get("page", 1))
         per_page = int(request.args.get("per_page", 10))
 
         query = {}
         if ip:
             query["ip"] = {"$regex": ip, "$options": "i"}
-        if date:
-            try:
-                start_date = datetime.strptime(date, "%Y-%m-%d")
-                end_date = start_date + timedelta(days=1)
-                query["scan_date"] = {"$gte": start_date, "$lt": end_date}
-            except ValueError:
-                return jsonify({"error": "Invalid date format, use YYYY-MM-DD"}), 400
+        if days and days.isdigit():
+            days = int(days)
+            start_date = datetime.utcnow() - timedelta(days=days)
+            query["scan_date"] = {"$gte": start_date}
 
         total = aggressive_collection.count_documents(query)
         scans = list(aggressive_collection.find(query)

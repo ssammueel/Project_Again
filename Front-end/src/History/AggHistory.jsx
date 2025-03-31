@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 
 export const AggHistory = () => {
+  
   const [scans, setScans] = useState([]);
   const [searchIp, setSearchIp] = useState("");
   const [ipSuggestions, setIpSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [daysFilter, setDaysFilter] = useState("");
+  const [selectedDate, setSelectedDate] = useState(""); 
   const [showDropdown, setShowDropdown] = useState(false);
   const [expandedScan, setExpandedScan] = useState(null);
   const [selectedScans, setSelectedScans] = useState([]);
@@ -15,22 +18,22 @@ export const AggHistory = () => {
     perPage: 10,
     total: 0
   });
-  const [selectedDate, setSelectedDate] = useState("");
 
   useEffect(() => {
     fetchScans();
     fetchUniqueIps();
-  }, [pagination.page, searchIp, selectedDate]);
+  }, [pagination.page, searchIp, daysFilter]);
 
-  const fetchScans = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      let url = `http://127.0.0.1:5000/api/aggressive_scans?page=${pagination.page}&per_page=${pagination.perPage}`;
-      if (searchIp) url += `&ip=${searchIp}`;
-      if (selectedDate) url += `&date=${selectedDate}`;
+const fetchScans = async () => {
+  setLoading(true);
+  setError(null);
+  try {
+    let url = `http://127.0.0.1:5000/api/aggressive_scans?page=${pagination.page}&per_page=${pagination.perPage}`;
+    
+    if (searchIp) url += `&ip=${searchIp}`;
+    if (daysFilter) url += `&days=${daysFilter}`; // Add days filter
 
-      const response = await fetch(url);
+    const response = await fetch(url);
       if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
       
       const data = await response.json();
@@ -210,23 +213,29 @@ export const AggHistory = () => {
           )}
         </div>
 
-        <div className="flex items-center gap-2">
-          <input
-            type="date"
-            value={selectedDate}
-            onChange={handleDateChange}
+        <select
             className="p-2 border border-gray-400 rounded-md bg-gray-50 text-gray-900 focus:border-green-500 focus:ring-2 focus:ring-green-300"
-          />
+            value={daysFilter}
+            onChange={(e) => {
+              setDaysFilter(e.target.value);
+              setPagination(prev => ({ ...prev, page: 1 }));
+            }}
+          >
+            <option value="">All Time</option>
+            <option value="1">Last 24 Hours</option>
+            <option value="7">Last 7 Days</option>
+            <option value="30">Last 30 Days</option>
+            <option value="90">Last 90 Days</option>
+          </select>
+
           <button
             className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition"
             onClick={handleSearch}
           >
             Search
           </button>
-        </div>
       </div>
 
-      {/* Action Buttons */}
       <div className="flex flex-wrap gap-2 mb-4">
         {selectedScans.length > 0 && (
           <button

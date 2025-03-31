@@ -7,6 +7,7 @@ export const CustomHistory = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [daysFilter, setDaysFilter] = useState("");
   const [expandedScan, setExpandedScan] = useState(null);
   const [selectedScans, setSelectedScans] = useState([]);
   const [toast, setToast] = useState({ show: false, message: '' });
@@ -20,7 +21,7 @@ export const CustomHistory = () => {
   useEffect(() => {
     fetchScans();
     fetchUniqueIps();
-  }, [pagination.page, searchIp, selectedDate]);
+  }, [pagination.page, searchIp, selectedDate, daysFilter]);  // Add daysFilter
 
   const fetchScans = async () => {
     setLoading(true);
@@ -29,7 +30,8 @@ export const CustomHistory = () => {
       let url = `http://127.0.0.1:5000/api/fetch_custom_scan?page=${pagination.page}&per_page=${pagination.perPage}`;
       if (searchIp) url += `&ip=${searchIp}`;
       if (selectedDate) url += `&date=${selectedDate}`;
-
+      if (daysFilter) url += `&days=${daysFilter}`;  // Add days filter
+  
       const response = await fetch(url);
       if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
       
@@ -207,12 +209,22 @@ export const CustomHistory = () => {
         </div>
 
         <div className="flex items-center gap-2">
-          <input
-            type="date"
-            value={selectedDate}
-            onChange={handleDateChange}
+          
+          <select
             className="p-2 border border-gray-400 rounded-md bg-gray-50 text-gray-900 focus:border-green-500 focus:ring-2 focus:ring-green-300"
-          />
+            value={daysFilter}
+            onChange={(e) => {
+              setDaysFilter(e.target.value);
+              setSelectedDate("");  // Clear date filter when days filter is selected
+              setPagination(prev => ({ ...prev, page: 1 }));
+            }}
+          >
+            <option value="">All Time</option>
+            <option value="1">Last 24 Hours</option>
+            <option value="7">Last 7 Days</option>
+            <option value="30">Last 30 Days</option>
+            <option value="90">Last 90 Days</option>
+          </select>
           <button
             className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition"
             onClick={handleSearch}

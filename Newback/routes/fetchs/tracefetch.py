@@ -62,6 +62,7 @@ def fetchTracerouteScan():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+
 @fetchTraceroute_bp.route('/traceroute_scans/<scan_id>', methods=['DELETE'])
 def delete_traceroute_scan(scan_id):
     try:

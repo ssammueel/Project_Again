@@ -1,9 +1,38 @@
+// Documentation.jsx
 import React, { useState } from 'react';
 import { DocNmap } from './DocNmap';
 import { DocHydra } from './DocHydra';
+import { InstallationGuide } from './InstallationGuide';
+import { ApiReference } from './ApiReference';
+import { Troubleshooting } from './Troubleshooting';
 
 export const Documentation = () => {
-  const [activeTab, setActiveTab] = useState('Nmap');
+  const [activeTab, setActiveTab] = useState('Installation');
+
+  const tabs = [
+    { id: 'Installation', label: 'Installation', icon: '🛠️' },
+    { id: 'Nmap', label: 'Nmap', icon: '🛡️' },
+    { id: 'Hydra', label: 'Nikto', icon: '🔑' },
+    { id: 'API', label: 'API Reference', icon: '📡' },
+    { id: 'Troubleshooting', label: 'Troubleshooting', icon: '🔧' }
+  ];
+
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'Nmap':
+        return <DocNmap />;
+      case 'Hydra':
+        return <DocHydra />;
+      case 'Installation':
+        return <InstallationGuide />;
+      case 'API':
+        return <ApiReference />;
+      case 'Troubleshooting':
+        return <Troubleshooting />;
+      default:
+        return <InstallationGuide />;
+    }
+  };
 
   return (
     <div className="mt-[5%] p-4 md:p-6 bg-[#051c2e] min-h-screen">
@@ -16,18 +45,19 @@ export const Documentation = () => {
           </h1>
           
           {/* Working Tab Navigation */}
-          <div className="flex bg-white p-0.5 rounded-md shadow-xs border border-gray-200">
-            {['Nmap', 'Hydra'].map((tool) => (
+          <div className="flex flex-wrap bg-white p-0.5 rounded-md shadow-xs border border-gray-200">
+            {tabs.map((tab) => (
               <button
-                key={tool}
-                onClick={() => setActiveTab(tool)}
-                className={`px-3 py-1.5 text-sm md:text-base rounded-[4px] font-medium transition-colors ${
-                  activeTab === tool 
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`px-3 py-1.5 text-sm md:text-base rounded-[4px] font-medium transition-colors flex items-center gap-1 ${
+                  activeTab === tab.id 
                     ? 'bg-blue-600 text-white shadow-inner' 
                     : 'text-gray-600 hover:bg-gray-100'
                 }`}
               >
-                {tool}
+                <span>{tab.icon}</span>
+                {tab.label}
               </button>
             ))}
           </div>
@@ -35,7 +65,7 @@ export const Documentation = () => {
 
         {/* Conditional Tool Rendering */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-          {activeTab === 'Nmap' ? <DocNmap /> : <DocHydra />}
+          {renderTabContent()}
         </div>
       </div>
     </div>
