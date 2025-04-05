@@ -15,13 +15,14 @@ export const HeaderHistory = () => {
     perPage: 10,
     total: 0
   });
+  const [daysFilter, setDaysFilter] = useState("");
 
   const API_URL = "http://127.0.0.1:5000/nikto/header_scans";
 
   useEffect(() => {
     fetchScans();
     fetchUniqueTargets();
-  }, [pagination.page, searchTarget]);
+  }, [pagination.page, searchTarget, daysFilter]);
 
   const fetchScans = async () => {
     setLoading(true);
@@ -29,15 +30,19 @@ export const HeaderHistory = () => {
     try {
       let url = `${API_URL}?page=${pagination.page}&per_page=${pagination.perPage}`;
       if (searchTarget) url += `&target=${searchTarget}`;
+      if (daysFilter) url += `&days=${daysFilter}`;
 
       const response = await fetch(url);
-      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+      }
       
       const data = await response.json();
-      setScans(data.scans || data);
+      setScans(data.scans);
       setPagination(prev => ({
         ...prev,
-        total: data.total || data.length || 0
+        total: data.total
       }));
     } catch (err) {
       setError(err.message);
@@ -58,6 +63,13 @@ export const HeaderHistory = () => {
   };
 
   const handleSearch = () => {
+    setPagination(prev => ({ ...prev, page: 1 }));
+    fetchScans();
+  };
+
+  const handleClearFilters = () => {
+    setSearchTarget("");
+    setDaysFilter("");
     setPagination(prev => ({ ...prev, page: 1 }));
     fetchScans();
   };
@@ -125,7 +137,7 @@ export const HeaderHistory = () => {
     const data = scans.map(scan => [
       new Date(scan.timestamp).toLocaleString(),
       scan.target,
-      scan.scan_result.replace(/\n/g, "\\n")
+      scan.scan_result.replace(/\n/g, "\\n").replace(/"/g, '""')
     ]);
 
     let csvContent = "data:text/csv;charset=utf-8," 
@@ -157,10 +169,10 @@ export const HeaderHistory = () => {
   };
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
-      <h2 className="text-2xl font-bold text-center mb-4 text-gray-900">Nikto Header Scan History</h2>
+    <div className="container mx-auto px-6 py-6">
+      <h2 className="text-2xl font-bold text-center mb-4 text-gray-900">Header Scan History</h2>
 
-      {/* Search Bar */}
+      {/* Search and Filter Bar */}
       <div className="flex flex-col md:flex-row gap-4 mb-6">
         <div className="flex-1 relative">
           <input
@@ -186,7 +198,7 @@ export const HeaderHistory = () => {
                       setShowDropdown(false);
                       handleSearch();
                     }}
-                    className="p-2 hover:bg-green-100 cursor-pointer"
+                    className="p-2 hover:bg-blue-100 cursor-pointer"
                   >
                     {target}
                   </div>
@@ -194,13 +206,42 @@ export const HeaderHistory = () => {
             </div>
           )}
         </div>
+
+        <select
+          className="p-2 border border-gray-300 rounded-md bg-white text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-300"
+          value={daysFilter}
+          onChange={(e) => {
+            setDaysFilter(e.target.value);
+            setPagination(prev => ({ ...prev, page: 1 }));
+          }}
+        >
+          <option value="">All Time</option>
+          <option value="1">Last 24 Hours</option>
+          <option value="7">Last 7 Days</option>
+          <option value="30">Last 30 Days</option>
+        </select>
+
         <button
-          className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition"
+          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
           onClick={handleSearch}
         >
           Search
         </button>
+
+        <button
+          onClick={handleClearFilters}
+          className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition"
+        >
+          Clear Filters
+        </button>
       </div>
+
+      {/* Days Filter Info */}
+      {daysFilter && (
+        <div className="mb-4 text-sm text-gray-600">
+          Showing scans from last {daysFilter} days
+        </div>
+      )}
 
       {/* Action Buttons */}
       <div className="flex flex-wrap gap-2 mb-4">
@@ -214,7 +255,7 @@ export const HeaderHistory = () => {
         )}
         <button
           onClick={exportToCSV}
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+          className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition"
         >
           Export to CSV
         </button>
@@ -229,7 +270,7 @@ export const HeaderHistory = () => {
       {/* Loading Indicator */}
       {loading && (
         <div className="flex justify-center my-8">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-600"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
         </div>
       )}
 
@@ -241,8 +282,8 @@ export const HeaderHistory = () => {
         {!loading && scans.length > 0 ? (
           <>
             <table className="table w-full border border-gray-300">
-              <thead className="bg-gray-200">
-                <tr className="bg-gray-700 text-white font-semibold">
+              <thead>
+                <tr className="bg-gray-800 text-white font-semibold">
                   <th className="border text-lg border-gray-300 w-10">
                     <input
                       type="checkbox"
@@ -270,33 +311,33 @@ export const HeaderHistory = () => {
                         {new Date(scan.timestamp).toLocaleString()}
                       </td>
                       <td className="border border-gray-300 text-[17px]">{scan.target}</td>
-                      <td className="border border-gray-300 text-[17px]">
-                        <div className="flex gap-2 justify-center">
-                          <button
-                            className="px-3 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-                            onClick={() => toggleExpand(index)}
-                          >
-                            {expandedScan === index ? "Hide" : "View"}
-                          </button>
-                          <button
-                            className="px-3 py-1 bg-red-600 text-white rounded-md hover:bg-red-700"
-                            onClick={() => handleDelete(scan._id)}
-                          >
-                            Delete
-                          </button>
-                        </div>
+                      <td className="border border-gray-300 text-[17px] text-center">
+                        <button
+                          className="px-3 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                          onClick={() => toggleExpand(index)}
+                        >
+                          {expandedScan === index ? "Hide" : "View"}
+                        </button>
                       </td>
                     </tr>
                     {expandedScan === index && (
                       <tr className="bg-gray-50">
                         <td colSpan="4" className="p-4 border">
-                          <div className="bg-gray-100 p-4 rounded-md shadow-md border border-gray-300">
-                            <h3 className="text-xl font-semibold text-gray-900 mb-2">Scan Details</h3>
-                            <p className="text-gray-800"><strong>Target:</strong> {scan.target}</p>
-                            <p className="text-gray-800"><strong>Timestamp:</strong> {new Date(scan.timestamp).toLocaleString()}</p>
-
-                            <h4 className="text-lg font-semibold mt-3 text-gray-900">Raw Output</h4>
-                            <pre className="bg-gray-50 p-4 rounded overflow-x-auto text-sm max-h-96">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                              <h3 className="font-semibold text-lg mb-2">Basic Information</h3>
+                              <p><strong>Target:</strong> {scan.target}</p>
+                              <p><strong>Timestamp:</strong> {new Date(scan.timestamp).toLocaleString()}</p>
+                            </div>
+                            <div>
+                              <h3 className="font-semibold text-lg mb-2">Scan Metadata</h3>
+                              {/* Add any additional metadata here if available */}
+                            </div>
+                          </div>
+                          
+                          <div className="mt-4">
+                            <h3 className="font-semibold text-lg mb-2">Scan Results</h3>
+                            <pre className="bg-gray-100 p-4 rounded overflow-x-auto text-sm max-h-96">
                               {scan.scan_result}
                             </pre>
                           </div>

@@ -9,6 +9,7 @@ from routes.fetchs.aggfetch import fetchAggressive_bp
 from routes.fetchs.customfetch import fetch_custom_scan_bp
 from routes.fetchs.firewallfetch import firewall_fetch_bp
 
+# from routes.fetchs.outdatedFetch import fetch_outdated_software_bp
 from routes.fetchs.outdatedFetch import fetch_outdated_software_bp
 from routes.fetchs.fileuploadFetch import fetch_scan_bp
 from routes.fetchs.nickto_custom import custom_nikto_fetch_bp

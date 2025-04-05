@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 export const Generalhistory = () => {
   const [scans, setScans] = useState([]);
   const [searchTarget, setSearchTarget] = useState("");
+  const [timeFilter, setTimeFilter] = useState("");
   const [targetSuggestions, setTargetSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -15,29 +16,33 @@ export const Generalhistory = () => {
     perPage: 10,
     total: 0
   });
-  const [selectedDate, setSelectedDate] = useState("");
+
+  const API_URL = "http://127.0.0.1:5000/nikto/general_scans";
 
   useEffect(() => {
     fetchScans();
     fetchUniqueTargets();
-  }, [pagination.page, searchTarget, selectedDate]);
+  }, [pagination.page, searchTarget, timeFilter]);
 
   const fetchScans = async () => {
     setLoading(true);
     setError(null);
     try {
-      let url = `http://127.0.0.1:5000/nikto/general_scans?page=${pagination.page}&per_page=${pagination.perPage}`;
+      let url = `${API_URL}?page=${pagination.page}&per_page=${pagination.perPage}`;
       if (searchTarget) url += `&target=${searchTarget}`;
-      if (selectedDate) url += `&date=${selectedDate}`;
+      if (timeFilter) url += `&days=${timeFilter}`;
 
       const response = await fetch(url);
-      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+      }
       
       const data = await response.json();
-      setScans(data.scans || data);
+      setScans(data.scans);
       setPagination(prev => ({
         ...prev,
-        total: data.total || data.length || 0
+        total: data.total
       }));
     } catch (err) {
       setError(err.message);
@@ -62,11 +67,18 @@ export const Generalhistory = () => {
     fetchScans();
   };
 
+  const handleClearFilters = () => {
+    setSearchTarget("");
+    setTimeFilter("");
+    setPagination(prev => ({ ...prev, page: 1 }));
+    fetchScans();
+  };
+
   const handleDelete = async (scanId) => {
     if (!window.confirm("Are you sure you want to delete this scan?")) return;
 
     try {
-      const response = await fetch(`http://127.0.0.1:5000/nikto/general_scan/${scanId}`, {
+      const response = await fetch(`${API_URL}/${scanId}`, {
         method: "DELETE",
       });
 
@@ -84,7 +96,7 @@ export const Generalhistory = () => {
     if (!selectedScans.length || !window.confirm(`Are you sure you want to delete ${selectedScans.length} scans?`)) return;
 
     try {
-      const response = await fetch("http://127.0.0.1:5000/nikto/general_scan/bulk_delete", {
+      const response = await fetch(`${API_URL}/bulk_delete`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -127,7 +139,7 @@ export const Generalhistory = () => {
       scan.target,
       extractDetail(scan.scan_result, 'Server'),
       extractDetail(scan.scan_result, 'Target Port'),
-      extractVulnerabilities(scan.scan_result).join('; ')
+      extractVulnerabilities(scan.scan_result).join('; ').replace(/"/g, '""')
     ]);
 
     let csvContent = "data:text/csv;charset=utf-8," 
@@ -167,18 +179,13 @@ export const Generalhistory = () => {
       .map(line => line.replace("+ ", ""));
   };
 
-  const handleDateChange = (e) => {
-    setSelectedDate(e.target.value);
-    setPagination(prev => ({ ...prev, page: 1 }));
-  };
-
   const toggleExpand = (index) => {
     setExpandedScan(expandedScan === index ? null : index);
   };
 
   return (
     <div className="container mx-auto px-6 py-6">
-      <h2 className="text-2xl font-bold text-center mb-4 text-gray-900">Nikto Scan History</h2>
+      <h2 className="text-2xl font-bold text-center mb-4 text-gray-900">Scan History</h2>
 
       {/* Search and Action Bar */}
       <div className="flex flex-col md:flex-row gap-4 mb-6">
@@ -215,21 +222,41 @@ export const Generalhistory = () => {
           )}
         </div>
 
-        <div className="flex items-center gap-2">
-          <input
-            type="date"
-            value={selectedDate}
-            onChange={handleDateChange}
-            className="p-2 border border-gray-400 rounded-md bg-gray-50 text-gray-900 focus:border-green-500 focus:ring-2 focus:ring-green-300"
-          />
-          <button
-            className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition"
-            onClick={handleSearch}
-          >
-            Search
-          </button>
-        </div>
+        <select
+          className="p-2 border border-gray-400 rounded-md bg-gray-50 text-gray-900 focus:border-green-500 focus:ring-2 focus:ring-green-300"
+          value={timeFilter}
+          onChange={(e) => {
+            setTimeFilter(e.target.value);
+            setPagination(prev => ({ ...prev, page: 1 }));
+          }}
+        >
+          <option value="">All Time</option>
+          <option value="1">Last 24 Hours</option>
+          <option value="7">Last 7 Days</option>
+          <option value="30">Last 30 Days</option>
+        </select>
+
+        <button
+          className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition"
+          onClick={handleSearch}
+        >
+          Search
+        </button>
+
+        <button
+          onClick={handleClearFilters}
+          className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition"
+        >
+          Clear Filters
+        </button>
       </div>
+
+      {/* Time Filter Indicator */}
+      {timeFilter && (
+        <div className="mb-4 text-sm text-gray-600">
+          Showing scans from last {timeFilter} {timeFilter === "1" ? "day" : "days"}
+        </div>
+      )}
 
       {/* Action Buttons */}
       <div className="flex flex-wrap gap-2 mb-4">
@@ -282,7 +309,8 @@ export const Generalhistory = () => {
                   <th className="border text-lg border-gray-300">Timestamp</th>
                   <th className="border text-lg border-gray-300">Target</th>
                   <th className="border text-lg border-gray-300">Server</th>
-                  <th className="border text-lg border-gray-300">Actions</th>
+                  <th className="border text-lg border-gray-300">View</th>
+                  <th className="border text-lg border-gray-300">Delete</th>
                 </tr>
               </thead>
               <tbody>
@@ -303,24 +331,26 @@ export const Generalhistory = () => {
                       <td className="border border-gray-300 text-[17px]">
                         {extractDetail(scan.scan_result, 'Server')}
                       </td>
-                      <td className="p-3 border border-gray-300 text-center space-x-2">
-                      <button
-                        className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition text-sm"
-                        onClick={() => toggleExpand(index)}
-                      >
-                        {expandedScan === index ? "Hide" : "View"}
-                      </button>
-                      <button
-                        className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition text-sm"
-                        onClick={() => handleDelete(scan._id)}
-                      >
-                        Delete
-                      </button>
-                    </td>
+                      <td className="border border-gray-300 text-center">
+                        <button
+                          className="px-3 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                          onClick={() => toggleExpand(index)}
+                        >
+                          {expandedScan === index ? "Hide" : "View"}
+                        </button>
+                      </td>
+                      <td className="border border-gray-300 text-center">
+                        <button
+                          className="px-3 py-1 bg-red-600 text-white rounded-md hover:bg-red-700"
+                          onClick={() => handleDelete(scan._id)}
+                        >
+                          Delete
+                        </button>
+                      </td>
                     </tr>
                     {expandedScan === index && (
                       <tr className="bg-gray-50">
-                        <td colSpan="5" className="p-4 border">
+                        <td colSpan="6" className="p-4 border">
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                               <h3 className="font-semibold text-lg mb-2">Scan Information</h3>
@@ -342,13 +372,12 @@ export const Generalhistory = () => {
                             <h3 className="font-semibold text-lg mb-2">Security Findings</h3>
                             <ol className="list-decimal pl-5">
                               {extractVulnerabilities(scan.scan_result).map((issue, idx) => (
-                                <li key={idx} className="bg-[#ebdcdc] p-2 text-[16px] mt-3 rounded-md my-1   border-l-4 border-orange-400">
+                                <li key={idx} className="bg-[#ebdcdc] p-2 text-[16px] mt-3 rounded-md my-1 border-l-4 border-orange-400">
                                   {issue}
                                 </li>
                               ))}
                             </ol>
                           </div>
-
                         </td>
                       </tr>
                     )}
@@ -404,4 +433,3 @@ export const Generalhistory = () => {
     </div>
   );
 };
-h

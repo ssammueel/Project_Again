@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request
 from pymongo import MongoClient, DESCENDING
+from datetime import datetime, timedelta
 import os
 from bson import ObjectId
 
@@ -19,6 +20,12 @@ def fetch_header_scans():
         query = {}
         if target:
             query["target"] = {"$regex": target, "$options": "i"}
+
+        days = request.args.get("days")
+        if days and days.isdigit():
+            days = int(days)
+            start_date = datetime.utcnow() - timedelta(days=days)
+            query["timestamp"] = {"$gte": start_date}
 
         total = header_nikto_collection.count_documents(query)
         scans = list(header_nikto_collection.find(query)

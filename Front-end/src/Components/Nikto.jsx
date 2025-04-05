@@ -274,7 +274,7 @@ export const FileUploadScan = () => {
     return (
         <div className="w-[100%]">
             <h2 className="text-[16px] ml-[15%] mt-[1%] px-4 rounded-lg py-2 w-fit font-bold font-mono bg-gradient-to-r from-red-600 to-red-800 text-white">
-                deFile Upload Scan
+                File Upload Scan
             </h2>
 
             <div className="w-[100%] flex gap-[5%] mt-[1%]">
